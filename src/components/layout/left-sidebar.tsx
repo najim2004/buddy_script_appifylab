@@ -5,39 +5,39 @@ export function LeftSidebar() {
   return (
     <div className="space-y-4">
       {/* Explore Section */}
-      <div className="bg-card rounded-[6px] p-6 pb-[6px]">
-        <h4 className="text-title mb-6 text-[18px] font-semibold">
-          Explore
-        </h4>
-        <ul className="m-0 list-none p-0">
+      <div className="bg-card rounded-lg p-6 pb-[6px]">
+        <h4 className="text-title mb-6 text-xl font-medium">Explore</h4>
+        <ul className="m-0 list-none space-y-6 p-0">
           {/* Learning */}
-          <li className="mb-[15px]">
+          <li>
             <Link
               href="#"
-              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center justify-between text-[15px] font-medium transition-colors"
             >
-              <svg
-                className="mr-3"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  className="group-hover:fill-primary transition-colors"
-                  fill="#666"
-                  d="M10 0c5.523 0 10 4.477 10 10s-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0zm0 1.395a8.605 8.605 0 100 17.21 8.605 8.605 0 000-17.21zm-1.233 4.65l.104.01c.188.028.443.113.668.203 1.026.398 3.033 1.746 3.8 2.563l.223.239.08.092a1.16 1.16 0 01.025 1.405c-.04.053-.086.105-.19.215l-.269.28c-.812.794-2.57 1.971-3.569 2.391-.277.117-.675.25-.865.253a1.167 1.167 0 01-1.07-.629c-.053-.104-.12-.353-.171-.586l-.051-.262c-.093-.57-.143-1.437-.142-2.347l.001-.288c.01-.858.063-1.64.157-2.147.037-.207.12-.563.167-.678.104-.25.291-.45.523-.575a1.15 1.15 0 01.58-.14zm.14 1.467l-.027.126-.034.198c-.07.483-.112 1.233-.111 2.036l.001.279c.009.737.053 1.414.123 1.841l.048.235.192-.07c.883-.372 2.636-1.56 3.23-2.2l.08-.087-.212-.218c-.711-.682-2.38-1.79-3.167-2.095l-.124-.045z"
-                />
-              </svg>
-              Learning
+              <span className="flex items-center gap-1">
+                <svg
+                  className="mr-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    className="group-hover:fill-primary transition-colors"
+                    fill="#666"
+                    d="M10 0c5.523 0 10 4.477 10 10s-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0zm0 1.395a8.605 8.605 0 100 17.21 8.605 8.605 0 000-17.21zm-1.233 4.65l.104.01c.188.028.443.113.668.203 1.026.398 3.033 1.746 3.8 2.563l.223.239.08.092a1.16 1.16 0 01.025 1.405c-.04.053-.086.105-.19.215l-.269.28c-.812.794-2.57 1.971-3.569 2.391-.277.117-.675.25-.865.253a1.167 1.167 0 01-1.07-.629c-.053-.104-.12-.353-.171-.586l-.051-.262c-.093-.57-.143-1.437-.142-2.347l.001-.288c.01-.858.063-1.64.157-2.147.037-.207.12-.563.167-.678.104-.25.291-.45.523-.575a1.15 1.15 0 01.58-.14zm.14 1.467l-.027.126-.034.198c-.07.483-.112 1.233-.111 2.036l.001.279c.009.737.053 1.414.123 1.841l.048.235.192-.07c.883-.372 2.636-1.56 3.23-2.2l.08-.087-.212-.218c-.711-.682-2.38-1.79-3.167-2.095l-.124-.045z"
+                  />
+                </svg>
+                Learning
+              </span>
               <span className="border-card bg-success ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
                 New
               </span>
             </Link>
           </li>
           {/* Insights */}
-          <li className="mb-[15px]">
+          <li>
             <Link
               href="#"
               className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
@@ -60,7 +60,7 @@ export function LeftSidebar() {
             </Link>
           </li>
           {/* Find Friends */}
-          <li className="mb-[15px]">
+          <li>
             <Link
               href="/friend-request"
               className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
@@ -83,7 +83,7 @@ export function LeftSidebar() {
             </Link>
           </li>
           {/* Bookmarks */}
-          <li className="mb-[15px]">
+          <li>
             <Link
               href="#"
               className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
@@ -106,7 +106,7 @@ export function LeftSidebar() {
             </Link>
           </li>
           {/* Group */}
-          <li className="mb-[15px]">
+          <li>
             <Link
               href="#"
               className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
@@ -146,26 +146,28 @@ export function LeftSidebar() {
             </Link>
           </li>
           {/* Gaming */}
-          <li className="mb-[15px]">
+          <li>
             <Link
               href="#"
-              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center justify-between text-[15px] font-medium transition-colors"
             >
-              <svg
-                className="mr-3"
-                xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="24"
-                fill="none"
-                viewBox="0 0 22 24"
-              >
-                <path
-                  className="group-hover:fill-primary transition-colors"
-                  fill="#666"
-                  d="M7.625 2c.315-.015.642.306.645.69.003.309.234.558.515.558h.928c1.317 0 2.402 1.169 2.419 2.616v.24h2.604c2.911-.026 5.255 2.337 5.377 5.414.005.12.006.245.004.368v4.31c.062 3.108-2.21 5.704-5.064 5.773-.117.003-.228 0-.34-.005a199.325 199.325 0 01-7.516 0c-2.816.132-5.238-2.292-5.363-5.411a6.262 6.262 0 01-.004-.371V11.87c-.03-1.497.48-2.931 1.438-4.024.956-1.094 2.245-1.714 3.629-1.746a3.28 3.28 0 01.342.005l3.617-.001v-.231c-.008-.676-.522-1.23-1.147-1.23h-.93c-.973 0-1.774-.866-1.785-1.937-.003-.386.28-.701.631-.705zm-.614 5.494h-.084C5.88 7.52 4.91 7.987 4.19 8.812c-.723.823-1.107 1.904-1.084 3.045v4.34c-.002.108 0 .202.003.294.094 2.353 1.903 4.193 4.07 4.08 2.487.046 5.013.046 7.55-.001.124.006.212.007.3.004 2.147-.05 3.86-2.007 3.812-4.361V11.87a5.027 5.027 0 00-.002-.291c-.093-2.338-1.82-4.082-4.029-4.082l-.07.002H7.209a4.032 4.032 0 00-.281-.004l.084-.001zm1.292 4.091c.341 0 .623.273.667.626l.007.098-.001 1.016h.946c.372 0 .673.325.673.725 0 .366-.253.669-.582.717l-.091.006h-.946v1.017c0 .4-.3.724-.673.724-.34 0-.622-.273-.667-.626l-.006-.098v-1.017h-.945c-.372 0-.674-.324-.674-.723 0-.367.254-.67.582-.718l.092-.006h.945v-1.017c0-.4.301-.724.673-.724zm7.058 3.428c.372 0 .674.324.674.724 0 .366-.254.67-.582.717l-.091.007h-.09c-.373 0-.674-.324-.674-.724 0-.367.253-.67.582-.717l.091-.007h.09zm-1.536-3.322c.372 0 .673.324.673.724 0 .367-.253.67-.582.718l-.091.006h-.09c-.372 0-.674-.324-.674-.724 0-.366.254-.67.582-.717l.092-.007h.09z"
-                />
-              </svg>
-              Gaming
+              <span className="flex items-center gap-1">
+                <svg
+                  className="mr-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 22 24"
+                >
+                  <path
+                    className="group-hover:fill-primary transition-colors"
+                    fill="#666"
+                    d="M7.625 2c.315-.015.642.306.645.69.003.309.234.558.515.558h.928c1.317 0 2.402 1.169 2.419 2.616v.24h2.604c2.911-.026 5.255 2.337 5.377 5.414.005.12.006.245.004.368v4.31c.062 3.108-2.21 5.704-5.064 5.773-.117.003-.228 0-.34-.005a199.325 199.325 0 01-7.516 0c-2.816.132-5.238-2.292-5.363-5.411a6.262 6.262 0 01-.004-.371V11.87c-.03-1.497.48-2.931 1.438-4.024.956-1.094 2.245-1.714 3.629-1.746a3.28 3.28 0 01.342.005l3.617-.001v-.231c-.008-.676-.522-1.23-1.147-1.23h-.93c-.973 0-1.774-.866-1.785-1.937-.003-.386.28-.701.631-.705zm-.614 5.494h-.084C5.88 7.52 4.91 7.987 4.19 8.812c-.723.823-1.107 1.904-1.084 3.045v4.34c-.002.108 0 .202.003.294.094 2.353 1.903 4.193 4.07 4.08 2.487.046 5.013.046 7.55-.001.124.006.212.007.3.004 2.147-.05 3.86-2.007 3.812-4.361V11.87a5.027 5.027 0 00-.002-.291c-.093-2.338-1.82-4.082-4.029-4.082l-.07.002H7.209a4.032 4.032 0 00-.281-.004l.084-.001zm1.292 4.091c.341 0 .623.273.667.626l.007.098-.001 1.016h.946c.372 0 .673.325.673.725 0 .366-.253.669-.582.717l-.091.006h-.946v1.017c0 .4-.3.724-.673.724-.34 0-.622-.273-.667-.626l-.006-.098v-1.017h-.945c-.372 0-.674-.324-.674-.723 0-.367.254-.67.582-.718l.092-.006h.945v-1.017c0-.4.301-.724.673-.724zm7.058 3.428c.372 0 .674.324.674.724 0 .366-.254.67-.582.717l-.091.007h-.09c-.373 0-.674-.324-.674-.724 0-.367.253-.67.582-.717l.091-.007h.09zm-1.536-3.322c.372 0 .673.324.673.724 0 .367-.253.67-.582.718l-.091.006h-.09c-.372 0-.674-.324-.674-.724 0-.366.254-.67.582-.717l.092-.007h.09z"
+                  />
+                </svg>
+                Gaming
+              </span>
               <span className="border-card bg-success ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
                 New
               </span>
@@ -232,14 +234,12 @@ export function LeftSidebar() {
       </div>
 
       {/* Suggested People */}
-      <div className="bg-card rounded-[6px] p-6 pb-[6px]">
+      <div className="bg-card rounded-lg p-6 pb-[6px]">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-title text-[18px] font-semibold">
-            Suggested People
-          </h4>
+          <h4 className="text-title text-xl font-medium">Suggested People</h4>
           <Link
             href="#"
-            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+            className="text-primary text-xs font-medium transition-colors"
           >
             See All
           </Link>
@@ -250,24 +250,24 @@ export function LeftSidebar() {
           <div className="flex items-center">
             <Link
               href="#"
-              className="mr-3 block h-[46px] w-[46px] shrink-0 overflow-hidden rounded-full"
+              className="mr-3 block h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full"
             >
               <Image
                 src="/assets/images/people1.png"
                 alt="Steve Jobs"
-                width={46}
-                height={46}
+                width={40}
+                height={40}
                 className="h-full w-full object-cover"
               />
             </Link>
             <div>
               <Link
                 href="#"
-                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-sm font-medium transition-colors"
               >
                 Steve Jobs
               </Link>
-              <p className="text-muted-foreground text-sm font-normal">
+              <p className="text-muted-foreground text-xs font-normal">
                 CEO of Apple
               </p>
             </div>
@@ -282,24 +282,24 @@ export function LeftSidebar() {
           <div className="flex items-center">
             <Link
               href="#"
-              className="mr-3 block h-[46px] w-[46px] shrink-0 overflow-hidden rounded-full"
+              className="mr-3 block h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full"
             >
               <Image
                 src="/assets/images/people2.png"
                 alt="Ryan Roslansky"
-                width={46}
-                height={46}
+                width={40}
+                height={40}
                 className="h-full w-full object-cover"
               />
             </Link>
             <div>
               <Link
                 href="#"
-                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-sm font-medium transition-colors"
               >
                 Ryan Roslansky
               </Link>
-              <p className="text-muted-foreground text-sm font-normal">
+              <p className="text-muted-foreground text-xs font-normal">
                 CEO of Linkedin
               </p>
             </div>
@@ -314,24 +314,24 @@ export function LeftSidebar() {
           <div className="flex items-center">
             <Link
               href="#"
-              className="mr-3 block h-[46px] w-[46px] shrink-0 overflow-hidden rounded-full"
+              className="mr-3 block h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full"
             >
               <Image
                 src="/assets/images/people3.png"
                 alt="Dylan Field"
-                width={46}
-                height={46}
+                width={40}
+                height={40}
                 className="h-full w-full object-cover"
               />
             </Link>
             <div>
               <Link
                 href="#"
-                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-sm font-medium transition-colors"
               >
                 Dylan Field
               </Link>
-              <p className="text-muted-foreground text-sm font-normal">
+              <p className="text-muted-foreground text-xs font-normal">
                 CEO of Figma
               </p>
             </div>
@@ -345,9 +345,7 @@ export function LeftSidebar() {
       {/* Events */}
       <div className="bg-card rounded-[6px] p-6 pb-[6px]">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-title text-[18px] font-semibold">
-            Events
-          </h4>
+          <h4 className="text-title text-[18px] font-semibold">Events</h4>
           <Link
             href="#"
             className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"

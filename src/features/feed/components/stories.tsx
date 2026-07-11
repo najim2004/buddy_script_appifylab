@@ -36,13 +36,13 @@ export function Stories({ stories }: StoriesProps) {
         </Button>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex w-full gap-6 overflow-x-auto">
         {stories.map((story, index) => (
           <StoryCard
             key={story.id}
             story={story}
             className={cn(
-              "w-[30%] shrink-0 lg:w-[23%]",
+              "w-[30%] shrink-0 lg:w-[22%]",
               index >= 2 && "hidden md:block",
               index >= 3 && "hidden lg:block",
             )}
@@ -66,7 +66,7 @@ function StoryCard({
         href="#0"
         className="group block overflow-hidden transition-all duration-200 ease-in-out"
       >
-        <div className="relative z-[2] flex h-[190px] w-full flex-col justify-end overflow-hidden rounded-md">
+        <div className="relative z-2 flex h-[155px] w-full flex-col justify-end overflow-hidden rounded-lg">
           <Image
             src={story.cover}
             alt={story.name}
@@ -75,7 +75,7 @@ function StoryCard({
             className="object-cover"
             priority={story.isOwn}
           />
-          <div className="absolute inset-0 z-[1] bg-black/50 transition-opacity duration-200 group-hover:opacity-70" />
+          <div className="absolute inset-0 z-1 bg-black/50 transition-opacity duration-200 group-hover:opacity-70" />
 
           {story.isOwn ? (
             <div className="bg-story relative z-10 w-full rounded-t-[25.5px] rounded-b-md pt-[30px]">

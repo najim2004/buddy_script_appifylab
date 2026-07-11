@@ -5,15 +5,10 @@ export function RightSidebar() {
   return (
     <div className="space-y-4">
       {/* You Might Like */}
-      <div className="bg-card rounded-[6px] p-6 pb-6">
+      <div className="bg-card rounded-lg p-6 pb-6">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-title text-[18px] font-semibold">
-            You Might Like
-          </h4>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
-          >
+          <h4 className="text-title text-xl font-medium">You Might Like</h4>
+          <Link href="#" className="text-primary text-xs font-medium">
             See All
           </Link>
         </div>
@@ -37,11 +32,11 @@ export function RightSidebar() {
             <div>
               <Link
                 href="#"
-                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-base font-medium transition-colors"
               >
                 Radovan SkillArena
               </Link>
-              <p className="text-muted-foreground text-[13px] font-normal">
+              <p className="text-muted-foreground text-xs font-normal">
                 Founder & CEO at Trophy
               </p>
             </div>
@@ -50,13 +45,13 @@ export function RightSidebar() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="border border-[#f1f1f1] dark:border-border bg-transparent text-sidebar-muted hover:bg-secondary flex-1 rounded-[6px] py-[10px] text-[15px] font-medium transition-colors"
+              className="dark:border-border text-sidebar-muted hover:bg-secondary flex-1 rounded-[6px] border border-[#f1f1f1] bg-transparent py-[10px] text-[15px] font-medium transition-colors"
             >
               Ignore
             </button>
             <button
               type="button"
-              className="bg-primary flex-1 rounded-[6px] py-[10px] text-[15px] font-medium text-white transition-colors hover:bg-primary-hover"
+              className="bg-primary hover:bg-primary-hover flex-1 rounded-[6px] py-[10px] text-[15px] font-medium text-white transition-colors"
             >
               Follow
             </button>
@@ -65,14 +60,12 @@ export function RightSidebar() {
       </div>
 
       {/* Your Friends */}
-      <div className="bg-card rounded-[6px] p-6">
+      <div className="bg-card rounded-lg p-6">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-title text-[18px] font-semibold">
-            Your Friends
-          </h4>
+          <h4 className="text-title text-xl font-medium">Your Friends</h4>
           <Link
             href="/friend-request"
-            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+            className="text-primary text-xs font-medium transition-colors"
           >
             See All
           </Link>
@@ -94,12 +87,12 @@ export function RightSidebar() {
           <input
             type="search"
             placeholder="Search friends"
-            className="border-border bg-background text-foreground focus:border-primary focus:ring-primary h-[42px] w-full rounded-[40px] border pr-4 pl-10 text-sm focus:ring-1 focus:outline-none"
+            className="border-border bg-background text-foreground focus:border-primary h-[42px] w-full rounded-[40px] border pr-4 pl-10 text-sm focus:ring-0 focus:outline-none"
           />
         </form>
 
         {/* Friends List */}
-        <div className="space-y-[18px]">
+        <div className="space-y-8">
           {/* Friend 1 (Inactive) */}
           <div className="flex items-center justify-between opacity-60 transition-opacity hover:opacity-100">
             <div className="flex items-center">
