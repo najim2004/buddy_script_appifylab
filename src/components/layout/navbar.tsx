@@ -2,22 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const pathname = usePathname();
 
-  // Utility to determine active link
   const isActive = (path: string) => pathname === path;
 
   return (
     <>
-      {/* Desktop Header */}
-      <nav className="fixed left-0 right-0 top-0 z-50 bg-bs-bg2 shadow-[0_4px_16px_rgba(240,242,245,1)] dark:shadow-none dark:border-b dark:border-bs-bcolor1">
-        <div className="container mx-auto flex h-[70px] max-w-[1400px] items-center px-4 xl:px-0">
-          
-          {/* Logo */}
+      <nav className="bg-card dark:border-border fixed top-0 right-0 left-0 z-50 shadow-none dark:border-b dark:shadow-none">
+        <div className="container mx-auto flex h-[72px] max-w-[1296px] items-center px-4 xl:px-0">
           <div className="flex shrink-0 items-center">
             <Link href="/">
               <Image
@@ -26,16 +21,15 @@ export function Navbar() {
                 width={161}
                 height={40}
                 priority
-                className="h-auto w-auto max-w-[161px]"
+                className="h-auto w-auto max-w-[137px]"
               />
             </Link>
           </div>
 
-          {/* Search Form */}
           <div className="ml-auto hidden lg:block">
             <form className="relative">
               <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2"
+                className="absolute top-1/2 left-4 -translate-y-1/2"
                 xmlns="http://www.w3.org/2000/svg"
                 width="17"
                 height="17"
@@ -48,22 +42,28 @@ export function Navbar() {
               <input
                 type="search"
                 placeholder="input search text"
-                className="h-[42px] w-[240px] rounded-[40px] border border-bs-bcolor1 bg-bs-bg1 pl-11 pr-4 text-sm text-bs-color1 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="border-border bg-background text-foreground focus:border-primary h-[40px] w-[426px] rounded-[40px] border pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
               />
             </form>
           </div>
 
-          {/* Right Navigation */}
-          <ul className="ml-auto hidden items-center space-x-6 lg:flex xl:space-x-8">
-            {/* Home */}
+          <ul className="ml-auto hidden items-center space-x-6 lg:flex xl:space-x-11">
             <li className="relative">
               <Link
                 href="/"
-                className={`relative flex h-[70px] items-center justify-center px-2 transition-all ${
-                  isActive("/") ? "border-b-2 border-primary" : "hover:border-b-2 hover:border-primary border-b-2 border-transparent"
+                className={`relative flex h-[70px] items-center justify-center px-4 transition-all ${
+                  isActive("/")
+                    ? "border-primary border-b-2"
+                    : "hover:border-primary border-b-2 border-transparent hover:border-b-2"
                 }`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="21" fill="none" viewBox="0 0 18 21">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="21"
+                  fill="none"
+                  viewBox="0 0 18 21"
+                >
                   <path
                     className="transition-all"
                     stroke={isActive("/") ? "#1890FF" : "currentColor"}
@@ -85,10 +85,18 @@ export function Navbar() {
               </Link>
             </li>
 
-            {/* Friend Request */}
             <li>
-              <Link href="/friend-request" className="flex h-[70px] items-center justify-center px-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20" fill="none" viewBox="0 0 26 20">
+              <Link
+                href="/friend-request"
+                className="flex h-[70px] items-center justify-center px-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="26"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 26 20"
+                >
                   <path
                     fill="currentColor"
                     fillOpacity=".6"
@@ -100,46 +108,51 @@ export function Navbar() {
               </Link>
             </li>
 
-            {/* Notification */}
-            <li className="relative flex h-[70px] items-center justify-center px-2 cursor-pointer group">
-              <div className="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" fill="none" viewBox="0 0 20 22">
-                  <path
-                    fill="currentColor"
-                    fillOpacity=".6"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M7.547 19.55c.533.59 1.218.915 1.93.915.714 0 1.403-.324 1.938-.916a.777.777 0 011.09-.056c.318.284.344.77.058 1.084-.832.917-1.927 1.423-3.086 1.423h-.002c-1.155-.001-2.248-.506-3.077-1.424a.762.762 0 01.057-1.083.774.774 0 011.092.057zM9.527 0c4.58 0 7.657 3.543 7.657 6.85 0 1.702.436 2.424.899 3.19.457.754.976 1.612.976 3.233-.36 4.14-4.713 4.478-9.531 4.478-4.818 0-9.172-.337-9.528-4.413-.003-1.686.515-2.544.973-3.299l.161-.27c.398-.679.737-1.417.737-2.918C1.871 3.543 4.948 0 9.528 0zm0 1.535c-3.6 0-6.11 2.802-6.11 5.316 0 2.127-.595 3.11-1.12 3.978-.422.697-.755 1.247-.755 2.444.173 1.93 1.455 2.944 7.986 2.944 6.494 0 7.817-1.06 7.988-3.01-.003-1.13-.336-1.681-.757-2.378-.526-.868-1.12-1.851-1.12-3.978 0-2.514-2.51-5.316-6.111-5.316z"
-                  />
-                </svg>
-                <span className="absolute -right-2 -top-2 flex h-[17px] min-w-[17px] items-center justify-center rounded-[9px] border border-bs-bg2 bg-primary px-[3px] text-[11px] font-normal leading-[1.4] text-white">
-                  6
-                </span>
-              </div>
+            <li className="relative cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="22"
+                fill="none"
+                viewBox="0 0 20 22"
+              >
+                <path
+                  fill="currentColor"
+                  fillOpacity=".6"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M7.547 19.55c.533.59 1.218.915 1.93.915.714 0 1.403-.324 1.938-.916a.777.777 0 011.09-.056c.318.284.344.77.058 1.084-.832.917-1.927 1.423-3.086 1.423h-.002c-1.155-.001-2.248-.506-3.077-1.424a.762.762 0 01.057-1.083.774.774 0 011.092.057zM9.527 0c4.58 0 7.657 3.543 7.657 6.85 0 1.702.436 2.424.899 3.19.457.754.976 1.612.976 3.233-.36 4.14-4.713 4.478-9.531 4.478-4.818 0-9.172-.337-9.528-4.413-.003-1.686.515-2.544.973-3.299l.161-.27c.398-.679.737-1.417.737-2.918C1.871 3.543 4.948 0 9.528 0zm0 1.535c-3.6 0-6.11 2.802-6.11 5.316 0 2.127-.595 3.11-1.12 3.978-.422.697-.755 1.247-.755 2.444.173 1.93 1.455 2.944 7.986 2.944 6.494 0 7.817-1.06 7.988-3.01-.003-1.13-.336-1.681-.757-2.378-.526-.868-1.12-1.851-1.12-3.978 0-2.514-2.51-5.316-6.111-5.316z"
+                />
+              </svg>
+              <span className="border-card bg-primary absolute -top-2 -right-2 flex h-[17px] min-w-[17px] items-center justify-center rounded-[9px] border text-[11px] leading-[1.4] font-normal text-white">
+                6
+              </span>
             </li>
 
-            {/* Messages */}
-            <li className="relative flex h-[70px] items-center justify-center px-2 cursor-pointer group">
-              <div className="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" fill="none" viewBox="0 0 23 22">
-                  <path
-                    fill="currentColor"
-                    fillOpacity=".6"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M11.43 0c2.96 0 5.743 1.143 7.833 3.22 4.32 4.29 4.32 11.271 0 15.562C17.145 20.886 14.293 22 11.405 22c-1.575 0-3.16-.33-4.643-1.012-.437-.174-.847-.338-1.14-.338-.338.002-.793.158-1.232.308-.9.307-2.022.69-2.852-.131-.826-.822-.445-1.932-.138-2.826.152-.44.307-.895.307-1.239 0-.282-.137-.642-.347-1.161C-.57 11.46.322 6.47 3.596 3.22A11.04 11.04 0 0111.43 0zm0 1.535A9.5 9.5 0 004.69 4.307a9.463 9.463 0 00-1.91 10.686c.241.592.474 1.17.474 1.77 0 .598-.207 1.201-.39 1.733-.15.439-.378 1.1-.231 1.245.143.147.813-.085 1.255-.235.53-.18 1.133-.387 1.73-.391.597 0 1.161.225 1.758.463 3.655 1.679 7.98.915 10.796-1.881 3.716-3.693 3.716-9.7 0-13.391a9.5 9.5 0 00-6.74-2.77zm4.068 8.867c.57 0 1.03.458 1.03 1.024 0 .566-.46 1.023-1.03 1.023a1.023 1.023 0 11-.01-2.047h.01zm-4.131 0c.568 0 1.03.458 1.03 1.024 0 .566-.462 1.023-1.03 1.023a1.03 1.03 0 01-1.035-1.024c0-.566.455-1.023 1.025-1.023h.01zm-4.132 0c.568 0 1.03.458 1.03 1.024 0 .566-.462 1.023-1.03 1.023a1.022 1.022 0 11-.01-2.047h.01z"
-                  />
-                </svg>
-                <span className="absolute -right-2 -top-2 flex h-[17px] min-w-[17px] items-center justify-center rounded-[9px] border border-bs-bg2 bg-primary px-[3px] text-[11px] font-normal leading-[1.4] text-white">
-                  2
-                </span>
-              </div>
+            <li className="relative cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23"
+                height="22"
+                fill="none"
+                viewBox="0 0 23 22"
+              >
+                <path
+                  fill="currentColor"
+                  fillOpacity=".6"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M11.43 0c2.96 0 5.743 1.143 7.833 3.22 4.32 4.29 4.32 11.271 0 15.562C17.145 20.886 14.293 22 11.405 22c-1.575 0-3.16-.33-4.643-1.012-.437-.174-.847-.338-1.14-.338-.338.002-.793.158-1.232.308-.9.307-2.022.69-2.852-.131-.826-.822-.445-1.932-.138-2.826.152-.44.307-.895.307-1.239 0-.282-.137-.642-.347-1.161C-.57 11.46.322 6.47 3.596 3.22A11.04 11.04 0 0111.43 0zm0 1.535A9.5 9.5 0 004.69 4.307a9.463 9.463 0 00-1.91 10.686c.241.592.474 1.17.474 1.77 0 .598-.207 1.201-.39 1.733-.15.439-.378 1.1-.231 1.245.143.147.813-.085 1.255-.235.53-.18 1.133-.387 1.73-.391.597 0 1.161.225 1.758.463 3.655 1.679 7.98.915 10.796-1.881 3.716-3.693 3.716-9.7 0-13.391a9.5 9.5 0 00-6.74-2.77zm4.068 8.867c.57 0 1.03.458 1.03 1.024 0 .566-.46 1.023-1.03 1.023a1.023 1.023 0 11-.01-2.047h.01zm-4.131 0c.568 0 1.03.458 1.03 1.024 0 .566-.462 1.023-1.03 1.023a1.03 1.03 0 01-1.035-1.024c0-.566.455-1.023 1.025-1.023h.01zm-4.132 0c.568 0 1.03.458 1.03 1.024 0 .566-.462 1.023-1.03 1.023a1.022 1.022 0 11-.01-2.047h.01z"
+                />
+              </svg>
+              <span className="border-card bg-primary absolute -top-2 -right-2 flex h-[17px] min-w-[17px] items-center justify-center rounded-[9px] border text-[11px] leading-[1.4] font-normal text-white">
+                2
+              </span>
             </li>
           </ul>
 
-          {/* Profile Section */}
-          <div className="ml-4 flex shrink-0 items-center gap-2 lg:ml-8">
-            <div className="h-8 w-8 overflow-hidden rounded-full">
+          <div className="ml-4 flex shrink-0 cursor-pointer items-center gap-2 lg:ml-8">
+            <div className="h-7 w-7 overflow-hidden rounded-full">
               <Image
                 src="/assets/images/profile.png"
                 alt="Profile"
@@ -149,18 +162,28 @@ export function Navbar() {
               />
             </div>
             <div className="hidden cursor-pointer items-center gap-1 lg:flex">
-              <span className="text-base font-normal text-bs-color6">Dylan Field</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" fill="none" viewBox="0 0 10 6">
-                <path fill="#112032" className="dark:fill-white" d="M5 5l.354.354L5 5.707l-.354-.353L5 5zm4.354-3.646l-4 4-.708-.708 4-4 .708.708zm-4.708 4l-4-4 .708-.708 4 4-.708.708z" />
+              <span className="text-ink text-base font-normal">
+                Dylan Field
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="10"
+                height="6"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  fill="#112032"
+                  className="dark:fill-white"
+                  d="M5 5l.354.354L5 5.707l-.354-.353L5 5zm4.354-3.646l-4 4-.708-.708 4-4 .708.708zm-4.708 4l-4-4 .708-.708 4 4-.708.708z"
+                />
               </svg>
             </div>
           </div>
-          
         </div>
       </nav>
-      
-      {/* Mobile Bottom Navigation Placeholder - Usually positioned fixed bottom */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 block border-t border-bs-bcolor1 bg-bs-bg2 lg:hidden">
+
+      <div className="border-border bg-card fixed right-0 bottom-0 left-0 z-40 block border-t lg:hidden">
         {/* Mobile bottom nav implementation... */}
       </div>
     </>

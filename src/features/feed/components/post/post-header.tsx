@@ -1,0 +1,84 @@
+import Link from "next/link";
+import { MoreHorizontal } from "lucide-react";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface PostHeaderProps {
+  authorName: string;
+  authorImage: string;
+  timeAgo: string;
+  privacy: string;
+}
+
+export function PostHeader({
+  authorName,
+  authorImage,
+  timeAgo,
+  privacy,
+}: PostHeaderProps) {
+  return (
+    <div className="mb-4 flex items-center justify-between">
+      <div className="flex cursor-pointer items-center">
+        <Avatar className="mr-4 size-11 shrink-0">
+          <AvatarImage src={authorImage} alt={authorName} />
+          <AvatarFallback>{authorName.slice(0, 1)}</AvatarFallback>
+        </Avatar>
+        <div>
+          <h4 className="mb-0.5">
+            <Link
+              href="#0"
+              className="text-ink hover:text-primary text-base leading-tight transition-colors hover:underline"
+            >
+              {authorName}
+            </Link>
+          </h4>
+          <p className="text-meta flex items-center text-sm leading-tight font-normal">
+            {timeAgo}
+            <span className="mx-1">·</span>
+            <Link href="#0" className="text-meta hover:underline">
+              {privacy}
+            </Link>
+          </p>
+        </div>
+      </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="text-meta hover:bg-background size-8 rounded-full"
+            aria-label="Post options"
+          >
+            <MoreHorizontal className="size-5" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="bg-card w-44">
+          <DropdownMenuItem className="cursor-pointer">
+            Save Post
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Turn on notifications
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Hide Post
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Edit Post
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+            Delete Post
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}

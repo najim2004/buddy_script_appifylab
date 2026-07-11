@@ -97,10 +97,10 @@ export default function RegisterPage() {
               </div>
 
               {/* Heading */}
-              <p className="text-bs-color mb-2 text-center text-base leading-snug font-normal">
+              <p className="text-card-foreground mb-2 text-center text-base leading-snug font-normal">
                 Get Started Now
               </p>
-              <h1 className="text-bs-color2 mb-[50px] text-center text-[28px] leading-tight font-medium">
+              <h1 className="text-card-foreground2 mb-[50px] text-center text-[28px] leading-tight font-medium">
                 Registration
               </h1>
 
@@ -108,7 +108,7 @@ export default function RegisterPage() {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-card hover:bg-muted border-bs-bcolor1 text-bs-color2 mb-10 h-auto w-full justify-center gap-2 rounded-lg px-[60px] py-3 text-base font-medium shadow-none"
+                className="bg-card hover:bg-muted border-border text-card-foreground2 mb-10 h-auto w-full justify-center gap-2 rounded-lg px-[60px] py-3 text-base font-medium shadow-none"
               >
                 <Image
                   src="/assets/images/google.svg"
@@ -122,16 +122,16 @@ export default function RegisterPage() {
 
               {/* OR divider */}
               <div className="relative mb-10 flex items-center justify-center py-[11px]">
-                <span className="bg-bs-bg4 absolute left-0 h-px w-[108px]" />
-                <span className="text-bs-color3 text-sm font-normal">Or</span>
-                <span className="bg-bs-bg4 absolute right-0 h-px w-[108px]" />
+                <span className="bg-divider absolute left-0 h-px w-[108px]" />
+                <span className="text-placeholder text-sm font-normal">Or</span>
+                <span className="bg-divider absolute right-0 h-px w-[108px]" />
               </div>
 
               {/* Registration form */}
               <RegisterForm />
 
               {/* Login link */}
-              <p className="text-bs-color text-center text-sm">
+              <p className="text-card-foreground text-center text-sm">
                 Already have an account?{" "}
                 <Link
                   href="/login"

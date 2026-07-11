@@ -56,14 +56,14 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel className="text-bs-color4 text-base font-medium">
+              <FormLabel className="text-label text-base font-medium">
                 Email
               </FormLabel>
               <FormControl>
                 <Input
                   type="email"
                   autoComplete="email"
-                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
+                  className="bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="you@example.com"
                   {...field}
                 />
@@ -79,14 +79,14 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel className="text-bs-color4 text-base font-medium">
+              <FormLabel className="text-label text-base font-medium">
                 Password
               </FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   autoComplete="new-password"
-                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
+                  className="bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="••••••••"
                   {...field}
                 />
@@ -102,14 +102,14 @@ export function RegisterForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel className="text-bs-color4 text-base font-medium">
+              <FormLabel className="text-label text-base font-medium">
                 Repeat Password
               </FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   autoComplete="new-password"
-                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
+                  className="bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="••••••••"
                   {...field}
                 />
@@ -134,7 +134,7 @@ export function RegisterForm() {
                   />
                 </FormControl>
                 <div className="leading-none">
-                  <FormLabel className="text-bs-color cursor-pointer text-sm font-normal">
+                  <FormLabel className="text-card-foreground cursor-pointer text-sm font-normal">
                     I agree to terms &amp; conditions
                   </FormLabel>
                 </div>
