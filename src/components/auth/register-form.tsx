@@ -1,0 +1,151 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import Link from "next/link";
+
+const registerSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  confirmPassword: z.string(),
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the terms & conditions.",
+  }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"],
+});
+
+export function RegisterForm() {
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      terms: true,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof registerSchema>) {
+    console.log(values);
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[14px]">
+        {/* Email */}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-2">
+              <FormLabel className="text-bs-color4 text-base font-medium">Email</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  autoComplete="email"
+                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  placeholder="you@example.com"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Password */}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-2">
+              <FormLabel className="text-bs-color4 text-base font-medium">Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  placeholder="••••••••"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Confirm Password */}
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-2">
+              <FormLabel className="text-bs-color4 text-base font-medium">Repeat Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  placeholder="••••••••"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Terms checkbox */}
+        <div className="pt-1">
+          <FormField
+            control={form.control}
+            name="terms"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="border-primary data-[state=checked]:border-primary data-[state=checked]:bg-primary"
+                  />
+                </FormControl>
+                <div className="leading-none">
+                  <FormLabel className="text-bs-color cursor-pointer text-sm font-normal">
+                    I agree to terms &amp; conditions
+                  </FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+          {form.formState.errors.terms && (
+            <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.terms.message}</p>
+          )}
+        </div>
+
+        {/* Submit */}
+        <div className="pt-[26px] pb-[60px]">
+          <Button
+            type="submit"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 h-auto w-full rounded-md py-3 text-base font-medium hover:shadow-[0_8px_24px_rgba(24,144,255,0.25)]"
+          >
+            Register now
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}

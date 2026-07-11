@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata = {
   title: "Login",
@@ -126,74 +124,7 @@ export default function LoginPage() {
               </div>
 
               {/* Login form */}
-              <form className="space-y-[14px]" noValidate>
-                {/* Email */}
-                <div className="flex flex-col gap-2">
-                  <Label
-                    htmlFor="email"
-                    className="text-bs-color4 text-base font-medium"
-                  >
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
-                    placeholder="you@example.com"
-                  />
-                </div>
-
-                {/* Password */}
-                <div className="flex flex-col gap-2">
-                  <Label
-                    htmlFor="password"
-                    className="text-bs-color4 text-base font-medium"
-                  >
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    autoComplete="current-password"
-                    className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
-                    placeholder="••••••••"
-                  />
-                </div>
-
-                {/* Remember me + Forgot password */}
-                <div className="flex items-center justify-between pt-1">
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="remember"
-                      defaultChecked
-                      className="border-primary data-[state=checked]:border-primary data-[state=checked]:bg-primary"
-                    />
-                    <Label
-                      htmlFor="remember"
-                      className="text-bs-color cursor-pointer text-sm font-normal"
-                    >
-                      Remember me
-                    </Label>
-                  </div>
-                  <button
-                    type="button"
-                    className="text-primary text-sm hover:underline"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-
-                {/* Submit */}
-                <div className="pt-[26px] pb-[60px]">
-                  <Button
-                    type="submit"
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 h-auto w-full rounded-md py-3 text-base font-medium hover:shadow-[0_8px_24px_rgba(24,144,255,0.25)]"
-                  >
-                    Login now
-                  </Button>
-                </div>
-              </form>
+              <LoginForm />
 
               {/* Register link */}
               <p className="text-bs-color text-center text-sm">
