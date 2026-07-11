@@ -78,9 +78,9 @@ function StoryCard({
           <div className="absolute inset-0 z-[1] bg-black/50 transition-opacity duration-200 group-hover:opacity-70" />
 
           {story.isOwn ? (
-            <div className="bg-surface-inverse relative z-10 w-full rounded-t-[25.5px] rounded-b-md pt-[30px]">
+            <div className="bg-story relative z-10 w-full rounded-t-[25.5px] rounded-b-md pt-[30px]">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="border-surface-inverse bg-primary flex h-8 w-8 items-center justify-center rounded-full border-2">
+                <span className="border-story bg-primary flex h-8 w-8 items-center justify-center rounded-full border-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="10"

@@ -7,7 +7,7 @@ export function RightSidebar() {
       {/* You Might Like */}
       <div className="bg-card rounded-[6px] p-6 pb-6">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-card-foreground text-[18px] font-semibold">
+          <h4 className="text-title text-[18px] font-semibold">
             You Might Like
           </h4>
           <Link
@@ -37,7 +37,7 @@ export function RightSidebar() {
             <div>
               <Link
                 href="#"
-                className="text-card-foreground hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
               >
                 Radovan SkillArena
               </Link>
@@ -50,13 +50,13 @@ export function RightSidebar() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="bg-background text-card-foreground hover:bg-secondary flex-1 rounded-[6px] py-[10px] text-[15px] font-medium transition-colors"
+              className="border border-[#f1f1f1] dark:border-border bg-transparent text-sidebar-muted hover:bg-secondary flex-1 rounded-[6px] py-[10px] text-[15px] font-medium transition-colors"
             >
               Ignore
             </button>
             <button
               type="button"
-              className="bg-primary flex-1 rounded-[6px] py-[10px] text-[15px] font-medium text-white transition-colors hover:bg-blue-600"
+              className="bg-primary flex-1 rounded-[6px] py-[10px] text-[15px] font-medium text-white transition-colors hover:bg-primary-hover"
             >
               Follow
             </button>
@@ -67,7 +67,7 @@ export function RightSidebar() {
       {/* Your Friends */}
       <div className="bg-card rounded-[6px] p-6">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-card-foreground text-[18px] font-semibold">
+          <h4 className="text-title text-[18px] font-semibold">
             Your Friends
           </h4>
           <Link
@@ -118,7 +118,7 @@ export function RightSidebar() {
               <div>
                 <Link
                   href="#"
-                  className="text-card-foreground hover:text-primary text-[14px] font-semibold transition-colors"
+                  className="text-title hover:text-primary text-[14px] font-semibold transition-colors"
                 >
                   Steve Jobs
                 </Link>
@@ -148,7 +148,7 @@ export function RightSidebar() {
               <div>
                 <Link
                   href="#"
-                  className="text-card-foreground group-hover:text-primary text-[14px] font-semibold transition-colors"
+                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
                 >
                   Ryan Roslansky
                 </Link>
@@ -195,7 +195,7 @@ export function RightSidebar() {
               <div>
                 <Link
                   href="#"
-                  className="text-card-foreground group-hover:text-primary text-[14px] font-semibold transition-colors"
+                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
                 >
                   Dylan Field
                 </Link>
@@ -242,7 +242,7 @@ export function RightSidebar() {
               <div>
                 <Link
                   href="#"
-                  className="text-card-foreground group-hover:text-primary text-[14px] font-semibold transition-colors"
+                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
                 >
                   Ryan Roslansky
                 </Link>
@@ -289,7 +289,7 @@ export function RightSidebar() {
               <div>
                 <Link
                   href="#"
-                  className="text-card-foreground group-hover:text-primary text-[14px] font-semibold transition-colors"
+                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
                 >
                   Dylan Field
                 </Link>

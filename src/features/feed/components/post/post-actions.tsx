@@ -16,7 +16,7 @@ export function PostActions() {
         type="button"
         onClick={() => setActive("haha")}
         className={cn(
-          "text-ink hover:bg-reaction-hover flex h-12 flex-1 items-center justify-center rounded-md text-sm transition-colors",
+          "text-content hover:bg-reaction-hover flex h-12 flex-1 items-center justify-center rounded-md text-sm transition-colors",
           active === "haha" && "bg-reaction-hover",
         )}
       >
@@ -53,7 +53,7 @@ export function PostActions() {
         type="button"
         onClick={() => setActive("comment")}
         className={cn(
-          "text-ink hover:bg-reaction-hover flex h-12 flex-1 items-center justify-center rounded-md text-sm transition-colors",
+          "text-content hover:bg-reaction-hover flex h-12 flex-1 items-center justify-center rounded-md text-sm transition-colors",
           active === "comment" && "bg-reaction-hover",
         )}
       >
@@ -65,7 +65,7 @@ export function PostActions() {
         type="button"
         onClick={() => setActive("share")}
         className={cn(
-          "text-ink hover:bg-reaction-hover flex h-12 flex-1 items-center justify-center rounded-md text-sm transition-colors",
+          "text-content hover:bg-reaction-hover flex h-12 flex-1 items-center justify-center rounded-md text-sm transition-colors",
           active === "share" && "bg-reaction-hover",
         )}
       >

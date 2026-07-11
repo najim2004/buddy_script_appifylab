@@ -6,7 +6,7 @@ export function LeftSidebar() {
     <div className="space-y-4">
       {/* Explore Section */}
       <div className="bg-card rounded-[6px] p-6 pb-[6px]">
-        <h4 className="text-card-foreground mb-6 text-[18px] font-semibold">
+        <h4 className="text-title mb-6 text-[18px] font-semibold">
           Explore
         </h4>
         <ul className="m-0 list-none p-0">
@@ -14,7 +14,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -31,7 +31,7 @@ export function LeftSidebar() {
                 />
               </svg>
               Learning
-              <span className="border-card bg-badge ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
+              <span className="border-card bg-success ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
                 New
               </span>
             </Link>
@@ -40,7 +40,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -63,7 +63,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="/friend-request"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -86,7 +86,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -109,7 +109,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -149,7 +149,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -166,7 +166,7 @@ export function LeftSidebar() {
                 />
               </svg>
               Gaming
-              <span className="border-card bg-badge ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
+              <span className="border-card bg-success ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
                 New
               </span>
             </Link>
@@ -175,7 +175,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -198,7 +198,7 @@ export function LeftSidebar() {
           <li className="mb-[15px]">
             <Link
               href="#"
-              className="text-ink hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center text-[15px] font-medium transition-colors"
             >
               <svg
                 className="mr-3"
@@ -234,7 +234,7 @@ export function LeftSidebar() {
       {/* Suggested People */}
       <div className="bg-card rounded-[6px] p-6 pb-[6px]">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-card-foreground text-[18px] font-semibold">
+          <h4 className="text-title text-[18px] font-semibold">
             Suggested People
           </h4>
           <Link
@@ -263,7 +263,7 @@ export function LeftSidebar() {
             <div>
               <Link
                 href="#"
-                className="text-card-foreground hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
               >
                 Steve Jobs
               </Link>
@@ -295,7 +295,7 @@ export function LeftSidebar() {
             <div>
               <Link
                 href="#"
-                className="text-card-foreground hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
               >
                 Ryan Roslansky
               </Link>
@@ -327,7 +327,7 @@ export function LeftSidebar() {
             <div>
               <Link
                 href="#"
-                className="text-card-foreground hover:text-primary text-[15px] font-semibold transition-colors"
+                className="text-title hover:text-primary text-[15px] font-semibold transition-colors"
               >
                 Dylan Field
               </Link>
@@ -345,7 +345,7 @@ export function LeftSidebar() {
       {/* Events */}
       <div className="bg-card rounded-[6px] p-6 pb-[6px]">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-card-foreground text-[18px] font-semibold">
+          <h4 className="text-title text-[18px] font-semibold">
             Events
           </h4>
           <Link
@@ -377,7 +377,7 @@ export function LeftSidebar() {
                 </span>
               </div>
               <div>
-                <h4 className="text-card-foreground group-hover:text-primary line-clamp-2 text-[15px] leading-tight font-semibold transition-colors">
+                <h4 className="text-content group-hover:text-primary line-clamp-2 text-[15px] leading-tight font-semibold transition-colors">
                   No more terrorism no more cry
                 </h4>
               </div>

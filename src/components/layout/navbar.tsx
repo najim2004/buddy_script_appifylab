@@ -42,7 +42,7 @@ export function Navbar() {
               <input
                 type="search"
                 placeholder="input search text"
-                className="border-border bg-background text-foreground focus:border-primary h-[40px] w-[426px] rounded-[40px] border pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
+                className="border-transparent bg-secondary text-foreground focus:border-primary h-[40px] w-[426px] rounded-[40px] border pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
               />
             </form>
           </div>
@@ -53,8 +53,8 @@ export function Navbar() {
                 href="/"
                 className={`relative flex h-[70px] items-center justify-center px-4 transition-all ${
                   isActive("/")
-                    ? "border-primary border-b-2"
-                    : "hover:border-primary border-b-2 border-transparent hover:border-b-2"
+                    ? "border-brand-underline border-b-2"
+                    : "hover:border-brand-underline border-b-2 border-transparent hover:border-b-2"
                 }`}
               >
                 <svg
@@ -162,7 +162,7 @@ export function Navbar() {
               />
             </div>
             <div className="hidden cursor-pointer items-center gap-1 lg:flex">
-              <span className="text-ink text-base font-normal">
+              <span className="text-title text-base font-normal">
                 Dylan Field
               </span>
               <svg

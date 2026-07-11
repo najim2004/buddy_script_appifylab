@@ -21,7 +21,7 @@ export function CommentThread({
       {previousCount > 0 ? (
         <button
           type="button"
-          className="text-meta mb-3 text-sm font-normal hover:underline"
+          className="text-muted-foreground mb-3 text-sm font-normal hover:underline"
         >
           View {previousCount} previous comments
         </button>
@@ -39,14 +39,14 @@ export function CommentThread({
             </Avatar>
             <div className="min-w-0 flex-1">
               <div className="bg-comment relative rounded-[18px] px-3.5 py-2.5">
-                <h4 className="text-ink text-sm font-semibold">
+                <h4 className="text-title text-sm font-semibold">
                   <Link href="#0" className="hover:underline">
                     {comment.author.name}
                   </Link>
                 </h4>
                 <p className="text-muted-foreground text-sm">{comment.body}</p>
                 {comment.reactionCount ? (
-                  <span className="bg-card text-meta absolute -right-1 -bottom-2 flex items-center gap-1 rounded-xl px-1.5 py-0.5 text-xs shadow-sm">
+                  <span className="bg-card text-subtle absolute -right-1 -bottom-2 flex items-center gap-1 rounded-xl px-1.5 py-0.5 text-xs shadow-sm">
                     <Image
                       src="/assets/images/react_img1.png"
                       alt=""
@@ -58,7 +58,7 @@ export function CommentThread({
                   </span>
                 ) : null}
               </div>
-              <ul className="text-meta mt-2 flex flex-wrap gap-3 px-1 text-xs">
+              <ul className="text-subtle mt-2 flex flex-wrap gap-3 px-1 text-xs">
                 <li>
                   <button type="button" className="hover:underline">
                     Like

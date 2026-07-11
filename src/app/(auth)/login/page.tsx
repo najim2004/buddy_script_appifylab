@@ -93,7 +93,7 @@ export default function LoginPage() {
               <p className="text-card-foreground mb-2 text-center text-base leading-snug font-normal">
                 Welcome back
               </p>
-              <h1 className="text-card-foreground2 mb-[50px] text-center text-[28px] leading-tight font-medium">
+              <h1 className="text-title mb-[50px] text-center text-[28px] leading-tight font-medium">
                 Login to your account
               </h1>
 
@@ -101,7 +101,7 @@ export default function LoginPage() {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-card hover:bg-muted border-border text-card-foreground2 mb-10 h-auto w-full justify-center gap-2 rounded-lg px-[60px] py-3 text-base font-medium shadow-none"
+                className="bg-card hover:bg-muted border-border text-title mb-10 h-auto w-full justify-center gap-2 rounded-lg px-[60px] py-3 text-base font-medium shadow-none"
               >
                 <Image
                   src="/assets/images/google.svg"

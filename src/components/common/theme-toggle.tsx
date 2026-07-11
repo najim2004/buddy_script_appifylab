@@ -20,7 +20,7 @@ export function ThemeToggle() {
           "relative flex h-8 w-[66px] items-center rounded-full border transition-none",
           "rotate-90",
           isDark
-            ? "border-transparent bg-[oklch(0.301_0.04_262.016)]"
+            ? "border-transparent bg-background"
             : "border-primary bg-primary",
         )}
       >

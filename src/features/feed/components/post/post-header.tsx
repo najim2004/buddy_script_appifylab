@@ -34,15 +34,15 @@ export function PostHeader({
           <h4 className="mb-0.5">
             <Link
               href="#0"
-              className="text-ink hover:text-primary text-base leading-tight transition-colors hover:underline"
+              className="text-content hover:text-primary text-base leading-tight transition-colors hover:underline"
             >
               {authorName}
             </Link>
           </h4>
-          <p className="text-meta flex items-center text-sm leading-tight font-normal">
+          <p className="text-subtle flex items-center text-sm leading-tight font-normal">
             {timeAgo}
             <span className="mx-1">·</span>
-            <Link href="#0" className="text-meta hover:underline">
+            <Link href="#0" className="text-subtle hover:underline">
               {privacy}
             </Link>
           </p>
@@ -55,7 +55,7 @@ export function PostHeader({
             type="button"
             variant="ghost"
             size="icon"
-            className="text-meta hover:bg-background size-8 rounded-full"
+            className="text-subtle hover:bg-background size-8 rounded-full"
             aria-label="Post options"
           >
             <MoreHorizontal className="size-5" />

@@ -31,12 +31,12 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
           <Textarea
             id="create-post"
             placeholder="Write something ..."
-            className="border-border bg-background text-card-foreground placeholder:text-muted-foreground min-h-[88px] resize-none rounded-md border-0 px-2 py-2 text-base shadow-none focus-visible:ring-0"
+            className="border-0 bg-transparent text-content placeholder:text-muted-foreground min-h-[88px] resize-none rounded-md border-0 px-2 py-2 text-base shadow-none focus-visible:ring-0"
           />
         </div>
       </div>
 
-      <div className="bg-composer mt-2.5 flex h-16 items-center justify-between rounded-b-md px-[15px]">
+      <div className="bg-brand-tint mt-2.5 flex h-16 items-center justify-between rounded-b-md px-[15px]">
         <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
           {ATTACHMENTS.map(({ label, icon: Icon }) => (
             <button

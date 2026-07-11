@@ -49,17 +49,17 @@ export function PostStats({
             </span>
           ) : null}
         </div>
-        <p className="text-meta ml-2.5 pt-1.5 text-sm leading-tight">
+        <p className="text-subtle ml-2.5 pt-1.5 text-sm leading-tight">
           {reactionCount}
         </p>
       </div>
 
-      <div className="text-meta flex items-center text-sm leading-tight">
+      <div className="text-subtle flex items-center text-sm leading-tight">
         <Link href="#0" className="hover:text-primary transition-colors">
-          <span className="text-ink">{commentsCount}</span> Comment
+          <span className="text-title">{commentsCount}</span> Comment
         </Link>
         <span className="mx-4">
-          <span className="text-ink">{sharesCount}</span> Share
+          <span className="text-title">{sharesCount}</span> Share
         </span>
       </div>
     </div>

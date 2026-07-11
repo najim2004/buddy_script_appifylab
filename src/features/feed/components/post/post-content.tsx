@@ -8,7 +8,7 @@ interface PostContentProps {
 export function PostContent({ content, image }: PostContentProps) {
   return (
     <>
-      <h4 className="text-ink mb-4 text-sm leading-[21px] font-normal">
+      <h4 className="text-content mb-4 text-sm leading-[21px] font-normal">
         {content}
       </h4>
 
