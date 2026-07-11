@@ -16,17 +16,21 @@ import {
 } from "@/components/ui/form";
 import Link from "next/link";
 
-const registerSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
-  confirmPassword: z.string(),
-  terms: z.boolean().refine((val) => val === true, {
-    message: "You must agree to the terms & conditions.",
-  }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match.",
-  path: ["confirmPassword"],
-});
+const registerSchema = z
+  .object({
+    email: z.string().email({ message: "Please enter a valid email address." }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters." }),
+    confirmPassword: z.string(),
+    terms: z.boolean().refine((val) => val === true, {
+      message: "You must agree to the terms & conditions.",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -52,12 +56,14 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel className="text-bs-color4 text-base font-medium">Email</FormLabel>
+              <FormLabel className="text-bs-color4 text-base font-medium">
+                Email
+              </FormLabel>
               <FormControl>
                 <Input
                   type="email"
                   autoComplete="email"
-                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="you@example.com"
                   {...field}
                 />
@@ -73,12 +79,14 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel className="text-bs-color4 text-base font-medium">Password</FormLabel>
+              <FormLabel className="text-bs-color4 text-base font-medium">
+                Password
+              </FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   autoComplete="new-password"
-                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="••••••••"
                   {...field}
                 />
@@ -94,12 +102,14 @@ export function RegisterForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2">
-              <FormLabel className="text-bs-color4 text-base font-medium">Repeat Password</FormLabel>
+              <FormLabel className="text-bs-color4 text-base font-medium">
+                Repeat Password
+              </FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   autoComplete="new-password"
-                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="••••••••"
                   {...field}
                 />
@@ -132,7 +142,9 @@ export function RegisterForm() {
             )}
           />
           {form.formState.errors.terms && (
-            <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.terms.message}</p>
+            <p className="text-destructive mt-2 text-sm font-medium">
+              {form.formState.errors.terms.message}
+            </p>
           )}
         </div>
 

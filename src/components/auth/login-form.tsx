@@ -53,7 +53,7 @@ export function LoginForm() {
                 <Input
                   type="email"
                   autoComplete="email"
-                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="you@example.com"
                   {...field}
                 />
@@ -76,7 +76,7 @@ export function LoginForm() {
                 <Input
                   type="password"
                   autoComplete="current-password"
-                  className="bg-card focus-visible:ring-primary border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm"
+                  className="bg-card border-bs-bcolor2 placeholder:text-bs-color3 h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
                   placeholder="••••••••"
                   {...field}
                 />
