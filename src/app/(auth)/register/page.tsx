@@ -13,7 +13,7 @@ export default function RegisterPage() {
     <main className="bg-background relative min-h-screen max-w-screen overflow-x-hidden py-[100px]">
       {/* Background decorative shapes */}
       <div className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
-        <span className="absolute top-0 left-0 h-[540px] w-[176px]">
+        <span className="absolute top-0 left-0 h-[540px] w-44">
           <Image
             src="/assets/images/shape1.svg"
             alt=""

@@ -5,7 +5,7 @@ export function LeftSidebar() {
   return (
     <div className="space-y-4">
       {/* Explore Section */}
-      <div className="bg-card rounded-lg p-6 pb-[6px]">
+      <div className="bg-card rounded-lg p-6 pb-1.5">
         <h4 className="text-title mb-6 text-xl font-medium">Explore</h4>
         <ul className="m-0 list-none space-y-6 p-0">
           {/* Learning */}
@@ -31,7 +31,7 @@ export function LeftSidebar() {
                 </svg>
                 Learning
               </span>
-              <span className="border-card bg-success ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
+              <span className="border-card bg-success ml-2 rounded border px-1.5 py-0.5 text-[10px] font-semibold text-white">
                 New
               </span>
             </Link>
@@ -168,7 +168,7 @@ export function LeftSidebar() {
                 </svg>
                 Gaming
               </span>
-              <span className="border-card bg-success ml-2 rounded border px-[6px] py-[2px] text-[10px] font-semibold text-white">
+              <span className="border-card bg-success ml-2 rounded border px-1.5 py-0.5 text-[10px] font-semibold text-white">
                 New
               </span>
             </Link>
@@ -234,7 +234,7 @@ export function LeftSidebar() {
       </div>
 
       {/* Suggested People */}
-      <div className="bg-card rounded-lg p-6 pb-[6px]">
+      <div className="bg-card rounded-lg p-6 pb-1.5">
         <div className="mb-6 flex items-center justify-between">
           <h4 className="text-title text-xl font-medium">Suggested People</h4>
           <Link
@@ -250,7 +250,7 @@ export function LeftSidebar() {
           <div className="flex items-center">
             <Link
               href="#"
-              className="mr-3 block h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full"
+              className="mr-3 block h-10 w-10 shrink-0 overflow-hidden rounded-full"
             >
               <Image
                 src="/assets/images/people1.png"
@@ -261,10 +261,7 @@ export function LeftSidebar() {
               />
             </Link>
             <div>
-              <Link
-                href="#"
-                className="text-title hover:text-primary text-sm font-medium transition-colors"
-              >
+              <Link href="#" className="text-title text-sm font-medium">
                 Steve Jobs
               </Link>
               <p className="text-muted-foreground text-xs font-normal">
@@ -272,7 +269,10 @@ export function LeftSidebar() {
               </p>
             </div>
           </div>
-          <Link href="#" className="text-primary text-sm font-semibold">
+          <Link
+            href="#"
+            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-[7px] text-xs leading-[1.4] font-medium transition-colors"
+          >
             Connect
           </Link>
         </div>
@@ -282,7 +282,7 @@ export function LeftSidebar() {
           <div className="flex items-center">
             <Link
               href="#"
-              className="mr-3 block h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full"
+              className="mr-3 block h-10 w-10 shrink-0 overflow-hidden rounded-full"
             >
               <Image
                 src="/assets/images/people2.png"
@@ -293,10 +293,7 @@ export function LeftSidebar() {
               />
             </Link>
             <div>
-              <Link
-                href="#"
-                className="text-title hover:text-primary text-sm font-medium transition-colors"
-              >
+              <Link href="#" className="text-title text-sm font-medium">
                 Ryan Roslansky
               </Link>
               <p className="text-muted-foreground text-xs font-normal">
@@ -304,7 +301,10 @@ export function LeftSidebar() {
               </p>
             </div>
           </div>
-          <Link href="#" className="text-primary text-sm font-semibold">
+          <Link
+            href="#"
+            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-[7px] text-xs leading-[1.4] font-medium transition-colors"
+          >
             Connect
           </Link>
         </div>
@@ -314,7 +314,7 @@ export function LeftSidebar() {
           <div className="flex items-center">
             <Link
               href="#"
-              className="mr-3 block h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full"
+              className="mr-3 block h-10 w-10 shrink-0 overflow-hidden rounded-full"
             >
               <Image
                 src="/assets/images/people3.png"
@@ -325,10 +325,7 @@ export function LeftSidebar() {
               />
             </Link>
             <div>
-              <Link
-                href="#"
-                className="text-title hover:text-primary text-sm font-medium transition-colors"
-              >
+              <Link href="#" className="text-title text-sm font-medium">
                 Dylan Field
               </Link>
               <p className="text-muted-foreground text-xs font-normal">
@@ -336,19 +333,22 @@ export function LeftSidebar() {
               </p>
             </div>
           </div>
-          <Link href="#" className="text-primary text-sm font-semibold">
+          <Link
+            href="#"
+            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-[7px] text-xs leading-[1.4] font-medium transition-colors"
+          >
             Connect
           </Link>
         </div>
       </div>
 
       {/* Events */}
-      <div className="bg-card rounded-[6px] p-6 pb-[6px]">
+      <div className="bg-card rounded-[6px] p-6 pb-1.5">
         <div className="mb-6 flex items-center justify-between">
-          <h4 className="text-title text-[18px] font-semibold">Events</h4>
+          <h4 className="text-title text-xl font-medium">Events</h4>
           <Link
             href="#"
-            className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors"
+            className="text-primary text-xs font-medium transition-colors"
           >
             See all
           </Link>
@@ -356,8 +356,8 @@ export function LeftSidebar() {
 
         {/* Event 1 */}
         <Link href="#" className="group mb-4 block transition-colors">
-          <div className="group-hover:border-primary overflow-hidden rounded-[6px] border border-transparent">
-            <div className="relative h-[120px] w-full bg-gray-200">
+          <div className="bg-card overflow-hidden rounded-lg shadow-[0px_4px_8px_rgba(0,0,0,0.08)]">
+            <div className="relative h-40 w-full overflow-hidden rounded-lg bg-gray-200">
               <Image
                 src="/assets/images/feed_event1.png"
                 alt="Event"
@@ -365,26 +365,26 @@ export function LeftSidebar() {
                 className="object-cover"
               />
             </div>
-            <div className="bg-card flex p-3 pb-0">
-              <div className="bg-primary/10 mr-3 flex shrink-0 flex-col items-center justify-center rounded-[6px] px-[10px] py-[6px]">
-                <span className="text-primary text-[18px] leading-tight font-semibold">
+            <div className="bg-card mt-1.5 mb-6 flex p-3 pb-0">
+              <div className="bg-success mr-3 flex h-[52px] w-[46px] shrink-0 flex-col items-center justify-center rounded-sm px-2 py-2">
+                <span className="text-lg leading-[1.1] font-bold text-white">
                   10
                 </span>
-                <span className="text-primary text-[11px] leading-tight font-medium uppercase">
+                <span className="text-lg leading-[1.1] font-normal text-white">
                   Jul
                 </span>
               </div>
               <div>
-                <h4 className="text-content group-hover:text-primary line-clamp-2 text-[15px] leading-tight font-semibold transition-colors">
+                <h4 className="text-title text-base leading-[1.4] font-medium">
                   No more terrorism no more cry
                 </h4>
               </div>
             </div>
-            <div className="border-border mx-3 mt-3 flex items-center justify-between border-t pt-3 pb-3">
-              <span className="text-muted-foreground text-[13px] font-normal">
+            <div className="border-background mt-1 mb-3 flex items-center justify-between border-t px-4 pt-3 pb-0.5">
+              <span className="text-muted-foreground text-xs leading-4 font-medium opacity-70">
                 17 People Going
               </span>
-              <span className="text-primary text-[13px] font-semibold">
+              <span className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-primary-light/90 rounded-sm border px-3.5 py-[3px] text-xs leading-[18px] font-medium transition-colors">
                 Going
               </span>
             </div>

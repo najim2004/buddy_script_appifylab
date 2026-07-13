@@ -32,7 +32,7 @@ export function RightSidebar() {
             <div>
               <Link
                 href="#"
-                className="text-title hover:text-primary text-base font-medium transition-colors"
+                className="text-title text-base font-medium transition-colors"
               >
                 Radovan SkillArena
               </Link>
@@ -45,13 +45,13 @@ export function RightSidebar() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="dark:border-border text-sidebar-muted hover:bg-secondary flex-1 rounded-[6px] border border-[#f1f1f1] bg-transparent py-[10px] text-[15px] font-medium transition-colors"
+              className="dark:border-border text-sidebar-muted hover:bg-secondary flex-1 rounded-[6px] border border-border-light bg-transparent py-2.5 text-[15px] font-medium transition-colors"
             >
               Ignore
             </button>
             <button
               type="button"
-              className="bg-primary hover:bg-primary-hover flex-1 rounded-[6px] py-[10px] text-[15px] font-medium text-white transition-colors"
+              className="bg-primary hover:bg-primary-hover flex-1 rounded-[6px] py-2.5 text-[15px] font-medium text-white transition-colors"
             >
               Follow
             </button>
@@ -94,7 +94,7 @@ export function RightSidebar() {
         {/* Friends List */}
         <div className="space-y-8">
           {/* Friend 1 (Inactive) */}
-          <div className="flex items-center justify-between opacity-60 transition-opacity hover:opacity-100">
+          <div className="hover:bg-background flex cursor-pointer items-center justify-between rounded-xl p-1.5">
             <div className="flex items-center">
               <Link
                 href="#"
@@ -109,22 +109,19 @@ export function RightSidebar() {
                 />
               </Link>
               <div>
-                <Link
-                  href="#"
-                  className="text-title hover:text-primary text-[14px] font-semibold transition-colors"
-                >
+                <Link href="#" className="text-title text-sm font-medium">
                   Steve Jobs
                 </Link>
-                <p className="text-muted-foreground text-[12px] font-normal">
+                <p className="text-muted-foreground text-xs font-normal">
                   CEO of Apple
                 </p>
               </div>
             </div>
-            <span className="text-muted-foreground text-[12px]">5m ago</span>
+            <span className="text-muted-foreground text-xs">5m ago</span>
           </div>
 
           {/* Friend 2 (Active) */}
-          <div className="group flex cursor-pointer items-center justify-between">
+          <div className="flex cursor-pointer items-center justify-between">
             <div className="flex items-center">
               <Link
                 href="#"
@@ -139,13 +136,10 @@ export function RightSidebar() {
                 />
               </Link>
               <div>
-                <Link
-                  href="#"
-                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
-                >
+                <Link href="#" className="text-title text-sm font-medium">
                   Ryan Roslansky
                 </Link>
-                <p className="text-muted-foreground text-[12px] font-normal">
+                <p className="text-muted-foreground text-xs font-normal">
                   CEO of Linkedin
                 </p>
               </div>
@@ -186,13 +180,10 @@ export function RightSidebar() {
                 />
               </Link>
               <div>
-                <Link
-                  href="#"
-                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
-                >
+                <Link href="#" className="text-title text-sm font-medium">
                   Dylan Field
                 </Link>
-                <p className="text-muted-foreground text-[12px] font-normal">
+                <p className="text-muted-foreground text-xs font-normal">
                   CEO of Figma
                 </p>
               </div>
@@ -233,13 +224,10 @@ export function RightSidebar() {
                 />
               </Link>
               <div>
-                <Link
-                  href="#"
-                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
-                >
+                <Link href="#" className="text-title text-sm font-medium">
                   Ryan Roslansky
                 </Link>
-                <p className="text-muted-foreground text-[12px] font-normal">
+                <p className="text-muted-foreground text-xs font-normal">
                   CEO of Linkedin
                 </p>
               </div>
@@ -280,13 +268,10 @@ export function RightSidebar() {
                 />
               </Link>
               <div>
-                <Link
-                  href="#"
-                  className="text-title group-hover:text-primary text-[14px] font-semibold transition-colors"
-                >
+                <Link href="#" className="text-title text-sm font-medium">
                   Dylan Field
                 </Link>
-                <p className="text-muted-foreground text-[12px] font-normal">
+                <p className="text-muted-foreground text-xs font-normal">
                   CEO of Figma
                 </p>
               </div>

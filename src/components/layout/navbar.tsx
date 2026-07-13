@@ -42,7 +42,7 @@ export function Navbar() {
               <input
                 type="search"
                 placeholder="input search text"
-                className="border-transparent bg-secondary text-foreground focus:border-primary h-[40px] w-[426px] rounded-[40px] border pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
+                className="border-transparent bg-secondary text-foreground focus:border-primary h-10 w-[426px] rounded-[40px] border pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
               />
             </form>
           </div>
