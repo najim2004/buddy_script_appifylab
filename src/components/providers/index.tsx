@@ -6,7 +6,6 @@ import { ThemeProvider } from "./theme-provider";
 import { AuthProvider } from "./auth-provider";
 import { SocketProvider } from "./socket-provider";
 
-/** Single entry point that composes every client-side provider. */
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ReduxProvider>

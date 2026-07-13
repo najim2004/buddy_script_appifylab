@@ -3,10 +3,6 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-/**
- * Route-level error boundary. Catches render/runtime errors in this segment
- * and its children, and offers a recovery action via `reset()`.
- */
 export default function Error({
   error,
   reset,
@@ -15,7 +11,6 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Replace with your observability tool (e.g. Sentry.captureException).
     console.error(error);
   }, [error]);
 

@@ -12,7 +12,6 @@ import { setConnected } from "@/features/chat/store/chat.slice";
 
 const SocketContext = createContext<Socket | null>(null);
 
-/** Access the shared socket instance. */
 export const useSocket = () => useContext(SocketContext);
 
 export function SocketProvider({ children }: { children: React.ReactNode }) {
@@ -20,14 +19,11 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
   const accessToken = useAppSelector((s) => s.auth.accessToken);
 
-  // Stable singleton instance exposed through context.
   const [socket] = useState(getSocket);
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    // Mutation (auth + connect) is encapsulated in the module helper so the
-    // socket instance is never mutated directly inside the component.
     const s = connectSocket(accessToken ?? undefined);
 
     const onConnect = () => dispatch(setConnected(true));

@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-/**
- * Type-safe, runtime-validated environment variables.
- * Only `NEXT_PUBLIC_*` vars are available on the client.
- */
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url().default("http://localhost:5000/api"),
   NEXT_PUBLIC_SOCKET_URL: z.string().url().default("http://localhost:5000"),

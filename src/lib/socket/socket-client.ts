@@ -3,11 +3,6 @@ import { env } from "@/lib/env";
 
 let socket: Socket | null = null;
 
-/**
- * Returns a singleton socket.io client. `autoConnect` is disabled so the
- * connection lifecycle is controlled explicitly (e.g. after auth) by the
- * SocketProvider.
- */
 export function getSocket(): Socket {
   if (!socket) {
     socket = io(env.NEXT_PUBLIC_SOCKET_URL, {

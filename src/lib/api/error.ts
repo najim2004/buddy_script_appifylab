@@ -1,16 +1,11 @@
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
-/** Type guard for RTK Query's FetchBaseQueryError. */
 export function isFetchBaseQueryError(
   error: unknown,
 ): error is FetchBaseQueryError {
   return typeof error === "object" && error != null && "status" in error;
 }
 
-/**
- * Normalizes any thrown/returned RTK Query error into a human-readable message.
- * Reads a `message` field from the API error body when available.
- */
 export function getApiErrorMessage(
   error: unknown,
   fallback = "Something went wrong. Please try again.",

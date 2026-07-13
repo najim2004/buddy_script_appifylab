@@ -9,7 +9,6 @@ import { env } from "@/lib/env";
 import type { RootState } from "@/store";
 import { logout, setCredentials } from "@/features/auth/store/auth.slice";
 
-// Prevents multiple parallel 401s from triggering several refresh calls.
 const mutex = new Mutex();
 
 const rawBaseQuery = fetchBaseQuery({
@@ -22,10 +21,6 @@ const rawBaseQuery = fetchBaseQuery({
   },
 });
 
-/**
- * Base query with automatic token refresh on 401.
- * On refresh failure the user is logged out.
- */
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,

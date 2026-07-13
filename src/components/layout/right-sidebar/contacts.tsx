@@ -89,7 +89,6 @@ export function Contacts() {
         </Link>
       </div>
 
-      {/* Search */}
       <form className="relative mb-6">
         <svg
           className="absolute top-1/2 left-3 -translate-y-1/2"
@@ -115,9 +114,7 @@ export function Contacts() {
           <div
             key={friend.id}
             className={`flex cursor-pointer items-center justify-between ${
-              !friend.isActive
-                ? "hover:bg-background rounded-xl p-1.5"
-                : "group"
+              !friend.isActive ? "hover:bg-background rounded-xl p-1.5" : ""
             }`}
           >
             <div className="flex items-center">

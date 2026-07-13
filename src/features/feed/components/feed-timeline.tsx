@@ -9,7 +9,7 @@ import { Stories, StoriesMobile } from "./stories";
 
 export function FeedTimeline() {
   return (
-    <div className="mx-auto w-full max-w-[600px] lg:max-w-none">
+    <div className="w-full">
       <Stories stories={FEED_STORIES} />
       <StoriesMobile stories={FEED_STORIES} />
       <CreatePost userAvatar={CURRENT_USER_AVATAR} />

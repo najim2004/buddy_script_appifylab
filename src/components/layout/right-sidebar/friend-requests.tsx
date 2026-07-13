@@ -54,13 +54,13 @@ export function FriendRequests() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="dark:border-border text-sidebar-muted hover:bg-secondary flex-1 rounded-[6px] border border-border-light bg-transparent py-2.5 text-[15px] font-medium transition-colors"
+                className="dark:border-border text-sidebar-muted hover:bg-secondary border-border-light flex-1 rounded-md border bg-transparent py-3 text-sm font-medium transition-colors"
               >
                 Ignore
               </button>
               <button
                 type="button"
-                className="bg-primary hover:bg-primary-hover flex-1 rounded-[6px] py-2.5 text-[15px] font-medium text-white transition-colors"
+                className="bg-primary hover:bg-primary-hover flex-1 rounded-md py-3 text-sm font-medium text-white transition-colors"
               >
                 Follow
               </button>

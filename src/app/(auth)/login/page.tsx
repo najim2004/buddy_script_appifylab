@@ -78,7 +78,6 @@ export default function LoginPage() {
           {/* Right – form card */}
           <div className="w-full px-2">
             <div className="bg-card rounded-md p-12 shadow-sm">
-              {/* Logo */}
               <div className="mb-7 flex justify-center">
                 <Image
                   src="/assets/images/logo.svg"
@@ -89,7 +88,6 @@ export default function LoginPage() {
                 />
               </div>
 
-              {/* Heading */}
               <p className="text-card-foreground mb-2 text-center text-base leading-snug font-normal">
                 Welcome back
               </p>
@@ -97,7 +95,6 @@ export default function LoginPage() {
                 Login to your account
               </h1>
 
-              {/* Google sign-in */}
               <Button
                 type="button"
                 variant="outline"
@@ -113,17 +110,14 @@ export default function LoginPage() {
                 Or sign-in with google
               </Button>
 
-              {/* OR divider */}
               <div className="relative mb-10 flex items-center justify-center py-[11px]">
                 <span className="bg-divider absolute left-0 h-px w-[108px]" />
                 <span className="text-placeholder text-sm font-normal">Or</span>
                 <span className="bg-divider absolute right-0 h-px w-[108px]" />
               </div>
 
-              {/* Login form */}
               <LoginForm />
 
-              {/* Register link */}
               <p className="text-card-foreground text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link

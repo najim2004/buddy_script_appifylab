@@ -33,7 +33,10 @@ export function SuggestedPeople() {
       </div>
 
       {SUGGESTED_PEOPLE.map((person) => (
-        <div key={person.name} className="mb-4 flex items-center justify-between">
+        <div
+          key={person.name}
+          className="mb-4 flex items-center justify-between"
+        >
           <div className="flex items-center">
             <Link
               href="#"
@@ -58,7 +61,7 @@ export function SuggestedPeople() {
           </div>
           <Link
             href="#"
-            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-[7px] text-xs leading-[1.4] font-medium transition-colors"
+            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-2 text-xs leading-[1.4] font-medium transition-colors"
           >
             Connect
           </Link>

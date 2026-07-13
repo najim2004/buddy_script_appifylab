@@ -40,7 +40,6 @@ export function LoginForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[14px]">
-        {/* Email */}
         <FormField
           control={form.control}
           name="email"
@@ -63,7 +62,6 @@ export function LoginForm() {
           )}
         />
 
-        {/* Password */}
         <FormField
           control={form.control}
           name="password"
@@ -86,7 +84,6 @@ export function LoginForm() {
           )}
         />
 
-        {/* Remember me + Forgot password */}
         <div className="flex items-center justify-between pt-1">
           <FormField
             control={form.control}
@@ -116,7 +113,6 @@ export function LoginForm() {
           </button>
         </div>
 
-        {/* Submit */}
         <div className="pt-[26px] pb-[60px]">
           <Button
             type="submit"

@@ -14,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Link from "next/link";
 
 const registerSchema = z
   .object({
@@ -50,7 +49,6 @@ export function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[14px]">
-        {/* Email */}
         <FormField
           control={form.control}
           name="email"
@@ -73,7 +71,6 @@ export function RegisterForm() {
           )}
         />
 
-        {/* Password */}
         <FormField
           control={form.control}
           name="password"
@@ -96,7 +93,6 @@ export function RegisterForm() {
           )}
         />
 
-        {/* Confirm Password */}
         <FormField
           control={form.control}
           name="confirmPassword"
@@ -119,7 +115,6 @@ export function RegisterForm() {
           )}
         />
 
-        {/* Terms checkbox */}
         <div className="pt-1">
           <FormField
             control={form.control}
@@ -148,7 +143,6 @@ export function RegisterForm() {
           )}
         </div>
 
-        {/* Submit */}
         <div className="pt-[26px] pb-[60px]">
           <Button
             type="submit"
