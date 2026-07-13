@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 
 interface PostStatsProps {
-  reactionCount: number;
-  commentsCount: number;
-  sharesCount: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  onCommentsClick?: () => void;
 }
 
 const REACTION_IMAGES = [
@@ -16,14 +16,12 @@ const REACTION_IMAGES = [
 ] as const;
 
 export function PostStats({
-  reactionCount,
-  commentsCount,
-  sharesCount,
+  likes,
+  comments,
+  shares,
+  onCommentsClick,
 }: PostStatsProps) {
-  const visible = REACTION_IMAGES.slice(
-    0,
-    Math.min(5, Math.max(1, reactionCount)),
-  );
+  const visible = REACTION_IMAGES.slice(0, Math.min(5, Math.max(1, likes)));
 
   return (
     <div className="mb-0 flex items-center justify-between px-6">
@@ -40,7 +38,7 @@ export function PostStats({
               style={{ marginLeft: index === 0 ? 0 : -16 }}
             />
           ))}
-          {reactionCount > 5 ? (
+          {likes > 5 ? (
             <span
               className="border-card bg-primary text-primary-foreground ml-[-16px] flex size-8 items-center justify-center rounded-full border-2 text-sm"
               aria-hidden
@@ -49,17 +47,19 @@ export function PostStats({
             </span>
           ) : null}
         </div>
-        <p className="text-subtle ml-2.5 pt-1.5 text-sm leading-tight">
-          {reactionCount}
-        </p>
+        <p className="text-subtle ml-2.5 pt-1.5 text-sm leading-tight">{likes}</p>
       </div>
 
       <div className="text-subtle flex items-center text-sm leading-tight">
-        <Link href="#0" className="hover:text-primary transition-colors">
-          <span className="text-title">{commentsCount}</span> Comment
-        </Link>
+        <button
+          type="button"
+          onClick={onCommentsClick}
+          className="hover:text-primary transition-colors"
+        >
+          <span className="text-title">{comments}</span> Comment
+        </button>
         <span className="mx-4">
-          <span className="text-title">{sharesCount}</span> Share
+          <span className="text-title">{shares}</span> Share
         </span>
       </div>
     </div>

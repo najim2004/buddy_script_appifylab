@@ -27,7 +27,7 @@ export function useChatSocket(roomId: string) {
   }, [socket, roomId, dispatch]);
 
   const sendMessage = (content: string) => {
-    socket?.emit("message:send", { roomId, content });
+    socket?.emit("message:send", { room_id: roomId, content });
   };
 
   return { sendMessage };

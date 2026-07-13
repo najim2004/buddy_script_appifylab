@@ -19,15 +19,15 @@ const chatSlice = createSlice({
       state.activeRoomId = action.payload;
     },
     messageReceived: (state, action: PayloadAction<Message>) => {
-      const { roomId } = action.payload;
-      state.messages[roomId] ??= [];
-      state.messages[roomId].push(action.payload);
+      const { room_id } = action.payload;
+      state.messages[room_id] ??= [];
+      state.messages[room_id].push(action.payload);
     },
     setMessages: (
       state,
-      action: PayloadAction<{ roomId: string; messages: Message[] }>,
+      action: PayloadAction<{ room_id: string; messages: Message[] }>,
     ) => {
-      state.messages[action.payload.roomId] = action.payload.messages;
+      state.messages[action.payload.room_id] = action.payload.messages;
     },
   },
 });

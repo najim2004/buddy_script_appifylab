@@ -1,26 +1,19 @@
-/** Shared API response & domain primitives used across features. */
+/** Shared API response primitives — match backend envelope. */
 
 export interface ApiResponse<T> {
   success: boolean;
-  message: string;
+  message?: string;
   data: T;
+  meta?: unknown;
 }
 
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
+export interface CursorMeta {
+  next_cursor: string | null;
+  has_next_page: boolean;
 }
 
 export interface ApiError {
   status: number;
   message: string;
   errors?: Record<string, string[]>;
-}
-
-export interface PaginationParams {
-  page?: number;
-  pageSize?: number;
-  search?: string;
 }

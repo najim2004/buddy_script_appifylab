@@ -8,7 +8,13 @@ export const metadata = {
   description: "Login to your Buddy Script account.",
 };
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
+  const { next } = await searchParams;
+
   return (
     <main className="bg-background relative min-h-screen max-w-screen overflow-x-hidden py-10 lg:py-[100px]">
       {/* Background decorative shapes */}
@@ -116,7 +122,7 @@ export default function LoginPage() {
                 <span className="bg-divider absolute right-0 h-px w-[108px]" />
               </div>
 
-              <LoginForm />
+              <LoginForm redirectTo={next} />
 
               <p className="text-card-foreground text-center text-sm">
                 Don&apos;t have an account?{" "}

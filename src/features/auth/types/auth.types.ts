@@ -1,9 +1,11 @@
+/** Backend GET /auth/me `data` — use as-is (no camelCase remap). */
 export interface User {
   id: string;
-  name: string;
   email: string;
-  avatarUrl?: string;
-  role: "admin" | "user";
+  first_name: string;
+  last_name: string;
+  type: string;
+  created_at: string;
 }
 
 export interface AuthState {
@@ -18,12 +20,8 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
-}
-
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
 }

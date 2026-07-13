@@ -1,7 +1,8 @@
 import { apiSlice } from "@/lib/api/api-slice";
-import { setCredentials, setUser, logout } from "../store/auth.slice";
+import { unwrapData } from "@/lib/api/unwrap";
+import type { ApiResponse } from "@/types/api.types";
+import { setUser, logout } from "../store/auth.slice";
 import type {
-  AuthResponse,
   LoginRequest,
   RegisterRequest,
   User,
@@ -9,53 +10,51 @@ import type {
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<AuthResponse, LoginRequest>({
-      query: (body) => ({ url: "/auth/login", method: "POST", body }),
-      invalidatesTags: ["User"],
-      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+    login: builder.mutation<unknown, LoginRequest>({
+      query: (body) => ({ url: "/auth/sign-in", method: "POST", body }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
-          dispatch(setCredentials(data));
+          await queryFulfilled;
+          const me = await dispatch(
+            authApi.endpoints.getMe.initiate(undefined, {
+              forceRefetch: true,
+            }),
+          ).unwrap();
+          dispatch(authApi.util.upsertQueryData("getMe", undefined, me));
+          dispatch(setUser(me));
         } catch {
           // handled by the calling component
         }
       },
     }),
 
-    register: builder.mutation<AuthResponse, RegisterRequest>({
-      query: (body) => ({ url: "/auth/register", method: "POST", body }),
-      invalidatesTags: ["User"],
-      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setCredentials(data));
-        } catch {
-          /* noop */
-        }
-      },
+    register: builder.mutation<unknown, RegisterRequest>({
+      query: (body) => ({ url: "/auth/sign-up", method: "POST", body }),
     }),
 
     getMe: builder.query<User, void>({
       query: () => "/auth/me",
+      keepUnusedDataFor: 300,
+      transformResponse: (response: ApiResponse<User>) => unwrapData(response),
       providesTags: ["User"],
-      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           dispatch(setUser(data));
         } catch {
-          // 401 → base query attempts a silent refresh; if that also fails
-          // it dispatches logout(), so no extra handling is needed here.
+          // 401 → base query clears auth state
         }
       },
     }),
 
     logout: builder.mutation<void, void>({
-      query: () => ({ url: "/auth/logout", method: "POST" }),
-      onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+      query: () => ({ url: "/auth/sign-out", method: "POST" }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
         } finally {
           dispatch(logout());
+          dispatch(apiSlice.util.resetApiState());
         }
       },
     }),

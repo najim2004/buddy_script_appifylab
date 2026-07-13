@@ -1,8 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,6 +17,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useLoginMutation } from "@/features/auth";
+import { getApiErrorMessage } from "@/lib/api/error";
+import { ROUTES } from "@/lib/constants";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -23,7 +29,19 @@ const loginSchema = z.object({
   remember: z.boolean(),
 });
 
-export function LoginForm() {
+interface LoginFormProps {
+  redirectTo?: string;
+}
+
+function safeRedirectPath(path?: string): string {
+  if (path && path.startsWith("/") && !path.startsWith("//")) return path;
+  return ROUTES.HOME;
+}
+
+export function LoginForm({ redirectTo }: LoginFormProps) {
+  const router = useRouter();
+  const [login, { isLoading }] = useLoginMutation();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -33,8 +51,14 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+      await login({ email: values.email, password: values.password }).unwrap();
+      toast.success("Welcome back!");
+      router.replace(safeRedirectPath(redirectTo));
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "Invalid email or password"));
+    }
   }
 
   return (
@@ -116,9 +140,10 @@ export function LoginForm() {
         <div className="pt-[26px] pb-[60px]">
           <Button
             type="submit"
+            disabled={isLoading}
             className="bg-primary text-primary-foreground hover:bg-primary/90 h-auto w-full rounded-md py-3 text-base font-medium hover:shadow-[0_8px_24px_rgba(24,144,255,0.25)]"
           >
-            Login now
+            {isLoading ? "Signing in…" : "Login now"}
           </Button>
         </div>
       </form>

@@ -2,10 +2,19 @@ export { FeedTimeline } from "./components/feed-timeline";
 export { CreatePost } from "./components/create-post";
 export { PostCard } from "./components/post-card";
 export { Stories, StoriesMobile } from "./components/stories";
+export {
+  useGetPostsQuery,
+  useGetPostQuery,
+  useGetCommentsQuery,
+  useCreatePostMutation,
+  useDeletePostMutation,
+  useLikePostMutation,
+  useCreateCommentMutation,
+  useLikeCommentMutation,
+} from "./api/feed.api";
 export type {
-  FeedAuthor,
-  FeedComment,
-  FeedPost,
-  FeedStory,
-  PostPrivacy,
-} from "./types/feed.types";
+  ApiPostDetail,
+  ApiLatestComment,
+  ApiComment,
+} from "./types/feed.api.types";
+export type { FeedStory } from "./types/feed.types";

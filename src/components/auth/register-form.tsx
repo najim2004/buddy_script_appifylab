@@ -1,8 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,13 +17,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useRegisterMutation } from "@/features/auth";
+import { getApiErrorMessage } from "@/lib/api/error";
+import { ROUTES } from "@/lib/constants";
 
 const registerSchema = z
   .object({
+    first_name: z.string().min(1, { message: "First name is required." }),
+    last_name: z.string().min(1, { message: "Last name is required." }),
     email: z.string().email({ message: "Please enter a valid email address." }),
     password: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters." }),
+      .min(8, { message: "Password must be at least 8 characters." }),
     confirmPassword: z.string(),
     terms: z.boolean().refine((val) => val === true, {
       message: "You must agree to the terms & conditions.",
@@ -31,10 +39,18 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
+const inputClass =
+  "bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0";
+
 export function RegisterForm() {
+  const router = useRouter();
+  const [register, { isLoading }] = useRegisterMutation();
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -42,13 +58,67 @@ export function RegisterForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    try {
+      await register({
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
+        password: values.password,
+      }).unwrap();
+      toast.success("Account created. Please sign in.");
+      router.push(ROUTES.LOGIN);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "Could not create account"));
+    }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[14px]">
+        <div className="grid grid-cols-1 gap-[14px] sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="first_name"
+            render={({ field }) => (
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel className="text-label text-base font-medium">
+                  First name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    autoComplete="given-name"
+                    className={inputClass}
+                    placeholder="John"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel className="text-label text-base font-medium">
+                  Last name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    autoComplete="family-name"
+                    className={inputClass}
+                    placeholder="Doe"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
           name="email"
@@ -61,7 +131,7 @@ export function RegisterForm() {
                 <Input
                   type="email"
                   autoComplete="email"
-                  className="bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
+                  className={inputClass}
                   placeholder="you@example.com"
                   {...field}
                 />
@@ -83,7 +153,7 @@ export function RegisterForm() {
                 <Input
                   type="password"
                   autoComplete="new-password"
-                  className="bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
+                  className={inputClass}
                   placeholder="••••••••"
                   {...field}
                 />
@@ -105,7 +175,7 @@ export function RegisterForm() {
                 <Input
                   type="password"
                   autoComplete="new-password"
-                  className="bg-card border-input placeholder:text-placeholder h-12 rounded-md text-sm shadow-none focus-visible:ring-0"
+                  className={inputClass}
                   placeholder="••••••••"
                   {...field}
                 />
@@ -146,9 +216,10 @@ export function RegisterForm() {
         <div className="pt-[26px] pb-[60px]">
           <Button
             type="submit"
+            disabled={isLoading}
             className="bg-primary text-primary-foreground hover:bg-primary/90 h-auto w-full rounded-md py-3 text-base font-medium hover:shadow-[0_8px_24px_rgba(24,144,255,0.25)]"
           >
-            Register now
+            {isLoading ? "Creating account…" : "Register now"}
           </Button>
         </div>
       </form>

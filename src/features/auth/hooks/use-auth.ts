@@ -2,7 +2,6 @@
 
 import { useAppSelector } from "@/store/hooks";
 
-/** Convenient typed access to the current auth state. */
 export function useAuth() {
   const { user, accessToken, isAuthenticated } = useAppSelector(
     (state) => state.auth,
@@ -12,6 +11,6 @@ export function useAuth() {
     user,
     accessToken,
     isAuthenticated,
-    isAdmin: user?.role === "admin",
+    isAdmin: user?.type === "admin",
   };
 }

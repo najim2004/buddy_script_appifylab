@@ -12,4 +12,9 @@ export {
   logout,
   default as authReducer,
 } from "./store/auth.slice";
-export type { User, AuthState } from "./types/auth.types";
+export type {
+  User,
+  AuthState,
+  LoginRequest,
+  RegisterRequest,
+} from "./types/auth.types";

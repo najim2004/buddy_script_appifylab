@@ -1,10 +1,10 @@
 export interface Message {
   id: string;
-  roomId: string;
-  senderId: string;
-  senderName: string;
+  room_id: string;
+  sender_id: string;
+  sender_name: string;
   content: string;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface ChatState {
@@ -14,14 +14,13 @@ export interface ChatState {
   isConnected: boolean;
 }
 
-/** Socket event contract shared with the backend. */
 export interface ServerToClientEvents {
   "message:new": (message: Message) => void;
-  "user:typing": (payload: { roomId: string; userId: string }) => void;
+  "user:typing": (payload: { room_id: string; user_id: string }) => void;
 }
 
 export interface ClientToServerEvents {
-  "message:send": (payload: { roomId: string; content: string }) => void;
-  "room:join": (roomId: string) => void;
-  "user:typing": (roomId: string) => void;
+  "message:send": (payload: { room_id: string; content: string }) => void;
+  "room:join": (room_id: string) => void;
+  "user:typing": (room_id: string) => void;
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { MoreHorizontal } from "lucide-react";
 
@@ -15,6 +17,8 @@ interface PostHeaderProps {
   authorImage: string;
   timeAgo: string;
   privacy: string;
+  canDelete?: boolean;
+  onDelete?: () => void;
 }
 
 export function PostHeader({
@@ -22,6 +26,8 @@ export function PostHeader({
   authorImage,
   timeAgo,
   privacy,
+  canDelete = false,
+  onDelete,
 }: PostHeaderProps) {
   return (
     <div className="mb-4 flex items-center justify-between">
@@ -74,7 +80,11 @@ export function PostHeader({
           <DropdownMenuItem className="cursor-pointer">
             Edit Post
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+          <DropdownMenuItem
+            className="text-destructive focus:text-destructive cursor-pointer"
+            disabled={!canDelete}
+            onClick={canDelete ? onDelete : undefined}
+          >
             Delete Post
           </DropdownMenuItem>
         </DropdownMenuContent>

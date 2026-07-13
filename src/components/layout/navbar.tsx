@@ -2,7 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
+import { toast } from "sonner";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAuth, useLogoutMutation } from "@/features/auth";
+import { getApiErrorMessage } from "@/lib/api/error";
+import { ROUTES } from "@/lib/constants";
 
 const NAV_ITEMS = [
   {
@@ -30,7 +42,6 @@ const NAV_ITEMS = [
           stroke={active ? "#1890FF" : "currentColor"}
           strokeOpacity={active ? "1" : ".6"}
           strokeWidth="1.5"
-          fill={active ? "none" : "none"}
           d="M1 9.924c0-1.552 0-2.328.314-3.01.313-.682.902-1.187 2.08-2.196l1.143-.98C6.667 1.913 7.732 1 9 1c1.268 0 2.333.913 4.463 2.738l1.142.98c1.179 1.01 1.768 1.514 2.081 2.196.314.682.314 1.458.314 3.01v4.846c0 2.155 0 3.233-.67 3.902-.669.67-1.746.67-3.901.67H5.57c-2.155 0-3.232 0-3.902-.67C1 18.002 1 16.925 1 14.77V9.924z"
         />
         <path
@@ -124,8 +135,25 @@ const NAV_ITEMS = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useAuth();
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
-  const isActive = (path: string) => pathname === path;
+  const displayName =
+    [user?.first_name, user?.last_name].filter(Boolean).join(" ") ||
+    user?.email ||
+    "User";
+  const avatarSrc = "/assets/images/profile.png";
+
+  const onLogout = async () => {
+    try {
+      await logout().unwrap();
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "Could not log out"));
+    } finally {
+      router.replace(ROUTES.LOGIN);
+    }
+  };
 
   return (
     <>
@@ -168,7 +196,9 @@ export function Navbar() {
           <ul className="ml-auto hidden items-center space-x-6 lg:flex xl:space-x-11">
             {NAV_ITEMS.map((item) => {
               const active =
-                item.hasActiveState && item.href ? isActive(item.href) : false;
+                item.hasActiveState && item.href
+                  ? pathname === item.href
+                  : false;
 
               const innerContent = (
                 <>
@@ -195,35 +225,53 @@ export function Navbar() {
             })}
           </ul>
 
-          <div className="ml-4 flex shrink-0 cursor-pointer items-center gap-2 lg:ml-8">
-            <div className="h-7 w-7 overflow-hidden rounded-full">
-              <Image
-                src="/assets/images/profile.png"
-                alt="Profile"
-                width={32}
-                height={32}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="hidden cursor-pointer items-center gap-1 lg:flex">
-              <span className="text-title text-base font-normal">
-                Dylan Field
-              </span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="6"
-                fill="none"
-                viewBox="0 0 10 6"
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="ml-4 flex shrink-0 items-center gap-2 outline-none lg:ml-8"
               >
-                <path
-                  fill="#112032"
-                  className="dark:fill-white"
-                  d="M5 5l.354.354L5 5.707l-.354-.353L5 5zm4.354-3.646l-4 4-.708-.708 4-4 .708.708zm-4.708 4l-4-4 .708-.708 4 4-.708.708z"
-                />
-              </svg>
-            </div>
-          </div>
+                <div className="h-7 w-7 overflow-hidden rounded-full">
+                  <Image
+                    src={avatarSrc}
+                    alt={displayName}
+                    width={32}
+                    height={32}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="hidden items-center gap-1 lg:flex">
+                  <span className="text-title text-base font-normal">
+                    {displayName}
+                  </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="6"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                    aria-hidden
+                  >
+                    <path
+                      fill="#112032"
+                      className="dark:fill-white"
+                      d="M5 5l.354.354L5 5.707l-.354-.353L5 5zm4.354-3.646l-4 4-.708-.708 4-4 .708.708zm-4.708 4l-4-4 .708-.708 4 4-.708.708z"
+                    />
+                  </svg>
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-card w-44">
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive cursor-pointer"
+                disabled={isLoggingOut}
+                onClick={() => void onLogout()}
+              >
+                <LogOut className="size-4" />
+                {isLoggingOut ? "Logging out…" : "Logout"}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </nav>
 

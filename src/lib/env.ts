@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 const clientEnvSchema = z.object({
-  NEXT_PUBLIC_API_URL: z.string().url().default("http://localhost:5000/api"),
-  NEXT_PUBLIC_SOCKET_URL: z.string().url().default("http://localhost:5000"),
+  /** Same-origin API path — proxied to backend via next.config rewrites. */
+  NEXT_PUBLIC_API_URL: z.string().default("/api"),
+  NEXT_PUBLIC_SOCKET_URL: z.string().url().default("http://localhost:4000"),
   NEXT_PUBLIC_APP_NAME: z.string().default("My Business"),
 });
 
