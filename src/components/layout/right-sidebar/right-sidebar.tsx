@@ -1,5 +1,5 @@
-import { FriendRequests } from "./right-sidebar/friend-requests";
-import { Contacts } from "./right-sidebar/contacts";
+import { FriendRequests } from "./friend-requests";
+import { Contacts } from "./contacts";
 
 export function RightSidebar() {
   return (

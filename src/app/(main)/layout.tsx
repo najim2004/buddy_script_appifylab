@@ -1,7 +1,7 @@
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Navbar } from "@/components/layout/navbar";
-import { LeftSidebar } from "@/components/layout/left-sidebar";
-import { RightSidebar } from "@/components/layout/right-sidebar";
+import { LeftSidebar } from "@/components/layout/left-sidebar/left-sidebar";
+import { RightSidebar } from "@/components/layout/right-sidebar/right-sidebar";
 
 export default function MainLayout({
   children,

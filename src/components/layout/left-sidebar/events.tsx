@@ -11,6 +11,15 @@ const EVENTS = [
     goingCount: "17 People Going",
     status: "Going",
   },
+  {
+    id: 2,
+    image: "/assets/images/feed_event1.png",
+    day: "10",
+    month: "Jul",
+    title: "No more terrorism no more cry",
+    goingCount: "17 People Going",
+    status: "Going",
+  },
 ];
 
 export function Events() {
@@ -27,7 +36,11 @@ export function Events() {
       </div>
 
       {EVENTS.map((event) => (
-        <Link key={event.id} href="#" className="group mb-4 block transition-colors">
+        <Link
+          key={event.id}
+          href="#"
+          className="group mb-4 block transition-colors"
+        >
           <div className="bg-card overflow-hidden rounded-lg shadow-[0px_4px_8px_rgba(0,0,0,0.08)]">
             <div className="relative h-40 w-full overflow-hidden rounded-lg bg-gray-200">
               <Image

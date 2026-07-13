@@ -38,6 +38,42 @@ const FRIENDS = [
     image: "/assets/images/people3.png",
     isActive: true,
   },
+  {
+    id: 6,
+    name: "Steve Jobs",
+    role: "CEO of Apple",
+    image: "/assets/images/people1.png",
+    timeAgo: "5m ago",
+    isActive: false,
+  },
+  {
+    id: 7,
+    name: "Ryan Roslansky",
+    role: "CEO of Linkedin",
+    image: "/assets/images/people2.png",
+    isActive: true,
+  },
+  {
+    id: 8,
+    name: "Dylan Field",
+    role: "CEO of Figma",
+    image: "/assets/images/people3.png",
+    isActive: true,
+  },
+  {
+    id: 9,
+    name: "Ryan Roslansky",
+    role: "CEO of Linkedin",
+    image: "/assets/images/people2.png",
+    isActive: true,
+  },
+  {
+    id: 10,
+    name: "Dylan Field",
+    role: "CEO of Figma",
+    image: "/assets/images/people3.png",
+    isActive: true,
+  },
 ];
 
 export function Contacts() {
@@ -79,7 +115,9 @@ export function Contacts() {
           <div
             key={friend.id}
             className={`flex cursor-pointer items-center justify-between ${
-              !friend.isActive ? "hover:bg-background rounded-xl p-1.5" : "group"
+              !friend.isActive
+                ? "hover:bg-background rounded-xl p-1.5"
+                : "group"
             }`}
           >
             <div className="flex items-center">
