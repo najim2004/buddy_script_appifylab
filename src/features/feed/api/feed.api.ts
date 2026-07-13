@@ -198,27 +198,48 @@ export const feedApi = apiSlice.injectEndpoints({
 
     createComment: builder.mutation<
       ApiComment,
-      { postId: string; content: string }
+      {
+        postId: string;
+        content: string;
+        parent_id?: string;
+        reply_to_user_id?: string;
+      }
     >({
-      query: ({ postId, content }) => ({
+      query: ({ postId, content, parent_id, reply_to_user_id }) => ({
         url: `/posts/${postId}/comments`,
         method: "POST",
-        body: { content },
+        body: {
+          content,
+          ...(parent_id ? { parent_id } : {}),
+          ...(reply_to_user_id ? { reply_to_user_id } : {}),
+        },
       }),
       transformResponse: (response: ApiResponse<ApiComment>) =>
         unwrapData(response),
       async onQueryStarted(
-        { postId, content },
+        { postId, content, parent_id },
         { dispatch, queryFulfilled, getState },
       ) {
         const user = (getState() as RootState).auth.user;
-        const optimisticComment = {
+        const commentsCache = feedApi.endpoints.getComments.select({
+          postId,
+          limit: COMMENTS_LIMIT,
+        })(getState() as RootState).data;
+
+        const replyTarget = parent_id
+          ? commentsCache?.data.find((c) => c.id === parent_id)
+          : undefined;
+
+        // Keep nested replies under the root parent (2-level tree).
+        const rootParentId = replyTarget?.parent_id ?? parent_id ?? null;
+
+        const optimisticComment: ApiComment = {
           id: `temp-${Date.now()}`,
           created_at: new Date().toISOString(),
           post_id: postId,
           content,
-          parent_id: null as string | null,
-          deleted_at: null as string | null,
+          parent_id: rootParentId,
+          deleted_at: null,
           is_deleted: false,
           likes: 0,
           has_liked: false,
@@ -228,11 +249,15 @@ export const feedApi = apiSlice.injectEndpoints({
             last_name: user?.last_name ?? "",
             avatar: user?.avatar ?? null,
           },
+          reply_to_user: rootParentId ? (replyTarget?.user ?? null) : null,
         };
 
         const applyOptimistic = (post: ApiPostDetail) => {
           post.comments += 1;
-          post.latest_comment = optimisticComment;
+          // Feed preview only tracks top-level latest comment.
+          if (!rootParentId) {
+            post.latest_comment = optimisticComment;
+          }
         };
 
         const listPatch = patchFeedList(dispatch, (draft) => {
@@ -245,7 +270,7 @@ export const feedApi = apiSlice.injectEndpoints({
             "getComments",
             { postId, limit: COMMENTS_LIMIT },
             (draft) => {
-              draft.data.unshift(optimisticComment);
+              draft.data.push(optimisticComment);
             },
           ),
         );
@@ -253,6 +278,7 @@ export const feedApi = apiSlice.injectEndpoints({
         try {
           const { data: comment } = await queryFulfilled;
           const applyReal = (post: ApiPostDetail) => {
+            if (comment.parent_id) return;
             post.latest_comment = {
               id: comment.id,
               created_at: String(comment.created_at),
@@ -284,7 +310,7 @@ export const feedApi = apiSlice.injectEndpoints({
                 );
                 if (idx >= 0) draft.data[idx] = comment;
                 else if (!draft.data.some((c) => c.id === comment.id)) {
-                  draft.data.unshift(comment);
+                  draft.data.push(comment);
                 }
               },
             ),

@@ -67,6 +67,25 @@ export function PostCard({
     }
   };
 
+  const onReply = async (payload: {
+    content: string;
+    parent_id: string;
+    reply_to_user_id: string;
+  }) => {
+    try {
+      await createComment({
+        postId: post.id,
+        content: payload.content,
+        parent_id: payload.parent_id,
+        reply_to_user_id: payload.reply_to_user_id,
+      }).unwrap();
+      openModal();
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "Could not post reply"));
+      throw error;
+    }
+  };
+
   const onLikeComment = async (commentId: string) => {
     try {
       await likeComment({ commentId, postId: post.id }).unwrap();
@@ -120,19 +139,21 @@ export function PostCard({
           onComment={openModal}
         />
 
-        <PostCommentInput
-          userImage={currentUserImage}
-          onSubmit={onComment}
-        />
-
         {post.latest_comment ? (
           <CommentThread
             comment={post.latest_comment}
             previousCount={Math.max(0, post.comments - 1)}
             onViewAll={openModal}
             onLikeComment={onLikeComment}
+            onReply={onReply}
+            currentUserImage={currentUserImage}
           />
         ) : null}
+
+        <PostCommentInput
+          userImage={currentUserImage}
+          onSubmit={onComment}
+        />
       </article>
 
       <PostModal

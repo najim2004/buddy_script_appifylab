@@ -87,6 +87,24 @@ export function PostModal({
     }
   };
 
+  const onReply = async (payload: {
+    content: string;
+    parent_id: string;
+    reply_to_user_id: string;
+  }) => {
+    try {
+      await createComment({
+        postId: post.id,
+        content: payload.content,
+        parent_id: payload.parent_id,
+        reply_to_user_id: payload.reply_to_user_id,
+      }).unwrap();
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "Could not post reply"));
+      throw error;
+    }
+  };
+
   const onLikeComment = async (commentId: string) => {
     try {
       await likeComment({ commentId, postId: post.id }).unwrap();
@@ -142,6 +160,8 @@ export function PostModal({
               <CommentThread
                 comments={comments}
                 onLikeComment={onLikeComment}
+                onReply={onReply}
+                currentUserImage={currentUserImage}
               />
             )}
           </div>
