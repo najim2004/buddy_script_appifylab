@@ -59,7 +59,7 @@ export default function RegisterPage() {
         </span>
       </div>
 
-      {/* Page content */}
+      {/* Main content */}
       <div className="relative container mx-auto max-w-[1320px]">
         <div className="grid grid-cols-1 lg:grid-cols-3">
           {/* Left – illustration */}

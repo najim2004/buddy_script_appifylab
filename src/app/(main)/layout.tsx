@@ -9,7 +9,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-background min-h-screen pb-[60px]">
+    <div className="bg-background min-h-screen">
       <ThemeToggle />
       <Navbar />
 

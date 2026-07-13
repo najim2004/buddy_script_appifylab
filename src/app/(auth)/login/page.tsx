@@ -60,7 +60,7 @@ export default function LoginPage() {
         </span>
       </div>
 
-      {/* Page content */}
+      {/* Main content */}
       <div className="relative container mx-auto max-w-[1320px]">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-0">
           {/* Left – illustration */}

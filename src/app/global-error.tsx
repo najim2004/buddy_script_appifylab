@@ -1,11 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-
-/**
- * Catches errors thrown in the root layout itself. Must render its own
- * <html> and <body> because it replaces the root layout when triggered.
- */
 export default function GlobalError({
   error,
   reset,
