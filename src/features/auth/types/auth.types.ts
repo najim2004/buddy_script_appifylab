@@ -6,6 +6,7 @@ export interface User {
   last_name: string;
   type: string;
   created_at: string;
+  avatar?: string | null;
 }
 
 export interface AuthState {

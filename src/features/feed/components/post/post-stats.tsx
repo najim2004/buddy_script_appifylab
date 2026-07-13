@@ -1,53 +1,58 @@
+"use client";
+
 import Image from "next/image";
+
+import { mediaUrl } from "@/lib/media-url";
+
+interface RecentLiker {
+  id: string;
+  avatar?: string | null;
+}
 
 interface PostStatsProps {
   likes: number;
   comments: number;
   shares: number;
+  recentLikes?: RecentLiker[];
   onCommentsClick?: () => void;
 }
-
-const REACTION_IMAGES = [
-  "/assets/images/react_img1.png",
-  "/assets/images/react_img2.png",
-  "/assets/images/react_img3.png",
-  "/assets/images/react_img4.png",
-  "/assets/images/react_img5.png",
-] as const;
 
 export function PostStats({
   likes,
   comments,
   shares,
+  recentLikes = [],
   onCommentsClick,
 }: PostStatsProps) {
-  const visible = REACTION_IMAGES.slice(0, Math.min(5, Math.max(1, likes)));
+  // Only real avatars — never fill with demo reaction images
+  const avatars = recentLikes
+    .map((liker) => mediaUrl(liker.avatar))
+    .filter((src): src is string => Boolean(src))
+    .slice(0, 5);
 
   return (
     <div className="mb-0 flex items-center justify-between px-6">
       <div className="flex items-center">
-        <div className="flex cursor-pointer items-center">
-          {visible.map((src, index) => (
-            <Image
-              key={src}
-              src={src}
-              alt=""
-              width={32}
-              height={32}
-              className="border-card bg-placeholder size-8 rounded-full border object-cover"
-              style={{ marginLeft: index === 0 ? 0 : -16 }}
-            />
-          ))}
-          {likes > 5 ? (
-            <span
-              className="border-card bg-primary text-primary-foreground ml-[-16px] flex size-8 items-center justify-center rounded-full border-2 text-sm"
-              aria-hidden
-            >
-              9+
-            </span>
-          ) : null}
-        </div>
-        <p className="text-subtle ml-2.5 pt-1.5 text-sm leading-tight">{likes}</p>
+        {avatars.length > 0 ? (
+          <div className="flex cursor-pointer items-center">
+            {avatars.map((src, index) => (
+              <Image
+                key={`${src}-${index}`}
+                src={src}
+                alt=""
+                width={32}
+                height={32}
+                className="border-card bg-placeholder size-8 rounded-full border object-cover"
+                style={{ marginLeft: index === 0 ? 0 : -16 }}
+              />
+            ))}
+          </div>
+        ) : null}
+        {likes > 0 ? (
+          <p className="text-subtle ml-2.5 pt-1.5 text-sm leading-tight">
+            {likes}
+          </p>
+        ) : null}
       </div>
 
       <div className="text-subtle flex items-center text-sm leading-tight">

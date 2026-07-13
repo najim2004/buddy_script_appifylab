@@ -20,17 +20,18 @@ export interface ApiPostAttachment {
 export interface ApiComment {
   id: string;
   created_at: string;
-  post_id?: string;
+  post_id: string;
   content: string;
   parent_id: string | null;
   deleted_at: string | null;
   is_deleted: boolean;
   likes: number;
+  has_liked: boolean;
   user: ApiUserBrief;
   reply_to_user?: ApiUserBrief | null;
 }
 
-/** Embedded on post list/detail — same fields as ApiComment. */
+/** Same shape as list/create comment responses. */
 export type ApiLatestComment = ApiComment;
 
 export interface ApiPostDetail {

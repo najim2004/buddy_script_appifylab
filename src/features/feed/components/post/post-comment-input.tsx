@@ -6,7 +6,7 @@ import { ImageIcon, Mic } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface PostCommentInputProps {
-  userImage: string;
+  userImage?: string;
   onSubmit?: (content: string) => Promise<void>;
   autoFocus?: boolean;
 }
@@ -35,7 +35,7 @@ export function PostCommentInput({
     <div className="px-6 pt-6 pb-2.5">
       <div className="bg-comment flex items-center rounded-[18px] px-2.5 py-1">
         <Avatar className="size-[26px] shrink-0">
-          <AvatarImage src={userImage} alt="" />
+          {userImage ? <AvatarImage src={userImage} alt="" /> : null}
           <AvatarFallback className="text-[10px]">U</AvatarFallback>
         </Avatar>
         <div className="flex flex-1 items-center">

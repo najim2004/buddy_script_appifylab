@@ -10,6 +10,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getApiErrorMessage } from "@/lib/api/error";
+import { mediaUrl } from "@/lib/media-url";
+import { formatRelativeTime } from "@/lib/format-time";
 import type { ApiPostDetail } from "../types/feed.api.types";
 import { COMMENTS_LIMIT } from "../types/feed.api.types";
 import {
@@ -29,13 +31,9 @@ interface PostModalProps {
   post: ApiPostDetail | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentUserImage: string;
+  currentUserImage?: string;
   canDelete?: boolean;
   onDelete?: () => void;
-}
-
-function mediaSrc(filePath: string) {
-  return `/storage/${filePath}`;
 }
 
 export function PostModal({
@@ -110,20 +108,25 @@ export function PostModal({
           <div className="px-6">
             <PostHeader
               authorName={authorName}
-              authorImage={post.author.avatar || "/assets/images/post_img.png"}
-              timeAgo={post.created_at}
+              authorImage={mediaUrl(post.author.avatar)}
+              timeAgo={formatRelativeTime(post.created_at)}
               privacy={post.visibility}
               canDelete={canDelete}
               onDelete={onDelete}
             />
             <PostContent
               content={post.content ?? ""}
-              image={imagePath ? mediaSrc(imagePath) : undefined}
-              video={videoPath ? mediaSrc(videoPath) : undefined}
+              image={mediaUrl(imagePath)}
+              video={mediaUrl(videoPath)}
             />
           </div>
 
-          <PostStats likes={post.likes} comments={post.comments} shares={0} />
+          <PostStats
+            likes={post.likes}
+            comments={post.comments}
+            shares={0}
+            recentLikes={post.recent_likes}
+          />
           <PostActions has_liked={post.has_liked} onLike={onLike} />
 
           <div className="border-border mt-2 border-t px-0 pt-2">

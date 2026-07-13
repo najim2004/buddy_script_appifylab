@@ -14,7 +14,7 @@ import {
 
 interface PostHeaderProps {
   authorName: string;
-  authorImage: string;
+  authorImage?: string;
   timeAgo: string;
   privacy: string;
   canDelete?: boolean;
@@ -33,7 +33,9 @@ export function PostHeader({
     <div className="mb-4 flex items-center justify-between">
       <div className="flex cursor-pointer items-center">
         <Avatar className="mr-4 size-11 shrink-0">
-          <AvatarImage src={authorImage} alt={authorName} />
+          {authorImage ? (
+            <AvatarImage src={authorImage} alt={authorName} />
+          ) : null}
           <AvatarFallback>{authorName.slice(0, 1)}</AvatarFallback>
         </Avatar>
         <div>

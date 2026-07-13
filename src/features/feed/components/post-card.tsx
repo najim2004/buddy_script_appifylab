@@ -4,8 +4,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { getApiErrorMessage } from "@/lib/api/error";
+import { mediaUrl } from "@/lib/media-url";
+import { formatRelativeTime } from "@/lib/format-time";
 import type { ApiPostDetail } from "../types/feed.api.types";
 import {
+  useCreateCommentMutation,
   useDeletePostMutation,
   useLikeCommentMutation,
   useLikePostMutation,
@@ -13,13 +16,14 @@ import {
 import { PostModal } from "./post-modal";
 import { CommentThread } from "./post/comment-thread";
 import { PostActions } from "./post/post-actions";
+import { PostCommentInput } from "./post/post-comment-input";
 import { PostContent } from "./post/post-content";
 import { PostHeader } from "./post/post-header";
 import { PostStats } from "./post/post-stats";
 
 interface PostCardProps {
   post: ApiPostDetail;
-  currentUserImage: string;
+  currentUserImage?: string;
   canDelete?: boolean;
 }
 
@@ -31,6 +35,7 @@ export function PostCard({
   const [modalOpen, setModalOpen] = useState(false);
   const [likePost] = useLikePostMutation();
   const [deletePost] = useDeletePostMutation();
+  const [createComment] = useCreateCommentMutation();
   const [likeComment] = useLikeCommentMutation();
 
   const openModal = () => setModalOpen(true);
@@ -50,6 +55,15 @@ export function PostCard({
       toast.success("Post deleted");
     } catch (error) {
       toast.error(getApiErrorMessage(error, "Could not delete post"));
+    }
+  };
+
+  const onComment = async (content: string) => {
+    try {
+      await createComment({ postId: post.id, content }).unwrap();
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, "Could not post comment"));
+      throw error;
     }
   };
 
@@ -79,16 +93,16 @@ export function PostCard({
                 .filter(Boolean)
                 .join(" ") || "User"
             }
-            authorImage={post.author.avatar || "/assets/images/post_img.png"}
-            timeAgo={post.created_at}
+            authorImage={mediaUrl(post.author.avatar)}
+            timeAgo={formatRelativeTime(post.created_at)}
             privacy={post.visibility}
             canDelete={canDelete}
             onDelete={canDelete ? onDelete : undefined}
           />
           <PostContent
             content={post.content ?? ""}
-            image={image ? `/storage/${image}` : undefined}
-            video={video ? `/storage/${video}` : undefined}
+            image={image ? mediaUrl(image) : undefined}
+            video={video ? mediaUrl(video) : undefined}
           />
         </div>
 
@@ -96,6 +110,7 @@ export function PostCard({
           likes={post.likes}
           comments={post.comments}
           shares={0}
+          recentLikes={post.recent_likes}
           onCommentsClick={openModal}
         />
 
@@ -103,6 +118,11 @@ export function PostCard({
           has_liked={post.has_liked}
           onLike={onLike}
           onComment={openModal}
+        />
+
+        <PostCommentInput
+          userImage={currentUserImage}
+          onSubmit={onComment}
         />
 
         {post.latest_comment ? (

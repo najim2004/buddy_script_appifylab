@@ -3,7 +3,8 @@
 import { Loader2 } from "lucide-react";
 
 import { useAuth } from "@/features/auth";
-import { CURRENT_USER_AVATAR, FEED_STORIES } from "../data/mock-feed";
+import { mediaUrl } from "@/lib/media-url";
+import { FEED_STORIES } from "../data/mock-feed";
 import { useGetPostsQuery } from "../api/feed.api";
 import { FEED_LIST_ARG } from "../types/feed.api.types";
 import { CreatePost } from "./create-post";
@@ -12,12 +13,9 @@ import { Stories, StoriesMobile } from "./stories";
 
 export function FeedTimeline() {
   const { user } = useAuth();
-  const { data, isLoading, isFetching, isError } = useGetPostsQuery(
-    FEED_LIST_ARG,
-    { refetchOnMountOrArgChange: 60 },
-  );
+  const { data, isLoading, isError } = useGetPostsQuery(FEED_LIST_ARG);
 
-  const userAvatar = CURRENT_USER_AVATAR;
+  const userAvatar = mediaUrl(user?.avatar);
   const posts = data?.data ?? [];
   const showInitialLoader = isLoading && !data;
 
@@ -30,12 +28,6 @@ export function FeedTimeline() {
       {showInitialLoader ? (
         <div className="bg-card mb-4 flex items-center justify-center rounded-md py-12">
           <Loader2 className="text-muted-foreground size-6 animate-spin" />
-        </div>
-      ) : null}
-
-      {isFetching && data ? (
-        <div className="text-muted-foreground mb-2 flex justify-center text-xs">
-          Updating…
         </div>
       ) : null}
 

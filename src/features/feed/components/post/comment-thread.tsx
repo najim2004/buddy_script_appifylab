@@ -1,9 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
+import { mediaUrl } from "@/lib/media-url";
+import { formatRelativeTime } from "@/lib/format-time";
+import { useAuth } from "@/features/auth";
 
 import type { ApiComment, ApiLatestComment } from "../../types/feed.api.types";
 
@@ -24,19 +27,22 @@ function CommentRow({
   comment: CommentItem;
   onLikeComment?: (commentId: string) => void;
 }) {
+  const { user } = useAuth();
   const name =
     [comment.user.first_name, comment.user.last_name]
       .filter(Boolean)
       .join(" ") || "User";
-  const avatar = comment.user.avatar || "/assets/images/txt_img.png";
+  const avatar = mediaUrl(comment.user.avatar);
   const body = comment.is_deleted
     ? "This comment was deleted."
     : comment.content;
+  const liked = Boolean(comment.has_liked);
+  const myAvatar = liked ? mediaUrl(user?.avatar) : undefined;
 
   return (
     <li className="flex gap-3">
       <Avatar className="size-10 shrink-0">
-        <AvatarImage src={avatar} alt={name} />
+        {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
         <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
@@ -49,13 +55,14 @@ function CommentRow({
           <p className="text-muted-foreground text-sm">{body}</p>
           {comment.likes > 0 ? (
             <span className="bg-card text-subtle absolute -right-1 -bottom-2 flex items-center gap-1 rounded-xl px-1.5 py-0.5 text-xs shadow-sm">
-              <Image
-                src="/assets/images/react_img1.png"
-                alt=""
-                width={14}
-                height={14}
-                className="size-3.5"
-              />
+              {myAvatar ? (
+                // eslint-disable-next-line @next/next/no-img-element -- tiny badge avatar
+                <img
+                  src={myAvatar}
+                  alt=""
+                  className="size-3.5 rounded-full object-cover"
+                />
+              ) : null}
               {comment.likes}
             </span>
           ) : null}
@@ -64,7 +71,10 @@ function CommentRow({
           <li>
             <button
               type="button"
-              className="hover:underline"
+              className={cn(
+                "hover:underline",
+                liked && "text-primary font-medium",
+              )}
               onClick={() => onLikeComment?.(comment.id)}
             >
               Like
@@ -76,7 +86,7 @@ function CommentRow({
             </button>
           </li>
           <li>
-            <span>{comment.created_at}</span>
+            <span>{formatRelativeTime(comment.created_at)}</span>
           </li>
         </ul>
       </div>

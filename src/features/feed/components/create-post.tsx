@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { useCreatePostMutation } from "../api/feed.api";
 
 interface CreatePostProps {
-  userAvatar: string;
+  userAvatar?: string;
   className?: string;
 }
 
@@ -73,7 +73,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
     <div className={cn("bg-card mb-4 rounded-md pt-6", className)}>
       <div className="flex items-start px-6">
         <Avatar className="mr-3 size-10 shrink-0">
-          <AvatarImage src={userAvatar} alt="Your profile" />
+          {userAvatar ? <AvatarImage src={userAvatar} alt="Your profile" /> : null}
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
 
@@ -210,13 +210,19 @@ export function CreatePostMobile({ userAvatar }: CreatePostProps) {
   return (
     <div className="bg-card mb-4 rounded-md p-4 md:hidden">
       <div className="flex items-center gap-3">
-        <Image
-          src={userAvatar}
-          alt=""
-          width={40}
-          height={40}
-          className="size-10 rounded-full object-cover"
-        />
+        {userAvatar ? (
+          <Image
+            src={userAvatar}
+            alt=""
+            width={40}
+            height={40}
+            className="size-10 rounded-full object-cover"
+          />
+        ) : (
+          <div className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-full text-sm">
+            U
+          </div>
+        )}
         <input
           type="text"
           readOnly

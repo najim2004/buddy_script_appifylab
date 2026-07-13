@@ -143,7 +143,11 @@ export function Navbar() {
     [user?.first_name, user?.last_name].filter(Boolean).join(" ") ||
     user?.email ||
     "User";
-  const avatarSrc = "/assets/images/profile.png";
+  const avatarSrc = user?.avatar
+    ? user.avatar.startsWith("http") || user.avatar.startsWith("/")
+      ? user.avatar
+      : `/storage/${user.avatar}`
+    : undefined;
 
   const onLogout = async () => {
     try {
@@ -231,14 +235,18 @@ export function Navbar() {
                 type="button"
                 className="ml-4 flex shrink-0 items-center gap-2 outline-none lg:ml-8"
               >
-                <div className="h-7 w-7 overflow-hidden rounded-full">
-                  <Image
-                    src={avatarSrc}
-                    alt={displayName}
-                    width={32}
-                    height={32}
-                    className="h-full w-full object-cover"
-                  />
+                <div className="bg-muted text-muted-foreground flex h-7 w-7 items-center justify-center overflow-hidden rounded-full text-xs">
+                  {avatarSrc ? (
+                    <Image
+                      src={avatarSrc}
+                      alt={displayName}
+                      width={32}
+                      height={32}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    displayName.slice(0, 1).toUpperCase()
+                  )}
                 </div>
                 <div className="hidden items-center gap-1 lg:flex">
                   <span className="text-title text-base font-normal">

@@ -136,7 +136,6 @@ export const feedApi = apiSlice.injectEndpoints({
         });
         try {
           await queryFulfilled;
-          dispatch(apiSlice.util.invalidateTags([{ type: "Post", id }]));
         } catch {
           listPatch.undo();
         }
@@ -147,25 +146,44 @@ export const feedApi = apiSlice.injectEndpoints({
       query: (id) => ({ url: `/posts/${id}/like`, method: "POST" }),
       transformResponse: (response: ApiResponse<LikeToggleResult>) =>
         unwrapData(response),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const toggle = (post: ApiPostDetail) => {
-          post.has_liked = !post.has_liked;
-          post.likes = Math.max(0, post.likes + (post.has_liked ? 1 : -1));
+      async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+        const user = (getState() as RootState).auth.user;
+        const feedData = feedApi.endpoints.getPosts.select(ROOT_FEED_ARG)(
+          getState() as RootState,
+        ).data;
+        const before =
+          feedData?.data.find((p) => p.id === id)?.has_liked ?? false;
+        const nextLiked = !before;
+
+        const applyLike = (post: ApiPostDetail, liked: boolean) => {
+          const wasLiked = post.has_liked;
+          if (wasLiked === liked) return;
+          post.has_liked = liked;
+          post.likes = Math.max(0, post.likes + (liked ? 1 : -1));
+          if (!user) return;
+          if (liked) {
+            post.recent_likes = [
+              { id: user.id, avatar: user.avatar ?? null },
+              ...post.recent_likes.filter((l) => l.id !== user.id),
+            ].slice(0, 5);
+          } else {
+            post.recent_likes = post.recent_likes.filter(
+              (l) => l.id !== user.id,
+            );
+          }
         };
 
         const listPatch = patchFeedList(dispatch, (draft) => {
           const post = draft.data.find((p) => p.id === id);
-          if (post) toggle(post);
+          if (post) applyLike(post, nextLiked);
         });
-        const detailPatch = patchPostDetail(dispatch, id, toggle);
+        const detailPatch = patchPostDetail(dispatch, id, (post) =>
+          applyLike(post, nextLiked),
+        );
 
         try {
           const { data } = await queryFulfilled;
-          const sync = (post: ApiPostDetail) => {
-            if (post.has_liked === data.liked) return;
-            post.has_liked = data.liked;
-            post.likes = Math.max(0, post.likes + (data.liked ? 1 : -1));
-          };
+          const sync = (post: ApiPostDetail) => applyLike(post, data.liked);
           patchFeedList(dispatch, (draft) => {
             const post = draft.data.find((p) => p.id === id);
             if (post) sync(post);
@@ -197,16 +215,18 @@ export const feedApi = apiSlice.injectEndpoints({
         const optimisticComment = {
           id: `temp-${Date.now()}`,
           created_at: new Date().toISOString(),
+          post_id: postId,
           content,
           parent_id: null as string | null,
           deleted_at: null as string | null,
           is_deleted: false,
           likes: 0,
+          has_liked: false,
           user: {
             id: user?.id ?? "me",
             first_name: user?.first_name || "You",
             last_name: user?.last_name ?? "",
-            avatar: null,
+            avatar: user?.avatar ?? null,
           },
         };
 
@@ -225,7 +245,7 @@ export const feedApi = apiSlice.injectEndpoints({
             "getComments",
             { postId, limit: COMMENTS_LIMIT },
             (draft) => {
-              draft.data.unshift({ ...optimisticComment, post_id: postId });
+              draft.data.unshift(optimisticComment);
             },
           ),
         );
@@ -236,6 +256,7 @@ export const feedApi = apiSlice.injectEndpoints({
             post.latest_comment = {
               id: comment.id,
               created_at: String(comment.created_at),
+              post_id: comment.post_id,
               content: comment.content,
               parent_id: comment.parent_id,
               deleted_at: comment.deleted_at
@@ -243,7 +264,9 @@ export const feedApi = apiSlice.injectEndpoints({
                 : null,
               is_deleted: comment.is_deleted,
               likes: comment.likes,
+              has_liked: comment.has_liked ?? false,
               user: comment.user,
+              reply_to_user: comment.reply_to_user ?? null,
             };
           };
           patchFeedList(dispatch, (draft) => {
@@ -286,36 +309,89 @@ export const feedApi = apiSlice.injectEndpoints({
         unwrapData(response),
       async onQueryStarted(
         { commentId, postId },
-        { dispatch, queryFulfilled },
+        { dispatch, queryFulfilled, getState },
       ) {
-        const bump = (post: ApiPostDetail, delta: number) => {
-          if (!post.latest_comment || post.latest_comment.id !== commentId)
-            return;
-          post.latest_comment.likes = Math.max(
-            0,
-            post.latest_comment.likes + delta,
-          );
+        const state = getState() as RootState;
+        const commentsCache = feedApi.endpoints.getComments.select({
+          postId,
+          limit: COMMENTS_LIMIT,
+        })(state).data;
+        const feedData = feedApi.endpoints.getPosts.select(ROOT_FEED_ARG)(
+          state,
+        ).data;
+
+        const fromComments = commentsCache?.data.find((c) => c.id === commentId)
+          ?.has_liked;
+        const fromFeed = feedData?.data.find((p) => p.id === postId)
+          ?.latest_comment?.id === commentId
+          ? feedData?.data.find((p) => p.id === postId)?.latest_comment
+              ?.has_liked
+          : undefined;
+        const before = Boolean(fromComments ?? fromFeed);
+        const nextLiked = !before;
+
+        const applyOnComment = (
+          comment: { likes: number; has_liked?: boolean },
+          liked: boolean,
+        ) => {
+          const was = Boolean(comment.has_liked);
+          if (was === liked) return;
+          comment.has_liked = liked;
+          comment.likes = Math.max(0, comment.likes + (liked ? 1 : -1));
         };
 
         const listPatch = patchFeedList(dispatch, (draft) => {
           const post = draft.data.find((p) => p.id === postId);
-          if (post) bump(post, 1);
+          if (post?.latest_comment?.id === commentId) {
+            applyOnComment(post.latest_comment, nextLiked);
+          }
         });
-        const detailPatch = patchPostDetail(dispatch, postId, (draft) =>
-          bump(draft, 1),
+        const detailPatch = patchPostDetail(dispatch, postId, (post) => {
+          if (post.latest_comment?.id === commentId) {
+            applyOnComment(post.latest_comment, nextLiked);
+          }
+        });
+        const commentsPatch = dispatch(
+          feedApi.util.updateQueryData(
+            "getComments",
+            { postId, limit: COMMENTS_LIMIT },
+            (draft) => {
+              const comment = draft.data.find((c) => c.id === commentId);
+              if (comment) applyOnComment(comment, nextLiked);
+            },
+          ),
         );
 
         try {
           const { data } = await queryFulfilled;
-          if (data.liked) return;
+          const sync = (comment: { likes: number; has_liked?: boolean }) =>
+            applyOnComment(comment, data.liked);
+
           patchFeedList(dispatch, (draft) => {
             const post = draft.data.find((p) => p.id === postId);
-            if (post) bump(post, -2);
+            if (post?.latest_comment?.id === commentId) {
+              sync(post.latest_comment);
+            }
           });
-          patchPostDetail(dispatch, postId, (draft) => bump(draft, -2));
+          patchPostDetail(dispatch, postId, (post) => {
+            if (post.latest_comment?.id === commentId) {
+              sync(post.latest_comment);
+            }
+          });
+          dispatch(
+            feedApi.util.updateQueryData(
+              "getComments",
+              { postId, limit: COMMENTS_LIMIT },
+              (draft) => {
+                const comment = draft.data.find((c) => c.id === commentId);
+                if (comment) sync(comment);
+              },
+            ),
+          );
         } catch {
           listPatch.undo();
           detailPatch.undo();
+          commentsPatch.undo();
         }
       },
     }),
