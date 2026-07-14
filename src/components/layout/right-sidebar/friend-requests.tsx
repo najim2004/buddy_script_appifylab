@@ -14,8 +14,8 @@ export function FriendRequests() {
   return (
     <div className="bg-card rounded-lg p-6 pb-6">
       <div className="mb-6 flex items-center justify-between">
-        <h4 className="text-title text-xl font-medium">You Might Like</h4>
-        <Link href="#" className="text-primary text-xs font-medium">
+        <h4 className="text-title text-base xl:text-xl font-medium">You Might Like</h4>
+        <Link href="#" className="text-primary text-nowrap text-xs xl:text-sm font-medium">
           See All
         </Link>
       </div>
@@ -41,11 +41,11 @@ export function FriendRequests() {
               <div>
                 <Link
                   href="#"
-                  className="text-title text-base font-medium transition-colors"
+                  className="text-title text-xs xl:text-base font-medium transition-colors"
                 >
                   {recommendation.name}
                 </Link>
-                <p className="text-muted-foreground text-xs font-normal">
+                <p className="text-muted-foreground text-[8px] xl:text-xs font-normal">
                   {recommendation.role}
                 </p>
               </div>
@@ -54,13 +54,13 @@ export function FriendRequests() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                className="dark:border-border text-sidebar-muted hover:bg-secondary border-border-light flex-1 rounded-md border bg-transparent py-3 text-sm font-medium transition-colors"
+                className="dark:border-border text-sidebar-muted hover:bg-secondary border-border-light flex-1 rounded-md border bg-transparent xl:py-3 py-2 text-sm font-medium transition-colors"
               >
                 Ignore
               </button>
               <button
                 type="button"
-                className="bg-primary hover:bg-primary-hover flex-1 rounded-md py-3 text-sm font-medium text-white transition-colors"
+                className="bg-primary hover:bg-primary-hover flex-1 rounded-md xl:py-3 py-2 text-sm font-medium text-white transition-colors"
               >
                 Follow
               </button>

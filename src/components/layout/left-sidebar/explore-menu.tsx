@@ -202,7 +202,7 @@ const EXPLORE_ITEMS = [
 export function ExploreMenu() {
   return (
     <div className="bg-card rounded-lg p-6 pb-1.5">
-      <h4 className="text-title mb-6 text-xl font-medium">Explore</h4>
+      <h4 className="text-title mb-6 text-base xl:text-xl font-medium">Explore</h4>
       <ul className="m-0 list-none space-y-6 p-0">
         {EXPLORE_ITEMS.map((item) => (
           <li
@@ -215,14 +215,14 @@ export function ExploreMenu() {
           >
             <Link
               href={item.href}
-              className="text-muted-foreground hover:text-primary group flex items-center justify-between text-[15px] font-medium transition-colors"
+              className="text-muted-foreground hover:text-primary group flex items-center justify-between text-sm xl:text-base font-medium transition-colors"
             >
               <span className="flex items-center">
                 {item.icon}
                 {item.name}
               </span>
               {item.isNew && (
-                <span className="border-card bg-success ml-2 rounded border px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                <span className="border-card bg-success ml-2 rounded border px-1.5 py-0.5 text-[8px] xl:text-[10px] font-semibold text-white">
                   New
                 </span>
               )}

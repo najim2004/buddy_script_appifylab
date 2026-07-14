@@ -23,10 +23,10 @@ export function SuggestedPeople() {
   return (
     <div className="bg-card rounded-lg p-6 pb-1.5">
       <div className="mb-6 flex items-center justify-between">
-        <h4 className="text-title text-xl font-medium">Suggested People</h4>
+        <h4 className="text-title text-base xl:text-xl font-medium">Suggested People</h4>
         <Link
           href="#"
-          className="text-primary text-xs font-medium transition-colors"
+          className="text-primary text-nowrap text-xs xl:text-sm font-medium transition-colors"
         >
           See All
         </Link>
@@ -35,9 +35,9 @@ export function SuggestedPeople() {
       {SUGGESTED_PEOPLE.map((person) => (
         <div
           key={person.name}
-          className="mb-4 flex items-center justify-between"
+          className="mb-4 flex lg:flex-col xl:flex-row items-center justify-between gap-4"
         >
-          <div className="flex items-center">
+          <div className="flex items-center w-full">
             <Link
               href="#"
               className="mr-3 block h-10 w-10 shrink-0 overflow-hidden rounded-full"
@@ -61,7 +61,7 @@ export function SuggestedPeople() {
           </div>
           <Link
             href="#"
-            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-2 text-xs leading-[1.4] font-medium transition-colors"
+            className="border-border text-muted-foreground hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-sm border p-2 text-xs leading-[1.4] font-medium transition-colors lg:w-full xl:w-auto text-center"
           >
             Connect
           </Link>

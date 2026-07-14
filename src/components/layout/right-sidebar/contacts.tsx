@@ -80,10 +80,10 @@ export function Contacts() {
   return (
     <div className="bg-card rounded-lg p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h4 className="text-title text-xl font-medium">Your Friends</h4>
+        <h4 className="text-title text-base xl:text-xl font-medium">Your Friends</h4>
         <Link
           href="/friend-request"
-          className="text-primary text-xs font-medium transition-colors"
+          className="text-primary text-nowrap text-xs xl:text-sm font-medium transition-colors"
         >
           See All
         </Link>
@@ -114,7 +114,9 @@ export function Contacts() {
           <div
             key={friend.id}
             className={`flex cursor-pointer items-center justify-between ${
-              !friend.isActive ? "hover:bg-background rounded-xl p-1.5" : ""
+              !friend.isActive
+                ? "hover:bg-background lg:flex-col lg:items-start gap-1 rounded-xl p-1.5 xl:flex-row xl:items-center xl:gap-0"
+                : ""
             }`}
           >
             <div className="flex items-center">
@@ -159,7 +161,7 @@ export function Contacts() {
                 />
               </svg>
             ) : (
-              <span className="text-muted-foreground text-xs">
+              <span className="text-muted-foreground lg:ml-[52px] text-xs xl:ml-0">
                 {friend.timeAgo}
               </span>
             )}

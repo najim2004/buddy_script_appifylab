@@ -13,11 +13,10 @@ export default function MainLayout({
       <ThemeToggle />
       <Navbar />
 
-      {/* Mobile: shorter top chrome + bottom nav clearance (vanilla pad ~56 / ~68) */}
       <div className="container mx-auto max-w-[1296px] px-3 pt-[72px] pb-[88px] sm:px-4 lg:px-4 lg:pt-[90px] lg:pb-0 xl:px-0">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
           <aside className="hidden lg:col-span-3 lg:block">
-            <div className="sticky top-[90px] max-h-[calc(100vh-100px)] overflow-y-auto scrollbar-none">
+            <div className="sticky top-[90px] max-h-[calc(100vh-100px)] scrollbar-none overflow-y-auto">
               <LeftSidebar />
             </div>
           </aside>
@@ -25,7 +24,7 @@ export default function MainLayout({
           <main className="min-w-0 lg:col-span-6">{children}</main>
 
           <aside className="hidden lg:col-span-3 lg:block">
-            <div className="sticky top-[90px] max-h-[calc(100vh-100px)] overflow-y-auto scrollbar-none">
+            <div className="sticky top-[90px] max-h-[calc(100vh-100px)] scrollbar-none overflow-y-auto">
               <RightSidebar />
             </div>
           </aside>

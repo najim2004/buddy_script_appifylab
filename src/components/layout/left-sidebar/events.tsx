@@ -42,7 +42,7 @@ export function Events() {
           className="group mb-4 block transition-colors"
         >
           <div className="bg-card overflow-hidden rounded-lg shadow-[0px_4px_8px_rgba(0,0,0,0.08)]">
-            <div className="relative h-40 w-full overflow-hidden rounded-lg bg-gray-200">
+            <div className="relative aspect-14/9 w-full overflow-hidden rounded-lg bg-gray-200">
               <Image
                 src={event.image}
                 alt="Event"
@@ -60,7 +60,7 @@ export function Events() {
                 </span>
               </div>
               <div>
-                <h4 className="text-title text-base leading-[1.4] font-medium">
+                <h4 className="text-title text-sm xl:text-base leading-[1.4] font-medium">
                   {event.title}
                 </h4>
               </div>
