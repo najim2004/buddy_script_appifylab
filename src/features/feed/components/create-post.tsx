@@ -2,7 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ImageIcon, Video, CalendarDays, FileText, Send, X } from "lucide-react";
+import {
+  ImageIcon,
+  Video,
+  CalendarDays,
+  FileText,
+  Send,
+  X,
+  Pen,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -32,7 +40,6 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
   const photoInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
 
-  // Blob URLs for local thumbnails — revoke when files change/unmount
   useEffect(() => {
     const next = files.map((file) => ({
       file,
@@ -73,17 +80,26 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
     <div className={cn("bg-card mb-4 rounded-md pt-6", className)}>
       <div className="flex items-start px-6">
         <Avatar className="mr-3 size-10 shrink-0">
-          {userAvatar ? <AvatarImage src={userAvatar} alt="Your profile" /> : null}
+          {userAvatar ? (
+            <AvatarImage src={userAvatar} alt="Your profile" />
+          ) : null}
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
 
-        <Textarea
-          id="create-post"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Write something ..."
-          className="text-content placeholder:text-muted-foreground min-h-[88px] flex-1 resize-none rounded-md border-0 bg-transparent px-2 py-2 text-base shadow-none focus-visible:ring-0"
-        />
+        <div className="relative flex-1">
+          <Textarea
+            id="create-post"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Write something ..."
+            className="text-content placeholder:text-muted-foreground min-h-[88px] w-full resize-none rounded-md border-0 bg-transparent px-2 py-2 pr-10 text-base shadow-none focus-visible:ring-0"
+          />
+          {!content && (
+            <div className="pointer-events-none absolute left-[150px] top-2 text-muted-foreground">
+              <Pen className="size-4" />
+            </div>
+          )}
+        </div>
       </div>
 
       {previews.length > 0 ? (
@@ -94,17 +110,25 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
               className="relative size-20 overflow-hidden rounded-md"
             >
               {item.isVideo ? (
-                <video
-                  src={item.url}
-                  className="size-full object-cover"
-                  muted
-                />
+                <>
+                  <video
+                    src={item.url}
+                    className="size-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <Video className="size-6 text-white opacity-80" />
+                  </div>
+                </>
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element -- local blob preview
-                <img
+                <Image
                   src={item.url}
                   alt=""
-                  className="size-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               )}
               <button
@@ -143,51 +167,53 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
         }}
       />
 
-      <div className="p-6">
-        <div className="bg-brand-tint mt-2.5 flex h-16 items-center justify-between rounded-md px-4">
-          <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
+      <div className="p-4 sm:p-6">
+        <div className="bg-brand-tint mt-2.5 flex flex-col gap-4 rounded-md p-4 lg:min-h-16 lg:px-4 lg:py-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
             <button
               type="button"
-              onClick={() => photoInputRef.current?.click()}
-              className="text-muted-foreground hover:text-primary group flex items-center px-1.5 text-sm sm:px-2.5 sm:text-base"
+              onClick={() => {
+                if (photoInputRef.current) {
+                  photoInputRef.current.value = "";
+                  photoInputRef.current.click();
+                }
+              }}
+              className="text-muted-foreground hover:text-primary group flex items-center text-sm sm:text-base font-medium"
             >
-              <span className="bg-card group-hover:bg-accent mr-0 flex size-[34px] items-center justify-center rounded-full sm:mr-2">
-                <ImageIcon className="size-5" />
-              </span>
-              <span className="hidden sm:inline">Photo</span>
+              <ImageIcon className="mr-1.5 size-5 sm:mr-2" />
+              <span>Photo</span>
             </button>
 
             <button
               type="button"
-              onClick={() => videoInputRef.current?.click()}
-              className="text-muted-foreground hover:text-primary group flex items-center px-1.5 text-sm sm:px-2.5 sm:text-base"
+              onClick={() => {
+                if (videoInputRef.current) {
+                  videoInputRef.current.value = "";
+                  videoInputRef.current.click();
+                }
+              }}
+              className="text-muted-foreground hover:text-primary group flex items-center text-sm sm:text-base font-medium"
             >
-              <span className="bg-card group-hover:bg-accent mr-0 flex size-[34px] items-center justify-center rounded-full sm:mr-2">
-                <Video className="size-5" />
-              </span>
-              <span className="hidden sm:inline">Video</span>
-            </button>
-
-            <button
-              type="button"
-              disabled
-              className="text-muted-foreground flex cursor-not-allowed items-center px-1.5 text-sm opacity-50 sm:px-2.5 sm:text-base"
-            >
-              <span className="bg-card mr-0 flex size-[34px] items-center justify-center rounded-full sm:mr-2">
-                <CalendarDays className="size-5" />
-              </span>
-              <span className="hidden sm:inline">Event</span>
+              <Video className="mr-1.5 size-5 sm:mr-2" />
+              <span>Video</span>
             </button>
 
             <button
               type="button"
               disabled
-              className="text-muted-foreground flex cursor-not-allowed items-center px-1.5 text-sm opacity-50 sm:px-2.5 sm:text-base"
+              className="text-muted-foreground flex cursor-not-allowed items-center text-sm opacity-50 sm:text-base font-medium"
             >
-              <span className="bg-card mr-0 flex size-[34px] items-center justify-center rounded-full sm:mr-2">
-                <FileText className="size-5" />
-              </span>
-              <span className="hidden sm:inline">Article</span>
+              <CalendarDays className="mr-1.5 size-5 sm:mr-2" />
+              <span>Event</span>
+            </button>
+
+            <button
+              type="button"
+              disabled
+              className="text-muted-foreground flex cursor-not-allowed items-center text-sm opacity-50 sm:text-base font-medium"
+            >
+              <FileText className="mr-1.5 size-5 sm:mr-2" />
+              <span>Article</span>
             </button>
           </div>
 
@@ -195,9 +221,9 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
             type="button"
             disabled={isLoading}
             onClick={() => void onPost()}
-            className="bg-primary hover:bg-primary-hover h-auto shrink-0 rounded-md px-[22px] py-3 text-base font-medium text-white"
+            className="bg-primary hover:bg-primary-hover h-auto w-full shrink-0 rounded-md py-3 text-base font-medium text-white lg:px-[22px]"
           >
-            <Send className="size-3.5" />
+            <Send className="mr-2 size-3.5" />
             {isLoading ? "Posting…" : "Post"}
           </Button>
         </div>

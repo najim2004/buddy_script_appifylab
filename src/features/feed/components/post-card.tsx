@@ -35,7 +35,6 @@ import { PostStats } from "./post/post-stats";
 
 const VISIBILITY_OPTIONS: { value: PostVisibility; label: string; icon: React.ElementType }[] = [
   { value: "PUBLIC", label: "Public", icon: Globe },
-  { value: "FRIENDS", label: "Friends", icon: Users },
   { value: "PRIVATE", label: "Only me", icon: Lock },
 ];
 
@@ -60,9 +59,17 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
     }
   };
 
+  const image = post.attachments?.find(
+    (a) => a.type === "IMAGE" || a.mime_type?.startsWith("image/"),
+  )?.file_path;
+
+  const video = post.attachments?.find(
+    (a) => a.type === "VIDEO" || a.mime_type?.startsWith("video/"),
+  )?.file_path;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 max-w-lg">
+      <DialogContent className="p-0 max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader className="px-6 pt-5 pb-3 border-b border-border">
           <DialogTitle>Edit post</DialogTitle>
         </DialogHeader>
@@ -74,6 +81,16 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
             className="min-h-[120px] resize-none text-base border-0 bg-transparent shadow-none focus-visible:ring-0 p-0"
             autoFocus
           />
+          {(image || video) && (
+            <div className="rounded-md border border-border p-2 pointer-events-none opacity-80">
+              <p className="text-xs text-muted-foreground mb-2">Attached Media (cannot be changed)</p>
+              <PostContent
+                content=""
+                image={image ? mediaUrl(image) : undefined}
+                video={video ? mediaUrl(video) : undefined}
+              />
+            </div>
+          )}
           <div>
             <p className="text-xs text-muted-foreground mb-2">Audience</p>
             <div className="flex gap-2">

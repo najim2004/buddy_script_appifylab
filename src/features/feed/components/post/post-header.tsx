@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -67,27 +67,18 @@ export function PostHeader({
             type="button"
             variant="ghost"
             size="icon"
-            className="text-subtle hover:bg-background size-8 rounded-full"
+            className="text-subtle hover:bg-background -mr-2.5 size-8 rounded-full"
             aria-label="Post options"
           >
-            <MoreHorizontal className="size-5" />
+            <MoreVertical className="size-6" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="bg-card w-44">
           <DropdownMenuItem className="cursor-pointer">
             Save Post
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            Turn on notifications
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            Hide Post
-          </DropdownMenuItem>
           {canEdit ? (
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={onEdit}
-            >
+            <DropdownMenuItem className="cursor-pointer" onClick={onEdit}>
               Edit Post
             </DropdownMenuItem>
           ) : null}
@@ -103,4 +94,3 @@ export function PostHeader({
     </div>
   );
 }
-

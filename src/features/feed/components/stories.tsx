@@ -66,7 +66,7 @@ function StoryCard({
         href="#0"
         className="group block overflow-hidden transition-all duration-200 ease-in-out"
       >
-        <div className="relative z-2 flex h-[155px] w-full flex-col justify-end overflow-hidden rounded-lg">
+        <div className="relative z-2 flex aspect-10/11 w-full flex-col justify-end overflow-hidden rounded-lg">
           <Image
             src={story.cover}
             alt={story.name}
