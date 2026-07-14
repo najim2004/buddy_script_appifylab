@@ -12,10 +12,12 @@ import {
 import { getApiErrorMessage } from "@/lib/api/error";
 import { mediaUrl } from "@/lib/media-url";
 import { formatRelativeTime } from "@/lib/format-time";
+import { useAuth } from "@/features/auth";
 import type { ApiPostDetail } from "../types/feed.api.types";
 import { COMMENTS_LIMIT } from "../types/feed.api.types";
 import {
   useCreateCommentMutation,
+  useDeleteCommentMutation,
   useGetCommentsQuery,
   useLikeCommentMutation,
   useLikePostMutation,
@@ -44,8 +46,10 @@ export function PostModal({
   canDelete = false,
   onDelete,
 }: PostModalProps) {
+  const { user } = useAuth();
   const postId = post?.id ?? "";
 
+  // Skip fetch if we already have comments in cache — RTK will serve from cache
   const { data: commentsData, isLoading: commentsLoading } =
     useGetCommentsQuery(
       { postId, limit: COMMENTS_LIMIT },
@@ -55,6 +59,7 @@ export function PostModal({
   const [likePost] = useLikePostMutation();
   const [createComment] = useCreateCommentMutation();
   const [likeComment] = useLikeCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
 
   if (!post) return null;
 
@@ -70,49 +75,44 @@ export function PostModal({
     (a) => a.type === "VIDEO" || a.mime_type?.startsWith("video/"),
   )?.file_path;
 
-  const onLike = async () => {
-    try {
-      await likePost(post.id).unwrap();
-    } catch (error) {
-      toast.error(getApiErrorMessage(error, "Could not like post"));
-    }
+  // Fire-and-forget — optimistic update handles UI immediately
+  const onLike = () => {
+    likePost(post.id).catch(() => toast.error("Could not like post"));
   };
 
-  const onComment = async (content: string) => {
-    try {
-      await createComment({ postId: post.id, content }).unwrap();
-    } catch (error) {
-      toast.error(getApiErrorMessage(error, "Could not post comment"));
-      throw error;
-    }
+  const onComment = (content: string) => {
+    createComment({ postId: post.id, content }).catch(() =>
+      toast.error("Could not post comment"),
+    );
   };
 
-  const onReply = async (payload: {
+  const onReply = (payload: {
     content: string;
     parent_id: string;
     reply_to_user_id: string;
   }) => {
-    try {
-      await createComment({
-        postId: post.id,
-        content: payload.content,
-        parent_id: payload.parent_id,
-        reply_to_user_id: payload.reply_to_user_id,
-      }).unwrap();
-    } catch (error) {
-      toast.error(getApiErrorMessage(error, "Could not post reply"));
-      throw error;
-    }
+    createComment({
+      postId: post.id,
+      content: payload.content,
+      parent_id: payload.parent_id,
+      reply_to_user_id: payload.reply_to_user_id,
+    }).catch(() => toast.error("Could not post reply"));
   };
 
-  const onLikeComment = async (commentId: string) => {
-    try {
-      await likeComment({ commentId, postId: post.id }).unwrap();
-    } catch (error) {
-      toast.error(getApiErrorMessage(error, "Could not like comment"));
-    }
+  const onLikeComment = (commentId: string) => {
+    likeComment({ commentId, postId: post.id }).catch(() =>
+      toast.error("Could not like comment"),
+    );
   };
 
+  const onDeleteComment = (commentId: string) => {
+    deleteComment({ commentId, postId: post.id }).catch(() =>
+      toast.error("Could not delete comment"),
+    );
+  };
+
+  // Merge: if the RTK cache already has comments (from before modal was opened)
+  // commentsLoading will be false and commentsData will be populated immediately.
   const comments = commentsData?.data ?? [];
 
   return (
@@ -160,8 +160,10 @@ export function PostModal({
               <CommentThread
                 comments={comments}
                 onLikeComment={onLikeComment}
+                onDeleteComment={onDeleteComment}
                 onReply={onReply}
                 currentUserImage={currentUserImage}
+                postAuthorId={post.author.id}
               />
             )}
           </div>

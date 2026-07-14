@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { Trash2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -26,14 +27,17 @@ interface CommentThreadProps {
   previousCount?: number;
   onViewAll?: () => void;
   onLikeComment?: (commentId: string) => void;
+  onDeleteComment?: (commentId: string) => void;
   onReply?: (payload: {
     content: string;
     parent_id: string;
     reply_to_user_id: string;
-  }) => Promise<void>;
+  }) => void;
   currentUserImage?: string;
   /** Flat feed preview — hide nested reply input if false. */
   allowReply?: boolean;
+  /** Post author id — allowed to delete any comment. */
+  postAuthorId?: string;
 }
 
 function displayName(user: ApiUserBrief) {
@@ -45,11 +49,15 @@ function CommentRow({
   isReply = false,
   onLikeComment,
   onReplyClick,
+  onDeleteComment,
+  postAuthorId,
 }: {
   comment: CommentItem;
   isReply?: boolean;
   onLikeComment?: (commentId: string) => void;
   onReplyClick?: (comment: CommentItem) => void;
+  onDeleteComment?: (commentId: string) => void;
+  postAuthorId?: string;
 }) {
   const { user } = useAuth();
   const name = displayName(comment.user);
@@ -60,8 +68,15 @@ function CommentRow({
     ? displayName(comment.reply_to_user)
     : null;
 
+  const isOptimistic = Boolean((comment as ApiComment)._optimistic);
+  // Can delete: comment author OR post author (admin of post)
+  const canDelete =
+    !isOptimistic &&
+    !!onDeleteComment &&
+    (user?.id === comment.user.id || user?.id === postAuthorId);
+
   return (
-    <li className={cn("flex gap-3", isReply && "ml-10")}>
+    <li className={cn("flex gap-3", isReply && "ml-10", isOptimistic && "opacity-50")}>
       <Avatar className={cn("shrink-0", isReply ? "size-8" : "size-10")}>
         {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
         <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
@@ -102,19 +117,21 @@ function CommentRow({
           ) : null}
         </div>
         <ul className="text-subtle mt-2 flex flex-wrap gap-3 px-1 text-xs">
-          <li>
-            <button
-              type="button"
-              className={cn(
-                "hover:underline",
-                liked && "text-primary font-medium",
-              )}
-              onClick={() => onLikeComment?.(comment.id)}
-            >
-              Like
-            </button>
-          </li>
-          {onReplyClick ? (
+          {!isOptimistic && (
+            <li>
+              <button
+                type="button"
+                className={cn(
+                  "hover:underline",
+                  liked && "text-primary font-medium",
+                )}
+                onClick={() => onLikeComment?.(comment.id)}
+              >
+                Like
+              </button>
+            </li>
+          )}
+          {!isOptimistic && onReplyClick ? (
             <li>
               <button
                 type="button"
@@ -126,8 +143,21 @@ function CommentRow({
             </li>
           ) : null}
           <li>
-            <span>{formatRelativeTime(comment.created_at)}</span>
+            <span>{isOptimistic ? "Sending…" : formatRelativeTime(comment.created_at)}</span>
           </li>
+          {canDelete ? (
+            <li>
+              <button
+                type="button"
+                className="text-destructive hover:underline flex items-center gap-1"
+                onClick={() => onDeleteComment?.(comment.id)}
+                aria-label="Delete comment"
+              >
+                <Trash2 className="size-3" />
+                Delete
+              </button>
+            </li>
+          ) : null}
         </ul>
       </div>
     </li>
@@ -148,9 +178,11 @@ export function CommentThread({
   previousCount = 0,
   onViewAll,
   onLikeComment,
+  onDeleteComment,
   onReply,
   currentUserImage,
   allowReply = true,
+  postAuthorId,
 }: CommentThreadProps) {
   const [replyTo, setReplyTo] = useState<ReplyTarget | null>(null);
   const flat = comments ?? (comment ? [comment] : []);
@@ -185,9 +217,9 @@ export function CommentThread({
     setReplyTo({ commentId: item.id, user: item.user });
   };
 
-  const submitReply = async (content: string) => {
+  const submitReply = (content: string) => {
     if (!replyTo || !onReply) return;
-    await onReply({
+    onReply({
       content,
       parent_id: replyTo.commentId,
       reply_to_user_id: replyTo.user.id,
@@ -216,16 +248,33 @@ export function CommentThread({
                 <CommentRow
                   comment={root}
                   onLikeComment={onLikeComment}
+                  onDeleteComment={onDeleteComment}
+                  postAuthorId={postAuthorId}
                   onReplyClick={
                     allowReply && onReply ? () => startReply(root) : undefined
                   }
                 />
+                
+                {replies.length === 0 && (root.replies ?? 0) > 0 && onViewAll ? (
+                  <li className="ml-[52px]">
+                    <button
+                      type="button"
+                      onClick={onViewAll}
+                      className="text-muted-foreground text-xs font-normal hover:underline"
+                    >
+                      View {root.replies} repl{root.replies > 1 ? "ies" : "y"}
+                    </button>
+                  </li>
+                ) : null}
+
                 {replies.map((reply) => (
                   <CommentRow
                     key={reply.id}
                     comment={reply}
                     isReply
                     onLikeComment={onLikeComment}
+                    onDeleteComment={onDeleteComment}
+                    postAuthorId={postAuthorId}
                     onReplyClick={
                       allowReply && onReply
                         ? () => startReply(reply)

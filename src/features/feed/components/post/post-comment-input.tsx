@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface PostCommentInputProps {
   userImage?: string;
-  onSubmit?: (content: string) => Promise<void>;
+  onSubmit?: (content: string) => void;
   onCancel?: () => void;
   autoFocus?: boolean;
   placeholder?: string;
@@ -21,18 +21,13 @@ export function PostCommentInput({
   placeholder = "Write a comment...",
 }: PostCommentInputProps) {
   const [value, setValue] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = async () => {
+  const submit = () => {
     const content = value.trim();
-    if (!content || !onSubmit || isSubmitting) return;
-    setIsSubmitting(true);
-    try {
-      await onSubmit(content);
-      setValue("");
-    } finally {
-      setIsSubmitting(false);
-    }
+    if (!content || !onSubmit) return;
+    // Clear immediately — API call is fire-and-forget via RTK optimistic update
+    setValue("");
+    onSubmit(content);
   };
 
   return (
@@ -51,14 +46,13 @@ export function PostCommentInput({
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                void submit();
+                submit();
               }
               if (e.key === "Escape" && onCancel) {
                 onCancel();
               }
             }}
             placeholder={placeholder}
-            disabled={isSubmitting}
             className="text-card-foreground placeholder:text-muted-foreground h-10 flex-1 resize-none bg-transparent px-2 py-2 text-sm outline-none"
           />
           {onCancel ? (

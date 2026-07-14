@@ -26,12 +26,13 @@ export interface ApiComment {
   deleted_at: string | null;
   is_deleted: boolean;
   likes: number;
+  replies: number;
   has_liked: boolean;
   user: ApiUserBrief;
   reply_to_user?: ApiUserBrief | null;
+  _optimistic?: boolean;
 }
 
-/** Same shape as list/create comment responses. */
 export type ApiLatestComment = ApiComment;
 
 export interface ApiPostDetail {

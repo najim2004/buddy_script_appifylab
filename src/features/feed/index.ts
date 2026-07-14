@@ -11,6 +11,8 @@ export {
   useLikePostMutation,
   useCreateCommentMutation,
   useLikeCommentMutation,
+  useUpdatePostMutation,
+  useDeleteCommentMutation,
 } from "./api/feed.api";
 export type {
   ApiPostDetail,

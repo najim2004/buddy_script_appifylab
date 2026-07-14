@@ -18,7 +18,9 @@ interface PostHeaderProps {
   timeAgo: string;
   privacy: string;
   canDelete?: boolean;
+  canEdit?: boolean;
   onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 export function PostHeader({
@@ -27,7 +29,9 @@ export function PostHeader({
   timeAgo,
   privacy,
   canDelete = false,
+  canEdit = false,
   onDelete,
+  onEdit,
 }: PostHeaderProps) {
   return (
     <div className="mb-4 flex items-center justify-between">
@@ -79,9 +83,14 @@ export function PostHeader({
           <DropdownMenuItem className="cursor-pointer">
             Hide Post
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            Edit Post
-          </DropdownMenuItem>
+          {canEdit ? (
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={onEdit}
+            >
+              Edit Post
+            </DropdownMenuItem>
+          ) : null}
           <DropdownMenuItem
             className="text-destructive focus:text-destructive cursor-pointer"
             disabled={!canDelete}
@@ -94,3 +103,4 @@ export function PostHeader({
     </div>
   );
 }
+

@@ -1,6 +1,5 @@
 import type { ApiResponse } from "@/types/api.types";
 
-/** Unwrap backend `{ success, data }` envelope only. */
 export function unwrapData<T>(response: ApiResponse<T>): T {
   return response.data;
 }
@@ -10,7 +9,6 @@ export type CursorMeta = {
   has_next_page: boolean;
 };
 
-/** List envelope after dropping `success` — keeps backend `data` + `meta` keys. */
 export type ApiListResponse<T> = ApiResponse<T> & {
   meta?: CursorMeta;
 };
