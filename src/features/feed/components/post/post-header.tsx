@@ -33,6 +33,8 @@ export function PostHeader({
   onDelete,
   onEdit,
 }: PostHeaderProps) {
+  const showMenu = canEdit || canDelete;
+
   return (
     <div className="mb-4 flex items-center justify-between gap-2">
       <div className="flex min-w-0 cursor-pointer items-center">
@@ -61,36 +63,36 @@ export function PostHeader({
         </div>
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="text-subtle hover:bg-background -mr-2.5 size-8 rounded-full"
-            aria-label="Post options"
-          >
-            <MoreVertical className="size-6" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-card w-44">
-          <DropdownMenuItem className="cursor-pointer">
-            Save Post
-          </DropdownMenuItem>
-          {canEdit ? (
-            <DropdownMenuItem className="cursor-pointer" onClick={onEdit}>
-              Edit Post
-            </DropdownMenuItem>
-          ) : null}
-          <DropdownMenuItem
-            className="text-destructive focus:text-destructive cursor-pointer"
-            disabled={!canDelete}
-            onClick={canDelete ? onDelete : undefined}
-          >
-            Delete Post
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {showMenu ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="text-subtle hover:bg-background -mr-2.5 size-8 rounded-full"
+              aria-label="Post options"
+            >
+              <MoreVertical className="size-6" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-card w-44">
+            {canEdit ? (
+              <DropdownMenuItem className="cursor-pointer" onClick={onEdit}>
+                Edit Post
+              </DropdownMenuItem>
+            ) : null}
+            {canDelete ? (
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive cursor-pointer"
+                onClick={onDelete}
+              >
+                Delete Post
+              </DropdownMenuItem>
+            ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : null}
     </div>
   );
 }

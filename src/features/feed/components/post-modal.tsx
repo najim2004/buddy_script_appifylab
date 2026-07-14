@@ -13,7 +13,6 @@ import {
 import { cn } from "@/lib/utils";
 import { mediaUrl } from "@/lib/media-url";
 import { formatRelativeTime } from "@/lib/format-time";
-import { useAuth } from "@/features/auth";
 import type { ApiPostDetail } from "../types/feed.api.types";
 import { COMMENTS_LIMIT } from "../types/feed.api.types";
 import {
@@ -36,7 +35,9 @@ interface PostModalProps {
   onOpenChange: (open: boolean) => void;
   currentUserImage?: string;
   canDelete?: boolean;
+  canEdit?: boolean;
   onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 export function PostModal({
@@ -45,9 +46,10 @@ export function PostModal({
   onOpenChange,
   currentUserImage,
   canDelete = false,
+  canEdit = false,
   onDelete,
+  onEdit,
 }: PostModalProps) {
-  const { user } = useAuth();
   const postId = post?.id ?? "";
 
   // Skip fetch if we already have comments in cache — RTK will serve from cache
@@ -123,7 +125,9 @@ export function PostModal({
               timeAgo={formatRelativeTime(post.created_at)}
               privacy={post.visibility}
               canDelete={canDelete}
+              canEdit={canEdit}
               onDelete={onDelete}
+              onEdit={onEdit}
             />
             <PostContent
               content={post.content ?? ""}

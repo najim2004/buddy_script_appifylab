@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Globe, Lock, Users, X } from "lucide-react";
+import { Globe, Lock, Users } from "lucide-react";
 
 import { getApiErrorMessage } from "@/lib/api/error";
 import { mediaUrl } from "@/lib/media-url";
@@ -50,6 +50,12 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
   const [content, setContent] = useState(post.content ?? "");
   const [visibility, setVisibility] = useState<PostVisibility>(post.visibility);
   const [updatePost, { isLoading }] = useUpdatePostMutation();
+
+  useEffect(() => {
+    if (!open) return;
+    setContent(post.content ?? "");
+    setVisibility(post.visibility);
+  }, [open, post.content, post.visibility]);
 
   const handleSave = async () => {
     try {
@@ -265,7 +271,16 @@ export function PostCard({
         onOpenChange={setModalOpen}
         currentUserImage={currentUserImage}
         canDelete={canDelete}
+        canEdit={isAuthor}
         onDelete={canDelete ? onDelete : undefined}
+        onEdit={
+          isAuthor
+            ? () => {
+                setModalOpen(false);
+                setEditOpen(true);
+              }
+            : undefined
+        }
       />
 
       {isAuthor ? (
