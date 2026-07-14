@@ -143,11 +143,12 @@ export function StoriesMobile({ stories }: StoriesProps) {
                     : "p-[2px] ring-2 ring-primary/70 ring-offset-1 ring-offset-card",
                 )}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={story.avatar ?? story.cover}
                   alt={story.name}
-                  className="size-full rounded-full object-cover"
+                  fill
+                  sizes="60px"
+                  className="rounded-full object-cover"
                 />
                 {story.isOwn ? (
                   <>

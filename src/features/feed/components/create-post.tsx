@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   ImageIcon,
   Video,
@@ -154,11 +155,13 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
                   </div>
                 </>
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element -- Local browser preview doesn't need Next.js server-side optimization
-                <img
+                <Image
                   src={item.url}
                   alt=""
-                  className="size-full object-cover"
+                  fill
+                  sizes="80px"
+                  unoptimized
+                  className="object-cover"
                 />
               )}
               <button
@@ -197,14 +200,14 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
         }}
       />
 
-      {/* Desktop toolbar — original lg+ UI (unchanged) */}
-      <div className="hidden p-4 sm:p-6 lg:block">
-        <div className="bg-brand-tint mt-2.5 flex flex-col gap-4 rounded-md p-4 lg:min-h-16 lg:px-4 lg:py-2">
-          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+      {/* Desktop toolbar (lg+) */}
+      <div className="hidden p-6 lg:block">
+        <div className="bg-brand-tint mt-2.5 flex flex-col gap-4 rounded-md p-4 lg:min-h-16 lg:px-4 lg:py-2 xl:grid xl:grid-cols-5">
+          <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 xl:col-span-4">
             <button
               type="button"
               onClick={openPhoto}
-              className="text-muted-foreground hover:text-primary group flex items-center text-sm font-medium sm:text-base"
+              className="text-muted-foreground hover:text-primary flex items-center text-sm font-medium sm:text-base"
             >
               <ImageIcon className="mr-1.5 size-5 sm:mr-2" />
               <span>Photo</span>
@@ -213,7 +216,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
             <button
               type="button"
               onClick={openVideo}
-              className="text-muted-foreground hover:text-primary group flex items-center text-sm font-medium sm:text-base"
+              className="text-muted-foreground hover:text-primary flex items-center text-sm font-medium sm:text-base"
             >
               <Video className="mr-1.5 size-5 sm:mr-2" />
               <span>Video</span>
@@ -250,7 +253,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
         </div>
       </div>
 
-      {/* Mobile toolbar — icons only (< lg), matching vanilla ≤991px */}
+      {/* Mobile toolbar (< lg) */}
       <div className="bg-brand-tint mt-2.5 flex h-16 items-center justify-between px-4 lg:hidden">
         <div className="flex items-center gap-3">
           <button

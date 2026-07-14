@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
         protocol: parsedBackendUrl.protocol.replace(":", "") as "http" | "https",
         hostname: parsedBackendUrl.hostname,
         port: parsedBackendUrl.port || undefined,
-        pathname: "/public/storage/**",
+        pathname: "/**",
       },
     ],
   },

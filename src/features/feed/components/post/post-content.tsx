@@ -15,6 +15,8 @@ export function PostContent({ content, attachments = [] }: PostContentProps) {
       item.type === "VIDEO" || item.mime_type?.startsWith("video/");
     const url = mediaUrl(item.file_path);
 
+    if (!url) return null;
+
     if (isVideo) {
       return (
         <video src={url} controls className="size-full bg-black object-cover" />
@@ -23,7 +25,7 @@ export function PostContent({ content, attachments = [] }: PostContentProps) {
 
     return (
       <Image
-        src={url || ""}
+        src={url}
         alt={item.file_name || "Attachment"}
         fill
         sizes="(max-width: 768px) 100vw, 600px"

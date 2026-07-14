@@ -47,6 +47,7 @@ export function Events() {
                 src={event.image}
                 alt="Event"
                 fill
+                sizes="80px"
                 className="object-cover"
               />
             </div>

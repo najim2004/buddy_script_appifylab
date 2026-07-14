@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 
@@ -105,10 +106,11 @@ function CommentRow({
           {comment.likes > 0 ? (
             <span className="bg-card text-subtle absolute -right-1 -bottom-2 flex items-center gap-1 rounded-xl px-1.5 py-0.5 text-xs shadow-sm">
               {myAvatar ? (
-                // eslint-disable-next-line @next/next/no-img-element -- tiny badge avatar
-                <img
+                <Image
                   src={myAvatar}
                   alt=""
+                  width={14}
+                  height={14}
                   className="size-3.5 rounded-full object-cover"
                 />
               ) : null}
