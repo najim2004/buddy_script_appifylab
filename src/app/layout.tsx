@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  icons: {
+    icon: [{ url: "/assets/images/logo-copy.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
