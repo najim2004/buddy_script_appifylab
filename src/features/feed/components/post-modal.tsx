@@ -67,14 +67,6 @@ export function PostModal({
     [post.author.first_name, post.author.last_name].filter(Boolean).join(" ") ||
     "User";
 
-  const imagePath = post.attachments.find(
-    (a) => a.type === "IMAGE" || a.mime_type?.startsWith("image/"),
-  )?.file_path;
-
-  const videoPath = post.attachments.find(
-    (a) => a.type === "VIDEO" || a.mime_type?.startsWith("video/"),
-  )?.file_path;
-
   // Fire-and-forget — optimistic update handles UI immediately
   const onLike = () => {
     likePost(post.id).catch(() => toast.error("Could not like post"));
@@ -134,12 +126,12 @@ export function PostModal({
             />
             <PostContent
               content={post.content ?? ""}
-              image={mediaUrl(imagePath)}
-              video={mediaUrl(videoPath)}
+              attachments={post.attachments}
             />
           </div>
 
           <PostStats
+            postId={post.id}
             likes={post.likes}
             comments={post.comments}
             shares={0}

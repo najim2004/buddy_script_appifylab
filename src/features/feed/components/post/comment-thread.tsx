@@ -117,7 +117,7 @@ function CommentRow({
           ) : null}
         </div>
         <ul className="text-subtle mt-2 flex flex-wrap gap-3 px-1 text-xs">
-          {!isOptimistic && (
+          {!isOptimistic && !comment.is_deleted && (
             <li>
               <button
                 type="button"
@@ -131,7 +131,7 @@ function CommentRow({
               </button>
             </li>
           )}
-          {!isOptimistic && onReplyClick ? (
+          {!isOptimistic && !comment.is_deleted && onReplyClick ? (
             <li>
               <button
                 type="button"
@@ -145,7 +145,7 @@ function CommentRow({
           <li>
             <span>{isOptimistic ? "Sending…" : formatRelativeTime(comment.created_at)}</span>
           </li>
-          {canDelete ? (
+          {canDelete && !comment.is_deleted ? (
             <li>
               <button
                 type="button"

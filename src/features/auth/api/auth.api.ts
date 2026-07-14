@@ -2,11 +2,7 @@ import { apiSlice } from "@/lib/api/api-slice";
 import { unwrapData } from "@/lib/api/unwrap";
 import type { ApiResponse } from "@/types/api.types";
 import { setUser, logout } from "../store/auth.slice";
-import type {
-  LoginRequest,
-  RegisterRequest,
-  User,
-} from "../types/auth.types";
+import type { LoginRequest, RegisterRequest, User } from "../types/auth.types";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,9 +18,7 @@ export const authApi = apiSlice.injectEndpoints({
           ).unwrap();
           dispatch(authApi.util.upsertQueryData("getMe", undefined, me));
           dispatch(setUser(me));
-        } catch {
-          // handled by the calling component
-        }
+        } catch {}
       },
     }),
 
@@ -41,9 +35,7 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           dispatch(setUser(data));
-        } catch {
-          // 401 → base query clears auth state
-        }
+        } catch {}
       },
     }),
 

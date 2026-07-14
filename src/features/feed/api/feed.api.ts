@@ -2,7 +2,6 @@ import { apiSlice } from "@/lib/api/api-slice";
 import { unwrapData, unwrapList, type ApiListResponse } from "@/lib/api/unwrap";
 import type { ApiResponse } from "@/types/api.types";
 import type { RootState } from "@/store";
-import type { AppDispatch } from "@/store";
 
 import type {
   ApiComment,
@@ -10,60 +9,25 @@ import type {
   CommentsPage,
   LikeToggleResult,
   PostsPage,
+  FeedListArg,
+  ApiUserBrief,
 } from "../types/feed.api.types";
 import { COMMENTS_LIMIT, FEED_LIST_ARG } from "../types/feed.api.types";
 
-export type FeedListArg = { limit?: number; cursor?: string };
-
-export function normalizeFeedListArg(
-  arg: FeedListArg | typeof FEED_LIST_ARG | void,
-): FeedListArg {
-  if (!arg) return { ...FEED_LIST_ARG };
-  const limit =
-    "limit" in arg && arg.limit != null ? arg.limit : FEED_LIST_ARG.limit;
-  const cursor = "cursor" in arg && arg.cursor ? arg.cursor : undefined;
-  return {
-    limit,
-    ...(cursor ? { cursor } : {}),
-  };
-}
-
-const ROOT_FEED_ARG = normalizeFeedListArg(FEED_LIST_ARG);
-
-type CachePatch = { undo: () => void };
-
-function patchFeedList(
-  dispatch: AppDispatch,
-  update: (draft: PostsPage) => void,
-): CachePatch {
-  return dispatch(
-    feedApi.util.updateQueryData("getPosts", ROOT_FEED_ARG, update),
-  );
-}
-
-function patchPostDetail(
-  dispatch: AppDispatch,
-  id: string,
-  update: (draft: ApiPostDetail) => void,
-): CachePatch {
-  return dispatch(feedApi.util.updateQueryData("getPost", id, update));
-}
-
 export const feedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Get posts list with pagination (scroll feed)
     getPosts: builder.query<PostsPage, FeedListArg | void>({
-      query: (arg) => {
-        const normalized = normalizeFeedListArg(arg);
-        return {
-          url: "/posts",
-          params: {
-            cursor: normalized.cursor,
-            limit: normalized.limit,
-          },
-        };
-      },
+      query: (arg) => ({
+        url: "/posts",
+        params: {
+          cursor: arg?.cursor,
+          limit: arg?.limit ?? FEED_LIST_ARG.limit,
+        },
+      }),
       serializeQueryArgs: ({ queryArgs }) => {
-        const { limit, cursor } = normalizeFeedListArg(queryArgs);
+        const limit = queryArgs?.limit ?? FEED_LIST_ARG.limit;
+        const cursor = queryArgs?.cursor;
         return `posts-list:${limit}:${cursor ?? "root"}`;
       },
       keepUnusedDataFor: 120,
@@ -78,6 +42,7 @@ export const feedApi = apiSlice.injectEndpoints({
           : [{ type: "Post", id: "LIST" }],
     }),
 
+    // Get single post detail by ID
     getPost: builder.query<ApiPostDetail, string>({
       query: (id) => `/posts/${id}`,
       keepUnusedDataFor: 120,
@@ -86,6 +51,7 @@ export const feedApi = apiSlice.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Post", id }],
     }),
 
+    // Create a new post with text and optional media attachments
     createPost: builder.mutation<
       ApiPostDetail,
       { content?: string; files?: File[] }
@@ -102,10 +68,12 @@ export const feedApi = apiSlice.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data: post } = await queryFulfilled;
-          patchFeedList(dispatch, (draft) => {
-            if (draft.data.some((p) => p.id === post.id)) return;
-            draft.data.unshift(post);
-          });
+          dispatch(
+            feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+              if (draft.data.some((p) => p.id === post.id)) return;
+              draft.data.unshift(post);
+            }),
+          );
           dispatch(feedApi.util.upsertQueryData("getPost", post.id, post));
         } catch {
           // caller shows toast
@@ -113,6 +81,7 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Get comments list for a specific post with pagination
     getComments: builder.query<
       CommentsPage,
       { postId: string; cursor?: string; limit?: number }
@@ -128,12 +97,26 @@ export const feedApi = apiSlice.injectEndpoints({
       ],
     }),
 
+    // Get list of users who liked a post
+    getPostLikes: builder.query<{ id: string; user: ApiUserBrief }[], string>({
+      query: (postId) => `/posts/${postId}/likes`,
+      transformResponse: (
+        response: ApiResponse<{ id: string; user: ApiUserBrief }[]>,
+      ) => unwrapData(response),
+      providesTags: (_result, _err, postId) => [
+        { type: "Post", id: `${postId}-likes` },
+      ],
+    }),
+
+    // Delete a post by ID
     deletePost: builder.mutation<void, string>({
       query: (id) => ({ url: `/posts/${id}`, method: "DELETE" }),
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const listPatch = patchFeedList(dispatch, (draft) => {
-          draft.data = draft.data.filter((p) => p.id !== id);
-        });
+        const listPatch = dispatch(
+          feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+            draft.data = draft.data.filter((p) => p.id !== id);
+          }),
+        );
         try {
           await queryFulfilled;
         } catch {
@@ -142,13 +125,17 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Toggle like state on a post
     likePost: builder.mutation<LikeToggleResult, string>({
       query: (id) => ({ url: `/posts/${id}/like`, method: "POST" }),
       transformResponse: (response: ApiResponse<LikeToggleResult>) =>
         unwrapData(response),
+      invalidatesTags: (_result, _err, id) => [
+        { type: "Post", id: `${id}-likes` },
+      ],
       async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
         const user = (getState() as RootState).auth.user;
-        const feedData = feedApi.endpoints.getPosts.select(ROOT_FEED_ARG)(
+        const feedData = feedApi.endpoints.getPosts.select(FEED_LIST_ARG)(
           getState() as RootState,
         ).data;
         const before =
@@ -173,22 +160,28 @@ export const feedApi = apiSlice.injectEndpoints({
           }
         };
 
-        const listPatch = patchFeedList(dispatch, (draft) => {
-          const post = draft.data.find((p) => p.id === id);
-          if (post) applyLike(post, nextLiked);
-        });
-        const detailPatch = patchPostDetail(dispatch, id, (post) =>
-          applyLike(post, nextLiked),
+        const listPatch = dispatch(
+          feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+            const post = draft.data.find((p) => p.id === id);
+            if (post) applyLike(post, nextLiked);
+          }),
+        );
+        const detailPatch = dispatch(
+          feedApi.util.updateQueryData("getPost", id, (post) =>
+            applyLike(post, nextLiked),
+          ),
         );
 
         try {
           const { data } = await queryFulfilled;
           const sync = (post: ApiPostDetail) => applyLike(post, data.liked);
-          patchFeedList(dispatch, (draft) => {
-            const post = draft.data.find((p) => p.id === id);
-            if (post) sync(post);
-          });
-          patchPostDetail(dispatch, id, sync);
+          dispatch(
+            feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+              const post = draft.data.find((p) => p.id === id);
+              if (post) sync(post);
+            }),
+          );
+          dispatch(feedApi.util.updateQueryData("getPost", id, sync));
         } catch {
           listPatch.undo();
           detailPatch.undo();
@@ -196,6 +189,7 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Create a comment or reply to a post
     createComment: builder.mutation<
       ApiComment,
       {
@@ -230,7 +224,6 @@ export const feedApi = apiSlice.injectEndpoints({
           ? commentsCache?.data.find((c) => c.id === parent_id)
           : undefined;
 
-        // Keep nested replies under the root parent (2-level tree).
         const rootParentId = replyTarget?.parent_id ?? parent_id ?? null;
 
         const optimisticComment: ApiComment = {
@@ -261,11 +254,15 @@ export const feedApi = apiSlice.injectEndpoints({
           }
         };
 
-        const listPatch = patchFeedList(dispatch, (draft) => {
-          const post = draft.data.find((p) => p.id === postId);
-          if (post) applyOptimistic(post);
-        });
-        const detailPatch = patchPostDetail(dispatch, postId, applyOptimistic);
+        const listPatch = dispatch(
+          feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+            const post = draft.data.find((p) => p.id === postId);
+            if (post) applyOptimistic(post);
+          }),
+        );
+        const detailPatch = dispatch(
+          feedApi.util.updateQueryData("getPost", postId, applyOptimistic),
+        );
         const commentsPatch = dispatch(
           feedApi.util.updateQueryData(
             "getComments",
@@ -283,11 +280,13 @@ export const feedApi = apiSlice.injectEndpoints({
             if (comment.parent_id) return;
             post.latest_comment = { ...realComment };
           };
-          patchFeedList(dispatch, (draft) => {
-            const post = draft.data.find((p) => p.id === postId);
-            if (post) applyReal(post);
-          });
-          patchPostDetail(dispatch, postId, applyReal);
+          dispatch(
+            feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+              const post = draft.data.find((p) => p.id === postId);
+              if (post) applyReal(post);
+            }),
+          );
+          dispatch(feedApi.util.updateQueryData("getPost", postId, applyReal));
           dispatch(
             feedApi.util.updateQueryData(
               "getComments",
@@ -311,6 +310,7 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Toggle like state on a comment
     likeComment: builder.mutation<
       LikeToggleResult,
       { commentId: string; postId: string }
@@ -331,7 +331,7 @@ export const feedApi = apiSlice.injectEndpoints({
           limit: COMMENTS_LIMIT,
         })(state).data;
         const feedData =
-          feedApi.endpoints.getPosts.select(ROOT_FEED_ARG)(state).data;
+          feedApi.endpoints.getPosts.select(FEED_LIST_ARG)(state).data;
 
         const fromComments = commentsCache?.data.find(
           (c) => c.id === commentId,
@@ -355,17 +355,21 @@ export const feedApi = apiSlice.injectEndpoints({
           comment.likes = Math.max(0, comment.likes + (liked ? 1 : -1));
         };
 
-        const listPatch = patchFeedList(dispatch, (draft) => {
-          const post = draft.data.find((p) => p.id === postId);
-          if (post?.latest_comment?.id === commentId) {
-            applyOnComment(post.latest_comment, nextLiked);
-          }
-        });
-        const detailPatch = patchPostDetail(dispatch, postId, (post) => {
-          if (post.latest_comment?.id === commentId) {
-            applyOnComment(post.latest_comment, nextLiked);
-          }
-        });
+        const listPatch = dispatch(
+          feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+            const post = draft.data.find((p) => p.id === postId);
+            if (post?.latest_comment?.id === commentId) {
+              applyOnComment(post.latest_comment, nextLiked);
+            }
+          }),
+        );
+        const detailPatch = dispatch(
+          feedApi.util.updateQueryData("getPost", postId, (post) => {
+            if (post.latest_comment?.id === commentId) {
+              applyOnComment(post.latest_comment, nextLiked);
+            }
+          }),
+        );
         const commentsPatch = dispatch(
           feedApi.util.updateQueryData(
             "getComments",
@@ -382,17 +386,21 @@ export const feedApi = apiSlice.injectEndpoints({
           const sync = (comment: { likes: number; has_liked?: boolean }) =>
             applyOnComment(comment, data.liked);
 
-          patchFeedList(dispatch, (draft) => {
-            const post = draft.data.find((p) => p.id === postId);
-            if (post?.latest_comment?.id === commentId) {
-              sync(post.latest_comment);
-            }
-          });
-          patchPostDetail(dispatch, postId, (post) => {
-            if (post.latest_comment?.id === commentId) {
-              sync(post.latest_comment);
-            }
-          });
+          dispatch(
+            feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+              const post = draft.data.find((p) => p.id === postId);
+              if (post?.latest_comment?.id === commentId) {
+                sync(post.latest_comment);
+              }
+            }),
+          );
+          dispatch(
+            feedApi.util.updateQueryData("getPost", postId, (post) => {
+              if (post.latest_comment?.id === commentId) {
+                sync(post.latest_comment);
+              }
+            }),
+          );
           dispatch(
             feedApi.util.updateQueryData(
               "getComments",
@@ -411,6 +419,7 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Update post text content or audience visibility
     updatePost: builder.mutation<
       ApiPostDetail,
       { id: string; content?: string; visibility?: string }
@@ -426,24 +435,30 @@ export const feedApi = apiSlice.injectEndpoints({
         { id, content, visibility },
         { dispatch, queryFulfilled },
       ) {
-        const listPatch = patchFeedList(dispatch, (draft) => {
-          const post = draft.data.find((p) => p.id === id);
-          if (!post) return;
-          if (content !== undefined) post.content = content;
-          if (visibility !== undefined)
-            post.visibility = visibility as ApiPostDetail["visibility"];
-        });
-        const detailPatch = patchPostDetail(dispatch, id, (post) => {
-          if (content !== undefined) post.content = content;
-          if (visibility !== undefined)
-            post.visibility = visibility as ApiPostDetail["visibility"];
-        });
+        const listPatch = dispatch(
+          feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+            const post = draft.data.find((p) => p.id === id);
+            if (!post) return;
+            if (content !== undefined) post.content = content;
+            if (visibility !== undefined)
+              post.visibility = visibility as ApiPostDetail["visibility"];
+          }),
+        );
+        const detailPatch = dispatch(
+          feedApi.util.updateQueryData("getPost", id, (post) => {
+            if (content !== undefined) post.content = content;
+            if (visibility !== undefined)
+              post.visibility = visibility as ApiPostDetail["visibility"];
+          }),
+        );
         try {
           const { data: updated } = await queryFulfilled;
-          patchFeedList(dispatch, (draft) => {
-            const idx = draft.data.findIndex((p) => p.id === id);
-            if (idx >= 0) draft.data[idx] = updated;
-          });
+          dispatch(
+            feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+              const idx = draft.data.findIndex((p) => p.id === id);
+              if (idx >= 0) draft.data[idx] = updated;
+            }),
+          );
           dispatch(feedApi.util.upsertQueryData("getPost", id, updated));
         } catch {
           listPatch.undo();
@@ -452,14 +467,22 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Delete a comment or reply by ID
     deleteComment: builder.mutation<
-      void,
+      { id: string; soft_deleted: boolean; deleted_at: string | null },
       { commentId: string; postId: string }
     >({
       query: ({ commentId }) => ({
         url: `/posts/comments/${commentId}`,
         method: "DELETE",
       }),
+      transformResponse: (
+        response: ApiResponse<{
+          id: string;
+          soft_deleted: boolean;
+          deleted_at: string | null;
+        }>,
+      ) => unwrapData(response),
       async onQueryStarted(
         { commentId, postId },
         { dispatch, queryFulfilled },
@@ -469,27 +492,66 @@ export const feedApi = apiSlice.injectEndpoints({
             "getComments",
             { postId, limit: COMMENTS_LIMIT },
             (draft) => {
-              draft.data = draft.data.filter((c) => c.id !== commentId);
+              const comment = draft.data.find((c) => c.id === commentId);
+              if (comment) {
+                if (comment.replies > 0) {
+                  comment.is_deleted = true;
+                  comment.deleted_at = new Date().toISOString();
+                } else {
+                  draft.data = draft.data.filter((c) => c.id !== commentId);
+                }
+              }
             },
           ),
         );
 
-        const listPatch = patchFeedList(dispatch, (draft) => {
-          const post = draft.data.find((p) => p.id === postId);
-          if (!post) return;
-          post.comments = Math.max(0, post.comments - 1);
-          if (post.latest_comment?.id === commentId) {
-            post.latest_comment = null;
-          }
-        });
-        const detailPatch = patchPostDetail(dispatch, postId, (post) => {
-          post.comments = Math.max(0, post.comments - 1);
-          if (post.latest_comment?.id === commentId) {
-            post.latest_comment = null;
-          }
-        });
+        const listPatch = dispatch(
+          feedApi.util.updateQueryData("getPosts", FEED_LIST_ARG, (draft) => {
+            const post = draft.data.find((p) => p.id === postId);
+            if (!post) return;
+            post.comments = Math.max(0, post.comments - 1);
+            if (post.latest_comment?.id === commentId) {
+              if (post.latest_comment.replies > 0) {
+                post.latest_comment.is_deleted = true;
+                post.latest_comment.deleted_at = new Date().toISOString();
+              } else {
+                post.latest_comment = null;
+              }
+            }
+          }),
+        );
+        const detailPatch = dispatch(
+          feedApi.util.updateQueryData("getPost", postId, (post) => {
+            post.comments = Math.max(0, post.comments - 1);
+            if (post.latest_comment?.id === commentId) {
+              if (post.latest_comment.replies > 0) {
+                post.latest_comment.is_deleted = true;
+                post.latest_comment.deleted_at = new Date().toISOString();
+              } else {
+                post.latest_comment = null;
+              }
+            }
+          }),
+        );
         try {
-          await queryFulfilled;
+          const { data } = await queryFulfilled;
+          dispatch(
+            feedApi.util.updateQueryData(
+              "getComments",
+              { postId, limit: COMMENTS_LIMIT },
+              (draft) => {
+                const comment = draft.data.find((c) => c.id === commentId);
+                if (comment) {
+                  if (data.soft_deleted) {
+                    comment.is_deleted = true;
+                    comment.deleted_at = data.deleted_at;
+                  } else {
+                    draft.data = draft.data.filter((c) => c.id !== commentId);
+                  }
+                }
+              },
+            ),
+          );
         } catch {
           commentsPatch.undo();
           listPatch.undo();
@@ -504,6 +566,7 @@ export const {
   useGetPostsQuery,
   useGetPostQuery,
   useGetCommentsQuery,
+  useGetPostLikesQuery,
   useCreatePostMutation,
   useDeletePostMutation,
   useLikePostMutation,

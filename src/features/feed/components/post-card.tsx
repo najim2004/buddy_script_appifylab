@@ -59,14 +59,6 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
     }
   };
 
-  const image = post.attachments?.find(
-    (a) => a.type === "IMAGE" || a.mime_type?.startsWith("image/"),
-  )?.file_path;
-
-  const video = post.attachments?.find(
-    (a) => a.type === "VIDEO" || a.mime_type?.startsWith("video/"),
-  )?.file_path;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0 max-w-lg max-h-[90vh] overflow-y-auto">
@@ -81,13 +73,12 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
             className="min-h-[120px] resize-none text-base border-0 bg-transparent shadow-none focus-visible:ring-0 p-0"
             autoFocus
           />
-          {(image || video) && (
+          {post.attachments && post.attachments.length > 0 && (
             <div className="rounded-md border border-border p-2 pointer-events-none opacity-80">
               <p className="text-xs text-muted-foreground mb-2">Attached Media (cannot be changed)</p>
               <PostContent
                 content=""
-                image={image ? mediaUrl(image) : undefined}
-                video={video ? mediaUrl(video) : undefined}
+                attachments={post.attachments}
               />
             </div>
           )}
@@ -203,14 +194,6 @@ export function PostCard({
     );
   };
 
-  const image = post.attachments.find(
-    (a) => a.type === "IMAGE" || a.mime_type?.startsWith("image/"),
-  )?.file_path;
-
-  const video = post.attachments.find(
-    (a) => a.type === "VIDEO" || a.mime_type?.startsWith("video/"),
-  )?.file_path;
-
   return (
     <>
       <article className="bg-card mb-4 rounded-md py-6">
@@ -231,12 +214,12 @@ export function PostCard({
           />
           <PostContent
             content={post.content ?? ""}
-            image={image ? mediaUrl(image) : undefined}
-            video={video ? mediaUrl(video) : undefined}
+            attachments={post.attachments}
           />
         </div>
 
         <PostStats
+          postId={post.id}
           likes={post.likes}
           comments={post.comments}
           shares={0}

@@ -73,3 +73,6 @@ export interface LikeToggleResult {
 
 export const FEED_LIST_ARG = { limit: 10 } as const;
 export const COMMENTS_LIMIT = 30;
+
+export type FeedListArg = { limit?: number; cursor?: string };
+

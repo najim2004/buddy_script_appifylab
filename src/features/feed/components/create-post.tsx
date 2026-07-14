@@ -33,43 +33,54 @@ type FilePreview = {
 
 export function CreatePost({ userAvatar, className }: CreatePostProps) {
   const [content, setContent] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<FilePreview[]>([]);
   const [createPost, { isLoading }] = useCreatePostMutation();
 
   const photoInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
 
+  const previewsRef = useRef<FilePreview[]>([]);
+  previewsRef.current = previews;
+
   useEffect(() => {
-    const next = files.map((file) => ({
+    return () => {
+      previewsRef.current.forEach((item) => URL.revokeObjectURL(item.url));
+    };
+  }, []);
+
+  const addFiles = (list: FileList | null) => {
+    if (!list?.length) return;
+    const newFiles: FilePreview[] = Array.from(list).map((file) => ({
       file,
       url: URL.createObjectURL(file),
       isVideo: file.type.startsWith("video/"),
     }));
-    setPreviews(next);
-    return () => next.forEach((item) => URL.revokeObjectURL(item.url));
-  }, [files]);
-
-  const addFiles = (list: FileList | null) => {
-    if (!list?.length) return;
-    setFiles((prev) => [...prev, ...Array.from(list)].slice(0, 10));
+    setPreviews((prev) => [...prev, ...newFiles].slice(0, 10));
   };
 
   const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => {
+      const target = prev[index];
+      if (target) {
+        URL.revokeObjectURL(target.url);
+      }
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   const onPost = async () => {
     const text = content.trim();
-    if (!text && files.length === 0) {
+    const rawFiles = previews.map((p) => p.file);
+    if (!text && rawFiles.length === 0) {
       toast.error("Write something or add a photo/video");
       return;
     }
 
     try {
-      await createPost({ content: text, files }).unwrap();
+      await createPost({ content: text, files: rawFiles }).unwrap();
       setContent("");
-      setFiles([]);
+      previews.forEach((item) => URL.revokeObjectURL(item.url));
+      setPreviews([]);
       toast.success("Post shared");
     } catch (error) {
       toast.error(getApiErrorMessage(error, "Could not create post"));
@@ -95,7 +106,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
             className="text-content placeholder:text-muted-foreground min-h-[88px] w-full resize-none rounded-md border-0 bg-transparent px-2 py-2 pr-10 text-base shadow-none focus-visible:ring-0"
           />
           {!content && (
-            <div className="pointer-events-none absolute left-[150px] top-2 text-muted-foreground">
+            <div className="text-muted-foreground pointer-events-none absolute top-2 left-[150px]">
               <Pen className="size-4" />
             </div>
           )}
@@ -128,6 +139,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
                   src={item.url}
                   alt=""
                   fill
+                  unoptimized
                   className="object-cover"
                 />
               )}
@@ -178,7 +190,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
                   photoInputRef.current.click();
                 }
               }}
-              className="text-muted-foreground hover:text-primary group flex items-center text-sm sm:text-base font-medium"
+              className="text-muted-foreground hover:text-primary group flex items-center text-sm font-medium sm:text-base"
             >
               <ImageIcon className="mr-1.5 size-5 sm:mr-2" />
               <span>Photo</span>
@@ -192,7 +204,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
                   videoInputRef.current.click();
                 }
               }}
-              className="text-muted-foreground hover:text-primary group flex items-center text-sm sm:text-base font-medium"
+              className="text-muted-foreground hover:text-primary group flex items-center text-sm font-medium sm:text-base"
             >
               <Video className="mr-1.5 size-5 sm:mr-2" />
               <span>Video</span>
@@ -201,7 +213,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
             <button
               type="button"
               disabled
-              className="text-muted-foreground flex cursor-not-allowed items-center text-sm opacity-50 sm:text-base font-medium"
+              className="text-muted-foreground flex cursor-not-allowed items-center text-sm font-medium opacity-50 sm:text-base"
             >
               <CalendarDays className="mr-1.5 size-5 sm:mr-2" />
               <span>Event</span>
@@ -210,7 +222,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
             <button
               type="button"
               disabled
-              className="text-muted-foreground flex cursor-not-allowed items-center text-sm opacity-50 sm:text-base font-medium"
+              className="text-muted-foreground flex cursor-not-allowed items-center text-sm font-medium opacity-50 sm:text-base"
             >
               <FileText className="mr-1.5 size-5 sm:mr-2" />
               <span>Article</span>
