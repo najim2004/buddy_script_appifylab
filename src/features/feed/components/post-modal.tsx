@@ -110,7 +110,7 @@ export function PostModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(dialogMobileFullscreen, "p-0 sm:max-w-2xl")}>
+      <DialogContent className={cn(dialogMobileFullscreen, "p-0 md:max-w-2xl")}>
         <DialogHeader>
           <DialogTitle>{authorName}&apos;s post</DialogTitle>
         </DialogHeader>

@@ -89,13 +89,13 @@ export function PostStats({
             <DialogContent
               className={cn(
                 dialogMobileFullscreen,
-                "flex flex-col p-0 sm:max-w-sm",
+                "flex flex-col p-0 md:max-w-sm",
               )}
             >
               <DialogHeader className="border-border border-b px-6 pt-5 pb-3">
                 <DialogTitle>Likes</DialogTitle>
               </DialogHeader>
-              <div className="max-h-none flex-1 space-y-4 overflow-y-auto px-6 py-4 sm:max-h-[350px]">
+              <div className="max-h-none flex-1 space-y-4 overflow-y-auto px-6 py-4 md:max-h-[350px]">
                 {likesLoading ? (
                   <div className="text-muted-foreground py-4 text-center text-sm">
                     Loading...

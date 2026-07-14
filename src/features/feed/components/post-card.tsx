@@ -66,7 +66,7 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
       <DialogContent
         className={cn(
           dialogMobileFullscreen,
-          "overflow-y-auto p-0 sm:max-h-[90vh] sm:max-w-lg",
+          "overflow-y-auto p-0 md:max-h-[90vh] md:max-w-lg",
         )}
       >
         <DialogHeader className="border-border border-b px-6 pt-5 pb-3">
