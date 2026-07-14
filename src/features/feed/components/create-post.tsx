@@ -135,12 +135,11 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
                   </div>
                 </>
               ) : (
-                <Image
+                // eslint-disable-next-line @next/next/no-img-element -- Local browser preview doesn't need Next.js server-side optimization
+                <img
                   src={item.url}
                   alt=""
-                  fill
-                  unoptimized
-                  className="object-cover"
+                  className="size-full object-cover"
                 />
               )}
               <button

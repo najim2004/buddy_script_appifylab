@@ -26,7 +26,6 @@ export function PostContent({ content, attachments = [] }: PostContentProps) {
         src={url || ""}
         alt={item.file_name || "Attachment"}
         fill
-        unoptimized
         sizes="(max-width: 768px) 100vw, 600px"
         className="object-cover"
       />

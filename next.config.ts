@@ -6,7 +6,19 @@ const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL ??
   "http://localhost:4000";
 
+const parsedBackendUrl = new URL(backendUrl);
+
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: parsedBackendUrl.protocol.replace(":", "") as "http" | "https",
+        hostname: parsedBackendUrl.hostname,
+        port: parsedBackendUrl.port || undefined,
+        pathname: "/public/storage/**",
+      },
+    ],
+  },
   async rewrites() {
     return [
       {
