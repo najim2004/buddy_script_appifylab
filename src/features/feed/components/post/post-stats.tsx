@@ -6,8 +6,16 @@ import { ThumbsUp } from "lucide-react";
 
 import { mediaUrl } from "@/lib/media-url";
 import { useGetPostLikesQuery } from "@/features/feed/api/feed.api";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  dialogMobileFullscreen,
+} from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 interface RecentLiker {
   id: string;
@@ -78,18 +86,26 @@ export function PostStats({
               </button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-sm p-0 max-h-[85vh] flex flex-col">
-              <DialogHeader className="px-6 pt-5 pb-3 border-b border-border">
+            <DialogContent
+              className={cn(
+                dialogMobileFullscreen,
+                "flex flex-col p-0 sm:max-w-sm",
+              )}
+            >
+              <DialogHeader className="border-border border-b px-6 pt-5 pb-3">
                 <DialogTitle>Likes</DialogTitle>
               </DialogHeader>
-              <div className="flex-1 overflow-y-auto px-6 py-4 max-h-[350px] space-y-4">
+              <div className="max-h-none flex-1 space-y-4 overflow-y-auto px-6 py-4 sm:max-h-[350px]">
                 {likesLoading ? (
-                  <div className="text-center text-sm text-muted-foreground py-4">Loading...</div>
+                  <div className="text-muted-foreground py-4 text-center text-sm">
+                    Loading...
+                  </div>
                 ) : likesData && likesData.length > 0 ? (
                   likesData.map((likeItem) => {
-                    const name = [likeItem.user.first_name, likeItem.user.last_name]
-                      .filter(Boolean)
-                      .join(" ") || "User";
+                    const name =
+                      [likeItem.user.first_name, likeItem.user.last_name]
+                        .filter(Boolean)
+                        .join(" ") || "User";
                     const avatar = mediaUrl(likeItem.user.avatar);
                     return (
                       <div key={likeItem.id} className="flex items-center gap-3">
@@ -97,12 +113,16 @@ export function PostStats({
                           {avatar && <AvatarImage src={avatar} alt={name} />}
                           <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
                         </Avatar>
-                        <span className="text-sm font-semibold text-title">{name}</span>
+                        <span className="text-title text-sm font-semibold">
+                          {name}
+                        </span>
                       </div>
                     );
                   })
                 ) : (
-                  <div className="text-center text-sm text-muted-foreground py-4">No likes yet</div>
+                  <div className="text-muted-foreground py-4 text-center text-sm">
+                    No likes yet
+                  </div>
                 )}
               </div>
             </DialogContent>

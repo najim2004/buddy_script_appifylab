@@ -8,8 +8,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  dialogMobileFullscreen,
 } from "@/components/ui/dialog";
-import { getApiErrorMessage } from "@/lib/api/error";
+import { cn } from "@/lib/utils";
 import { mediaUrl } from "@/lib/media-url";
 import { formatRelativeTime } from "@/lib/format-time";
 import { useAuth } from "@/features/auth";
@@ -109,7 +110,7 @@ export function PostModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0">
+      <DialogContent className={cn(dialogMobileFullscreen, "p-0 sm:max-w-2xl")}>
         <DialogHeader>
           <DialogTitle>{authorName}&apos;s post</DialogTitle>
         </DialogHeader>

@@ -6,6 +6,10 @@ import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 
+/** Full-screen on phone; centered sheet from `sm` up. */
+export const dialogMobileFullscreen =
+  "inset-0 top-0 left-0 h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 rounded-none sm:inset-auto sm:top-1/2 sm:left-1/2 sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-md";
+
 function Dialog({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -109,4 +113,5 @@ export {
   DialogHeader,
   DialogTitle,
   DialogClose,
+  dialogMobileFullscreen,
 };

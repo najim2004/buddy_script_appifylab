@@ -13,9 +13,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  dialogMobileFullscreen,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import type { ApiPostDetail, PostVisibility } from "../types/feed.api.types";
 import {
   useCreateCommentMutation,
@@ -61,8 +63,13 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="px-6 pt-5 pb-3 border-b border-border">
+      <DialogContent
+        className={cn(
+          dialogMobileFullscreen,
+          "overflow-y-auto p-0 sm:max-h-[90vh] sm:max-w-lg",
+        )}
+      >
+        <DialogHeader className="border-border border-b px-6 pt-5 pb-3">
           <DialogTitle>Edit post</DialogTitle>
         </DialogHeader>
         <div className="px-6 py-4 space-y-4">
