@@ -76,7 +76,7 @@ function CommentRow({
     (user?.id === comment.user.id || user?.id === postAuthorId);
 
   return (
-    <li className={cn("flex gap-3", isReply && "ml-10", isOptimistic && "opacity-50")}>
+    <li className={cn("flex gap-2 sm:gap-3", isReply && "ml-6 sm:ml-10", isOptimistic && "opacity-50")}>
       <Avatar className={cn("shrink-0", isReply ? "size-8" : "size-10")}>
         {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
         <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
@@ -228,7 +228,7 @@ export function CommentThread({
   };
 
   return (
-    <div className="px-6 pb-2">
+    <div className="px-4 pb-2 sm:px-6">
       {previousCount > 0 ? (
         <button
           type="button"
@@ -256,7 +256,7 @@ export function CommentThread({
                 />
                 
                 {replies.length === 0 && (root.replies ?? 0) > 0 && onViewAll ? (
-                  <li className="ml-[52px]">
+                  <li className="ml-8 sm:ml-[52px]">
                     <button
                       type="button"
                       onClick={onViewAll}
@@ -287,7 +287,7 @@ export function CommentThread({
               {replyTo &&
               (replyTo.commentId === root.id ||
                 replies.some((r) => r.id === replyTo.commentId)) ? (
-                <div className="ml-10">
+                <div className="ml-6 sm:ml-10">
                   <PostCommentInput
                     userImage={currentUserImage}
                     autoFocus

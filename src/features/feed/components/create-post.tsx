@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import {
   ImageIcon,
   Video,
@@ -87,9 +86,29 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
     }
   };
 
+  const openPhoto = () => {
+    if (photoInputRef.current) {
+      photoInputRef.current.value = "";
+      photoInputRef.current.click();
+    }
+  };
+
+  const openVideo = () => {
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
+      videoInputRef.current.click();
+    }
+  };
+
   return (
-    <div className={cn("bg-card mb-4 rounded-md pt-6", className)}>
-      <div className="flex items-start px-6">
+    <div
+      className={cn(
+        "bg-card mb-4 rounded-md pt-6 max-lg:overflow-hidden max-lg:pt-4",
+        className,
+      )}
+    >
+      {/* Top composer — base classes are the original lg UI; max-lg only tweaks mobile */}
+      <div className="flex items-start px-6 max-lg:px-4">
         <Avatar className="mr-3 size-10 shrink-0">
           {userAvatar ? (
             <AvatarImage src={userAvatar} alt="Your profile" />
@@ -103,10 +122,10 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Write something ..."
-            className="text-content placeholder:text-muted-foreground min-h-[88px] w-full resize-none rounded-md border-0 bg-transparent px-2 py-2 pr-10 text-base shadow-none focus-visible:ring-0"
+            className="text-content placeholder:text-muted-foreground min-h-[88px] w-full resize-none rounded-md border-0 bg-transparent px-2 py-2 pr-10 text-base shadow-none focus-visible:ring-0 max-lg:min-h-[72px] max-lg:text-sm"
           />
           {!content && (
-            <div className="text-muted-foreground pointer-events-none absolute top-2 left-[150px]">
+            <div className="text-muted-foreground pointer-events-none absolute top-2 left-[150px] max-lg:left-[130px]">
               <Pen className="size-4" />
             </div>
           )}
@@ -114,7 +133,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
       </div>
 
       {previews.length > 0 ? (
-        <div className="mt-3 flex flex-wrap gap-2 px-6">
+        <div className="mt-3 flex flex-wrap gap-2 px-6 max-lg:px-4">
           {previews.map((item, index) => (
             <div
               key={`${item.file.name}-${index}`}
@@ -178,17 +197,13 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
         }}
       />
 
-      <div className="p-4 sm:p-6">
+      {/* Desktop toolbar — original lg+ UI (unchanged) */}
+      <div className="hidden p-4 sm:p-6 lg:block">
         <div className="bg-brand-tint mt-2.5 flex flex-col gap-4 rounded-md p-4 lg:min-h-16 lg:px-4 lg:py-2">
           <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
             <button
               type="button"
-              onClick={() => {
-                if (photoInputRef.current) {
-                  photoInputRef.current.value = "";
-                  photoInputRef.current.click();
-                }
-              }}
+              onClick={openPhoto}
               className="text-muted-foreground hover:text-primary group flex items-center text-sm font-medium sm:text-base"
             >
               <ImageIcon className="mr-1.5 size-5 sm:mr-2" />
@@ -197,12 +212,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
 
             <button
               type="button"
-              onClick={() => {
-                if (videoInputRef.current) {
-                  videoInputRef.current.value = "";
-                  videoInputRef.current.click();
-                }
-              }}
+              onClick={openVideo}
               className="text-muted-foreground hover:text-primary group flex items-center text-sm font-medium sm:text-base"
             >
               <Video className="mr-1.5 size-5 sm:mr-2" />
@@ -239,33 +249,53 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
           </Button>
         </div>
       </div>
-    </div>
-  );
-}
 
-export function CreatePostMobile({ userAvatar }: CreatePostProps) {
-  return (
-    <div className="bg-card mb-4 rounded-md p-4 md:hidden">
-      <div className="flex items-center gap-3">
-        {userAvatar ? (
-          <Image
-            src={userAvatar}
-            alt=""
-            width={40}
-            height={40}
-            className="size-10 rounded-full object-cover"
-          />
-        ) : (
-          <div className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-full text-sm">
-            U
-          </div>
-        )}
-        <input
-          type="text"
-          readOnly
-          placeholder="Write something ..."
-          className="bg-comment text-muted-foreground h-10 flex-1 rounded-full px-4 text-sm outline-none"
-        />
+      {/* Mobile toolbar — icons only (< lg), matching vanilla ≤991px */}
+      <div className="bg-brand-tint mt-2.5 flex h-16 items-center justify-between px-4 lg:hidden">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={openPhoto}
+            aria-label="Add photo"
+            className="text-muted-foreground hover:text-primary"
+          >
+            <ImageIcon className="size-5" />
+          </button>
+          <button
+            type="button"
+            onClick={openVideo}
+            aria-label="Add video"
+            className="text-muted-foreground hover:text-primary"
+          >
+            <Video className="size-5" />
+          </button>
+          <button
+            type="button"
+            disabled
+            aria-label="Event"
+            className="text-muted-foreground cursor-not-allowed opacity-50"
+          >
+            <CalendarDays className="size-5" />
+          </button>
+          <button
+            type="button"
+            disabled
+            aria-label="Article"
+            className="text-muted-foreground cursor-not-allowed opacity-50"
+          >
+            <FileText className="size-5" />
+          </button>
+        </div>
+
+        <Button
+          type="button"
+          disabled={isLoading}
+          onClick={() => void onPost()}
+          className="bg-primary hover:bg-primary-hover h-10 w-[100px] shrink-0 rounded-md text-sm font-medium text-white"
+        >
+          <Send className="mr-1.5 size-3.5" />
+          {isLoading ? "…" : "Post"}
+        </Button>
       </div>
     </div>
   );

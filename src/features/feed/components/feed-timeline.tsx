@@ -26,19 +26,19 @@ export function FeedTimeline() {
       <CreatePost userAvatar={userAvatar} />
 
       {showInitialLoader ? (
-        <div className="bg-card mb-4 flex items-center justify-center rounded-md py-12">
+        <div className="bg-card mb-4 flex items-center justify-center rounded-md py-10 sm:py-12">
           <Loader2 className="text-muted-foreground size-6 animate-spin" />
         </div>
       ) : null}
 
       {isError && !data ? (
-        <div className="bg-card text-muted-foreground mb-4 rounded-md px-6 py-8 text-center text-sm">
+        <div className="bg-card text-muted-foreground mb-4 rounded-md px-4 py-8 text-center text-sm sm:px-6">
           Could not load posts. Please try again.
         </div>
       ) : null}
 
       {!showInitialLoader && !isError && posts.length === 0 ? (
-        <div className="bg-card text-muted-foreground mb-4 rounded-md px-6 py-8 text-center text-sm">
+        <div className="bg-card text-muted-foreground mb-4 rounded-md px-4 py-8 text-center text-sm sm:px-6">
           No posts yet. Be the first to share something.
         </div>
       ) : null}

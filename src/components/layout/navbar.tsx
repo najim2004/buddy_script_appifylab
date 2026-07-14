@@ -12,6 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  MobileBottomNav,
+  MobileTopBar,
+} from "@/components/layout/mobile-bottom-nav";
 import { useAuth, useLogoutMutation } from "@/features/auth";
 import { getApiErrorMessage } from "@/lib/api/error";
 import { ROUTES } from "@/lib/constants";
@@ -161,7 +165,8 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="bg-card fixed top-0 right-0 left-0 z-50 dark:border-b">
+      {/* Desktop top nav — mirrors vanilla ≥992px */}
+      <nav className="bg-card fixed top-0 right-0 left-0 z-50 hidden dark:border-b lg:block">
         <div className="container mx-auto flex h-[72px] max-w-[1296px] items-center px-4 xl:px-0">
           <div className="flex shrink-0 items-center">
             <Link href="/">
@@ -176,7 +181,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="ml-auto hidden lg:block">
+          <div className="ml-auto">
             <form className="relative">
               <svg
                 className="absolute top-1/2 left-4 -translate-y-1/2"
@@ -192,12 +197,12 @@ export function Navbar() {
               <input
                 type="search"
                 placeholder="input search text"
-                className="bg-secondary text-foreground focus:border-primary h-10 w-[426px] rounded-[40px] border border-transparent pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
+                className="bg-secondary text-foreground focus:border-primary h-10 w-[min(426px,100%)] rounded-[40px] border border-transparent pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
               />
             </form>
           </div>
 
-          <ul className="ml-auto hidden items-center space-x-6 lg:flex xl:space-x-11">
+          <ul className="ml-auto flex items-center space-x-6 xl:space-x-11">
             {NAV_ITEMS.map((item) => {
               const active =
                 item.hasActiveState && item.href
@@ -233,7 +238,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="ml-4 flex shrink-0 items-center gap-2 outline-none lg:ml-8"
+                className="ml-8 flex shrink-0 items-center gap-2 outline-none"
               >
                 <div className="bg-muted text-muted-foreground flex h-7 w-7 items-center justify-center overflow-hidden rounded-full text-xs">
                   {avatarSrc ? (
@@ -248,7 +253,7 @@ export function Navbar() {
                     displayName.slice(0, 1).toUpperCase()
                   )}
                 </div>
-                <div className="hidden items-center gap-1 lg:flex">
+                <div className="flex items-center gap-1">
                   <span className="text-title text-base font-normal">
                     {displayName}
                   </span>
@@ -283,9 +288,9 @@ export function Navbar() {
         </div>
       </nav>
 
-      <div className="border-border bg-card fixed right-0 bottom-0 left-0 z-40 block border-t lg:hidden">
-        {/* TODO: mobile nav*/}
-      </div>
+      {/* Mobile chrome — mirrors vanilla ≤991px */}
+      <MobileTopBar />
+      <MobileBottomNav />
     </>
   );
 }

@@ -44,7 +44,7 @@ export function PostStats({
     .slice(0, 5);
 
   return (
-    <div className="mb-0 flex items-center justify-between px-6">
+    <div className="mb-0 flex items-center justify-between px-4 sm:px-6">
       <div className="flex items-center">
         {likes > 0 ? (
           <Dialog open={likesListOpen} onOpenChange={setLikesListOpen}>
@@ -110,7 +110,7 @@ export function PostStats({
         ) : null}
       </div>
 
-      <div className="text-subtle flex items-center text-sm leading-tight">
+      <div className="text-subtle flex shrink-0 items-center text-xs leading-tight sm:text-sm">
         <button
           type="button"
           onClick={onCommentsClick}
@@ -118,7 +118,7 @@ export function PostStats({
         >
           <span className="text-title">{comments}</span> Comment
         </button>
-        <span className="mx-4">
+        <span className="mx-2 sm:mx-4">
           <span className="text-title">{shares}</span> Share
         </span>
       </div>

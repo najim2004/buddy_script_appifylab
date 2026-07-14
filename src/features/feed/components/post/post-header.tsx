@@ -34,9 +34,9 @@ export function PostHeader({
   onEdit,
 }: PostHeaderProps) {
   return (
-    <div className="mb-4 flex items-center justify-between">
-      <div className="flex cursor-pointer items-center">
-        <Avatar className="mr-4 size-11 shrink-0">
+    <div className="mb-4 flex items-center justify-between gap-2">
+      <div className="flex min-w-0 cursor-pointer items-center">
+        <Avatar className="mr-3 size-10 shrink-0 sm:mr-4 sm:size-11">
           {authorImage ? (
             <AvatarImage src={authorImage} alt={authorName} />
           ) : null}
@@ -46,12 +46,12 @@ export function PostHeader({
           <h4 className="mb-0.5">
             <Link
               href="#0"
-              className="text-content hover:text-primary text-base leading-tight transition-colors hover:underline"
+              className="text-content hover:text-primary block truncate text-sm leading-tight transition-colors hover:underline sm:text-base"
             >
               {authorName}
             </Link>
           </h4>
-          <p className="text-subtle flex items-center text-sm leading-tight font-normal">
+          <p className="text-subtle flex items-center text-xs leading-tight font-normal sm:text-sm">
             {timeAgo}
             <span className="mx-1">·</span>
             <Link href="#0" className="text-subtle hover:underline">

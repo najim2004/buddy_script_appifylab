@@ -31,7 +31,7 @@ export function PostCommentInput({
   };
 
   return (
-    <div className="px-6 pt-4 pb-2.5">
+    <div className="px-4 pt-4 pb-2.5 sm:px-6">
       <div className="bg-comment flex items-center rounded-[18px] px-2.5 py-1">
         <Avatar className="size-[26px] shrink-0">
           {userImage ? <AvatarImage src={userImage} alt="" /> : null}

@@ -115,7 +115,7 @@ export function PostModal({
         </DialogHeader>
 
         <div className="min-h-0 flex-1 overflow-y-auto py-4">
-          <div className="px-6">
+          <div className="px-4 sm:px-6">
             <PostHeader
               authorName={authorName}
               authorImage={mediaUrl(post.author.avatar)}

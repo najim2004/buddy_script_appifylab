@@ -13,7 +13,7 @@ interface StoriesProps {
 
 export function Stories({ stories }: StoriesProps) {
   return (
-    <div className="relative mb-4 hidden md:block">
+    <div className="relative mb-4 hidden lg:block">
       <div className="absolute top-1/2 right-[-5px] z-20 -translate-y-1/2">
         <Button
           type="button"
@@ -36,15 +36,14 @@ export function Stories({ stories }: StoriesProps) {
         </Button>
       </div>
 
-      <div className="flex w-full gap-6 overflow-x-auto">
+      <div className="flex w-full gap-6 overflow-x-auto scrollbar-none">
         {stories.map((story, index) => (
           <StoryCard
             key={story.id}
             story={story}
             className={cn(
-              "w-[30%] shrink-0 lg:w-[22%]",
-              index >= 2 && "hidden md:block",
-              index >= 3 && "hidden lg:block",
+              "w-[22%] min-w-[110px] shrink-0",
+              index >= 4 && "hidden xl:block",
             )}
           />
         ))}
@@ -125,29 +124,66 @@ function StoryCard({
   );
 }
 
+/** Instagram-style horizontal stories — shown below lg (vanilla mobile stories) */
 export function StoriesMobile({ stories }: StoriesProps) {
   return (
-    <div className="mb-4 flex gap-3 overflow-x-auto px-1 md:hidden">
-      {stories.map((story) => (
-        <Link
-          key={story.id}
-          href="#0"
-          className="flex w-16 shrink-0 flex-col items-center gap-1"
-        >
-          <Avatar
-            className={cn(
-              "size-14 border-2",
-              story.isOwn ? "border-primary" : "border-primary/60",
-            )}
-          >
-            <AvatarImage src={story.avatar ?? story.cover} alt={story.name} />
-            <AvatarFallback>{story.name.slice(0, 1)}</AvatarFallback>
-          </Avatar>
-          <span className="text-muted-foreground line-clamp-1 w-full text-center text-[11px]">
-            {story.isOwn ? "Your Story" : story.name.split(" ")[0]}
-          </span>
-        </Link>
-      ))}
+    <div className="bg-card mb-4 rounded-md px-3 py-3 lg:hidden">
+      <ul className="flex items-center gap-1 overflow-x-auto scrollbar-none">
+        {stories.map((story) => (
+          <li key={story.id} className="flex w-[70px] shrink-0 justify-center">
+            <Link
+              href="#0"
+              className="flex w-[60px] flex-col items-center"
+            >
+              <div
+                className={cn(
+                  "relative size-[60px] overflow-hidden rounded-full",
+                  story.isOwn
+                    ? "ring-0"
+                    : "p-[2px] ring-2 ring-primary/70 ring-offset-1 ring-offset-card",
+                )}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={story.avatar ?? story.cover}
+                  alt={story.name}
+                  className="size-full rounded-full object-cover"
+                />
+                {story.isOwn ? (
+                  <>
+                    <span className="absolute inset-0 rounded-full bg-black/45" />
+                    <span className="border-card bg-primary absolute top-1/2 left-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        fill="none"
+                        viewBox="0 0 12 12"
+                        aria-hidden
+                      >
+                        <path
+                          stroke="#fff"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 2.5v7M2.5 6h7"
+                        />
+                      </svg>
+                    </span>
+                  </>
+                ) : null}
+              </div>
+              <p
+                className={cn(
+                  "mt-3 w-full truncate text-center text-xs leading-tight font-medium",
+                  story.isOwn ? "text-primary" : "text-subtle",
+                )}
+              >
+                {story.isOwn ? "Your Story" : story.name.split(" ")[0]}
+              </p>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

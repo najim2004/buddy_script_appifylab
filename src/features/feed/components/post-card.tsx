@@ -196,8 +196,8 @@ export function PostCard({
 
   return (
     <>
-      <article className="bg-card mb-4 rounded-md py-6">
-        <div className="px-6">
+      <article className="bg-card mb-4 rounded-md py-4 sm:py-6">
+        <div className="px-4 sm:px-6">
           <PostHeader
             authorName={
               [post.author.first_name, post.author.last_name]
