@@ -52,7 +52,6 @@ export function PostModal({
 }: PostModalProps) {
   const postId = post?.id ?? "";
 
-  // Skip fetch if we already have comments in cache — RTK will serve from cache
   const { data: commentsData, isLoading: commentsLoading } =
     useGetCommentsQuery(
       { postId, limit: COMMENTS_LIMIT },
@@ -70,7 +69,6 @@ export function PostModal({
     [post.author.first_name, post.author.last_name].filter(Boolean).join(" ") ||
     "User";
 
-  // Fire-and-forget — optimistic update handles UI immediately
   const onLike = () => {
     likePost(post.id).catch(() => toast.error("Could not like post"));
   };
@@ -106,8 +104,6 @@ export function PostModal({
     );
   };
 
-  // Merge: if the RTK cache already has comments (from before modal was opened)
-  // commentsLoading will be false and commentsData will be populated immediately.
   const comments = commentsData?.data ?? [];
 
   return (

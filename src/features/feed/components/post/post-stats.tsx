@@ -41,10 +41,12 @@ export function PostStats({
 }: PostStatsProps) {
   const [likesListOpen, setLikesListOpen] = useState(false);
 
-  // Only fetch likes when list is open
-  const { data: likesData, isLoading: likesLoading } = useGetPostLikesQuery(postId, {
-    skip: !likesListOpen,
-  });
+  const { data: likesData, isLoading: likesLoading } = useGetPostLikesQuery(
+    postId,
+    {
+      skip: !likesListOpen,
+    },
+  );
 
   const avatars = recentLikes
     .map((liker) => mediaUrl(liker.avatar))
@@ -59,10 +61,9 @@ export function PostStats({
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
+                className="flex items-center transition-opacity hover:opacity-80 focus:outline-none"
               >
-                {/* Minimal outline like icon */}
-                <ThumbsUp className="size-4 text-primary mr-2" />
+                <ThumbsUp className="text-primary mr-2 size-4" />
 
                 {avatars.length > 0 ? (
                   <div className="mr-2 flex items-center">
@@ -108,7 +109,10 @@ export function PostStats({
                         .join(" ") || "User";
                     const avatar = mediaUrl(likeItem.user.avatar);
                     return (
-                      <div key={likeItem.id} className="flex items-center gap-3">
+                      <div
+                        key={likeItem.id}
+                        className="flex items-center gap-3"
+                      >
                         <Avatar className="size-9">
                           {avatar && <AvatarImage src={avatar} alt={name} />}
                           <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>

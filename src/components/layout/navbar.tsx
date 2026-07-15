@@ -165,8 +165,7 @@ export function Navbar() {
 
   return (
     <>
-      {/* Desktop top nav — mirrors vanilla ≥992px */}
-      <nav className="bg-card fixed top-0 right-0 left-0 z-50 hidden dark:border-b lg:block">
+      <nav className="bg-card fixed top-0 right-0 left-0 z-50 hidden lg:block dark:border-b">
         <div className="container mx-auto flex h-[72px] max-w-[1296px] items-center px-4 xl:px-0">
           <div className="flex shrink-0 items-center">
             <Link href="/">
@@ -181,8 +180,8 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="ml-auto">
-            <form className="relative">
+          <div className="ml-auto w-full">
+            <form className="relative mx-auto lg:w-[326px] xl:w-[426px]">
               <svg
                 className="absolute top-1/2 left-4 -translate-y-1/2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +196,7 @@ export function Navbar() {
               <input
                 type="search"
                 placeholder="input search text"
-                className="bg-secondary text-foreground focus:border-primary h-10 w-[min(426px,100%)] rounded-[40px] border border-transparent pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
+                className="bg-secondary text-foreground focus:border-primary h-10 w-full rounded-[40px] border border-transparent pr-4 pl-11 text-sm font-medium focus:ring-0 focus:outline-none"
               />
             </form>
           </div>
@@ -288,7 +287,6 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile chrome — mirrors vanilla ≤991px */}
       <MobileTopBar />
       <MobileBottomNav />
     </>

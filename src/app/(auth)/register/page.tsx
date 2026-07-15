@@ -11,7 +11,6 @@ export const metadata = {
 export default function RegisterPage() {
   return (
     <main className="bg-background relative min-h-screen max-w-screen overflow-x-hidden py-[100px]">
-      {/* Background decorative shapes */}
       <div className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
         <span className="absolute top-0 left-0 h-[540px] w-44">
           <Image
@@ -59,10 +58,8 @@ export default function RegisterPage() {
         </span>
       </div>
 
-      {/* Main content */}
       <div className="relative container mx-auto max-w-[1320px]">
         <div className="grid grid-cols-1 lg:grid-cols-3">
-          {/* Left – illustration */}
           <div className="my-auto w-full px-2 lg:col-span-2">
             <Image
               src="/assets/images/registration.png"
@@ -82,7 +79,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* Right – form card */}
           <div className="w-full px-2">
             <div className="bg-card rounded-lg p-12 shadow-none">
               <div className="mb-7 flex justify-center">

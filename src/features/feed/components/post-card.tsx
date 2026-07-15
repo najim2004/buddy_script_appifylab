@@ -35,7 +35,11 @@ import { PostContent } from "./post/post-content";
 import { PostHeader } from "./post/post-header";
 import { PostStats } from "./post/post-stats";
 
-const VISIBILITY_OPTIONS: { value: PostVisibility; label: string; icon: React.ElementType }[] = [
+const VISIBILITY_OPTIONS: {
+  value: PostVisibility;
+  label: string;
+  icon: React.ElementType;
+}[] = [
   { value: "PUBLIC", label: "Public", icon: Globe },
   { value: "PRIVATE", label: "Only me", icon: Lock },
 ];
@@ -78,34 +82,33 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
         <DialogHeader className="border-border border-b px-6 pt-5 pb-3">
           <DialogTitle>Edit post</DialogTitle>
         </DialogHeader>
-        <div className="px-6 py-4 space-y-4">
+        <div className="space-y-4 px-6 py-4">
           <Textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="What's on your mind?"
-            className="min-h-[120px] resize-none text-base border-0 bg-transparent shadow-none focus-visible:ring-0 p-0"
+            className="min-h-[120px] resize-none border-0 bg-transparent p-0 text-base shadow-none focus-visible:ring-0"
             autoFocus
           />
           {post.attachments && post.attachments.length > 0 && (
-            <div className="rounded-md border border-border p-2 pointer-events-none opacity-80">
-              <p className="text-xs text-muted-foreground mb-2">Attached Media (cannot be changed)</p>
-              <PostContent
-                content=""
-                attachments={post.attachments}
-              />
+            <div className="border-border pointer-events-none rounded-md border p-2 opacity-80">
+              <p className="text-muted-foreground mb-2 text-xs">
+                Attached Media (cannot be changed)
+              </p>
+              <PostContent content="" attachments={post.attachments} />
             </div>
           )}
           <div>
-            <p className="text-xs text-muted-foreground mb-2">Audience</p>
+            <p className="text-muted-foreground mb-2 text-xs">Audience</p>
             <div className="flex gap-2">
               {VISIBILITY_OPTIONS.map(({ value, label, icon: Icon }) => (
                 <button
                   key={value}
                   type="button"
                   onClick={() => setVisibility(value)}
-                  className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium border transition-colors ${
+                  className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                     visibility === value
-                      ? "bg-primary text-white border-primary"
+                      ? "bg-primary border-primary text-white"
                       : "border-border text-muted-foreground hover:border-primary hover:text-primary"
                   }`}
                 >
@@ -116,7 +119,7 @@ function EditPostModal({ post, open, onOpenChange }: EditPostModalProps) {
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-2 px-6 py-4 border-t border-border">
+        <div className="border-border flex justify-end gap-2 border-t px-6 py-4">
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}
@@ -153,15 +156,12 @@ export function PostCard({
   const [likeComment] = useLikeCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
 
-  // The current user can edit if they are the post author
   const isAuthor = user?.id === post.author.id;
 
   const openModal = () => setModalOpen(true);
 
   const onLike = () => {
-    likePost(post.id).catch(() =>
-      toast.error("Could not like post"),
-    );
+    likePost(post.id).catch(() => toast.error("Could not like post"));
   };
 
   const onDelete = async () => {
@@ -174,7 +174,6 @@ export function PostCard({
     }
   };
 
-  // Fire-and-forget — optimistic update handles UI immediately
   const onComment = (content: string) => {
     createComment({ postId: post.id, content }).catch(() =>
       toast.error("Could not post comment"),
@@ -259,10 +258,7 @@ export function PostCard({
           />
         ) : null}
 
-        <PostCommentInput
-          userImage={currentUserImage}
-          onSubmit={onComment}
-        />
+        <PostCommentInput userImage={currentUserImage} onSubmit={onComment} />
       </article>
 
       <PostModal
@@ -284,11 +280,7 @@ export function PostCard({
       />
 
       {isAuthor ? (
-        <EditPostModal
-          post={post}
-          open={editOpen}
-          onOpenChange={setEditOpen}
-        />
+        <EditPostModal post={post} open={editOpen} onOpenChange={setEditOpen} />
       ) : null}
     </>
   );

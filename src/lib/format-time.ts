@@ -1,7 +1,3 @@
-/**
- * Facebook-style relative time for feed posts/comments.
- * Backend sends ISO timestamps; UI formats them here.
- */
 export function formatRelativeTime(input: string | Date): string {
   const date = input instanceof Date ? input : new Date(input);
   if (Number.isNaN(date.getTime())) return "";

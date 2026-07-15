@@ -1,4 +1,3 @@
-/** Backend GET /auth/me `data` — use as-is (no camelCase remap). */
 export interface User {
   id: string;
   email: string;

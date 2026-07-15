@@ -11,13 +11,16 @@ import { mediaUrl } from "@/lib/media-url";
 import { formatRelativeTime } from "@/lib/format-time";
 import { useAuth } from "@/features/auth";
 
-import type { ApiComment, ApiLatestComment, ApiUserBrief } from "../../types/feed.api.types";
+import type {
+  ApiComment,
+  ApiLatestComment,
+  ApiUserBrief,
+} from "../../types/feed.api.types";
 import { PostCommentInput } from "./post-comment-input";
 
 type CommentItem = ApiComment | ApiLatestComment;
 
 export type ReplyTarget = {
-  /** Comment clicked — used as parent_id (backend collapses to root). */
   commentId: string;
   user: ApiUserBrief;
 };
@@ -35,9 +38,7 @@ interface CommentThreadProps {
     reply_to_user_id: string;
   }) => void;
   currentUserImage?: string;
-  /** Flat feed preview — hide nested reply input if false. */
   allowReply?: boolean;
-  /** Post author id — allowed to delete any comment. */
   postAuthorId?: string;
 }
 
@@ -70,14 +71,19 @@ function CommentRow({
     : null;
 
   const isOptimistic = Boolean((comment as ApiComment)._optimistic);
-  // Can delete: comment author OR post author (admin of post)
   const canDelete =
     !isOptimistic &&
     !!onDeleteComment &&
     (user?.id === comment.user.id || user?.id === postAuthorId);
 
   return (
-    <li className={cn("flex gap-2 sm:gap-3", isReply && "ml-6 sm:ml-10", isOptimistic && "opacity-50")}>
+    <li
+      className={cn(
+        "flex gap-2 sm:gap-3",
+        isReply && "ml-6 sm:ml-10",
+        isOptimistic && "opacity-50",
+      )}
+    >
       <Avatar className={cn("shrink-0", isReply ? "size-8" : "size-10")}>
         {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
         <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
@@ -97,7 +103,9 @@ function CommentRow({
             <p className="text-muted-foreground text-sm">
               {mentionName ? (
                 <>
-                  <span className="text-primary font-medium">@{mentionName}</span>{" "}
+                  <span className="text-primary font-medium">
+                    @{mentionName}
+                  </span>{" "}
                 </>
               ) : null}
               {comment.content}
@@ -145,13 +153,17 @@ function CommentRow({
             </li>
           ) : null}
           <li>
-            <span>{isOptimistic ? "Sending…" : formatRelativeTime(comment.created_at)}</span>
+            <span>
+              {isOptimistic
+                ? "Sending…"
+                : formatRelativeTime(comment.created_at)}
+            </span>
           </li>
           {canDelete && !comment.is_deleted ? (
             <li>
               <button
                 type="button"
-                className="text-destructive hover:underline flex items-center gap-1"
+                className="text-destructive flex items-center gap-1 hover:underline"
                 onClick={() => onDeleteComment?.(comment.id)}
                 aria-label="Delete comment"
               >
@@ -256,8 +268,10 @@ export function CommentThread({
                     allowReply && onReply ? () => startReply(root) : undefined
                   }
                 />
-                
-                {replies.length === 0 && (root.replies ?? 0) > 0 && onViewAll ? (
+
+                {replies.length === 0 &&
+                (root.replies ?? 0) > 0 &&
+                onViewAll ? (
                   <li className="ml-8 sm:ml-[52px]">
                     <button
                       type="button"

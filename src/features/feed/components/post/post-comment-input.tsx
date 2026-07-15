@@ -25,7 +25,6 @@ export function PostCommentInput({
   const submit = () => {
     const content = value.trim();
     if (!content || !onSubmit) return;
-    // Clear immediately — API call is fire-and-forget via RTK optimistic update
     setValue("");
     onSubmit(content);
   };

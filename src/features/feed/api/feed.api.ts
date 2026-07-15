@@ -16,7 +16,6 @@ import { COMMENTS_LIMIT, FEED_LIST_ARG } from "../types/feed.api.types";
 
 export const feedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Get posts list with pagination (scroll feed)
     getPosts: builder.query<PostsPage, FeedListArg | void>({
       query: (arg) => ({
         url: "/posts",
@@ -42,7 +41,6 @@ export const feedApi = apiSlice.injectEndpoints({
           : [{ type: "Post", id: "LIST" }],
     }),
 
-    // Get single post detail by ID
     getPost: builder.query<ApiPostDetail, string>({
       query: (id) => `/posts/${id}`,
       keepUnusedDataFor: 120,
@@ -51,7 +49,6 @@ export const feedApi = apiSlice.injectEndpoints({
       providesTags: (_result, _err, id) => [{ type: "Post", id }],
     }),
 
-    // Create a new post with text and optional media attachments
     createPost: builder.mutation<
       ApiPostDetail,
       { content?: string; files?: File[] }
@@ -75,13 +72,10 @@ export const feedApi = apiSlice.injectEndpoints({
             }),
           );
           dispatch(feedApi.util.upsertQueryData("getPost", post.id, post));
-        } catch {
-          // caller shows toast
-        }
+        } catch {}
       },
     }),
 
-    // Get comments list for a specific post with pagination
     getComments: builder.query<
       CommentsPage,
       { postId: string; cursor?: string; limit?: number }
@@ -97,7 +91,6 @@ export const feedApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    // Get list of users who liked a post
     getPostLikes: builder.query<{ id: string; user: ApiUserBrief }[], string>({
       query: (postId) => `/posts/${postId}/likes`,
       transformResponse: (
@@ -108,7 +101,6 @@ export const feedApi = apiSlice.injectEndpoints({
       ],
     }),
 
-    // Delete a post by ID
     deletePost: builder.mutation<void, string>({
       query: (id) => ({ url: `/posts/${id}`, method: "DELETE" }),
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
@@ -125,7 +117,6 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // Toggle like state on a post
     likePost: builder.mutation<LikeToggleResult, string>({
       query: (id) => ({ url: `/posts/${id}/like`, method: "POST" }),
       transformResponse: (response: ApiResponse<LikeToggleResult>) =>
@@ -189,7 +180,6 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // Create a comment or reply to a post
     createComment: builder.mutation<
       ApiComment,
       {
@@ -310,7 +300,6 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // Toggle like state on a comment
     likeComment: builder.mutation<
       LikeToggleResult,
       { commentId: string; postId: string }
@@ -419,7 +408,6 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // Update post text content or audience visibility
     updatePost: builder.mutation<
       ApiPostDetail,
       { id: string; content?: string; visibility?: string }
@@ -467,7 +455,6 @@ export const feedApi = apiSlice.injectEndpoints({
       },
     }),
 
-    // Delete a comment or reply by ID
     deleteComment: builder.mutation<
       { id: string; soft_deleted: boolean; deleted_at: string | null },
       { commentId: string; postId: string }

@@ -17,7 +17,6 @@ export default async function LoginPage({
 
   return (
     <main className="bg-background relative min-h-screen max-w-screen overflow-x-hidden py-10 lg:py-[100px]">
-      {/* Background decorative shapes */}
       <div className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
         <span className="absolute top-0 left-0 h-[540px] w-44">
           <Image
@@ -66,10 +65,8 @@ export default async function LoginPage({
         </span>
       </div>
 
-      {/* Main content */}
       <div className="relative container mx-auto max-w-[1320px]">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-0">
-          {/* Left – illustration */}
           <div className="my-auto w-full px-2 lg:col-span-2">
             <Image
               src="/assets/images/login.png"
@@ -81,7 +78,6 @@ export default async function LoginPage({
             />
           </div>
 
-          {/* Right – form card */}
           <div className="w-full px-2">
             <div className="bg-card rounded-md p-12 shadow-sm">
               <div className="mb-7 flex justify-center">

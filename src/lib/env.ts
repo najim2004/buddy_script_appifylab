@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const clientEnvSchema = z.object({
-  /** Same-origin API path — proxied to backend via next.config rewrites. */
   NEXT_PUBLIC_API_URL: z.string().default("/api"),
   NEXT_PUBLIC_SOCKET_URL: z.string().url().default("http://localhost:4000"),
   NEXT_PUBLIC_APP_NAME: z.string().default("My Business"),
@@ -14,10 +13,7 @@ const parsed = clientEnvSchema.safeParse({
 });
 
 if (!parsed.success) {
-  console.error(
-    "❌ Invalid environment variables:",
-    z.treeifyError(parsed.error),
-  );
+  console.error("Invalid environment variables:", z.treeifyError(parsed.error));
   throw new Error("Invalid environment variables");
 }
 

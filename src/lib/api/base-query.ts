@@ -32,7 +32,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 
   const url = typeof args === "string" ? args : args.url;
 
-  // login/register 401 = wrong credentials, not expired session
   if (url.includes("/auth/sign-in") || url.includes("/auth/sign-up")) {
     return result;
   }
@@ -47,7 +46,6 @@ export const baseQueryWithReauth: BaseQueryFn<
   const path = typeof window !== "undefined" ? window.location.pathname : "";
   const onAuthPage = path === ROUTES.LOGIN || path === ROUTES.REGISTER;
 
-  // getMe failing on login page — just clear state, don't redirect
   if (!isAuthenticated && onAuthPage) {
     api.dispatch(logout());
     return result;
@@ -61,9 +59,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       method: "POST",
       credentials: "include",
     });
-  } catch {
-    // still clear local state even if sign-out fails
-  }
+  } catch {}
 
   api.dispatch(logout());
   api.dispatch({ type: "api/resetApiState" });

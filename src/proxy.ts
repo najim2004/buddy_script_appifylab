@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { ROUTES } from "@/lib/constants";
 
-/** Better Auth default session cookie names (dev + secure prefix). */
 const SESSION_COOKIE_NAMES = [
   "better-auth.session_token",
   "__Secure-better-auth.session_token",
@@ -17,10 +16,6 @@ function hasSessionCookie(request: NextRequest): boolean {
   });
 }
 
-/**
- * Next.js 16 request boundary (formerly `middleware`).
- * Optimistic session-cookie gate — real auth still enforced by the API.
- */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAuthed = hasSessionCookie(request);
@@ -41,9 +36,6 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Skip static assets, Next internals, and image optimizer.
-     */
     "/((?!api|_next/static|_next/image|favicon.ico|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
