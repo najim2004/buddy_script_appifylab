@@ -43,7 +43,7 @@ type FilePreview = {
 
 export function CreatePost({ userAvatar, className }: CreatePostProps) {
   const [content, setContent] = useState("");
-  const [visibility, setVisibility] = useState("public");
+  const [visibility, setVisibility] = useState("PUBLIC");
   const [previews, setPreviews] = useState<FilePreview[]>([]);
   const [createPost, { isLoading }] = useCreatePostMutation();
 
@@ -103,7 +103,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
     try {
       await createPost({ content: text, files: rawFiles, visibility }).unwrap();
       setContent("");
-      setVisibility("public");
+      setVisibility("PUBLIC");
       previews.forEach((item) => URL.revokeObjectURL(item.url));
       setPreviews([]);
       toast.success("Post shared");
@@ -148,25 +148,25 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
                   type="button"
                   className="border-input text-muted-foreground hover:bg-accent flex cursor-pointer items-center gap-1.5 rounded-md border bg-transparent px-2.5 py-1 text-xs font-medium outline-none"
                 >
-                  {visibility === "public" ? (
+                  {visibility === "PUBLIC" ? (
                     <Globe className="size-3.5" />
                   ) : (
                     <Lock className="size-3.5" />
                   )}
-                  <span className="capitalize">{visibility}</span>
+                  <span className="capitalize">{visibility.toLowerCase()}</span>
                   <ChevronDown className="size-3.5" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[130px]">
                 <DropdownMenuItem
-                  onClick={() => setVisibility("public")}
+                  onClick={() => setVisibility("PUBLIC")}
                   className="cursor-pointer gap-2"
                 >
                   <Globe className="text-muted-foreground size-4" />
                   <span>Public</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setVisibility("private")}
+                  onClick={() => setVisibility("PRIVATE")}
                   className="cursor-pointer gap-2"
                 >
                   <Lock className="text-muted-foreground size-4" />
