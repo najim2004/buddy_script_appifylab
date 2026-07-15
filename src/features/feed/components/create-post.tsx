@@ -10,7 +10,17 @@ import {
   Send,
   X,
   Pen,
+  Globe,
+  Lock,
+  ChevronDown,
 } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,6 +43,7 @@ type FilePreview = {
 
 export function CreatePost({ userAvatar, className }: CreatePostProps) {
   const [content, setContent] = useState("");
+  const [visibility, setVisibility] = useState("public");
   const [previews, setPreviews] = useState<FilePreview[]>([]);
   const [createPost, { isLoading }] = useCreatePostMutation();
 
@@ -50,7 +61,20 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
 
   const addFiles = (list: FileList | null) => {
     if (!list?.length) return;
-    const newFiles: FilePreview[] = Array.from(list).map((file) => ({
+
+    const validFiles: File[] = [];
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i];
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error(`File "${file.name}" exceeds the 2MB limit.`);
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    if (validFiles.length === 0) return;
+
+    const newFiles: FilePreview[] = validFiles.map((file) => ({
       file,
       url: URL.createObjectURL(file),
       isVideo: file.type.startsWith("video/"),
@@ -77,8 +101,9 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
     }
 
     try {
-      await createPost({ content: text, files: rawFiles }).unwrap();
+      await createPost({ content: text, files: rawFiles, visibility }).unwrap();
       setContent("");
+      setVisibility("public");
       previews.forEach((item) => URL.revokeObjectURL(item.url));
       setPreviews([]);
       toast.success("Post shared");
@@ -108,15 +133,50 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
         className,
       )}
     >
-      <div className="flex items-start px-6 max-lg:px-4">
-        <Avatar className="mr-3 size-10 shrink-0">
-          {userAvatar ? (
-            <AvatarImage src={userAvatar} alt="Your profile" />
-          ) : null}
-          <AvatarFallback>U</AvatarFallback>
-        </Avatar>
-
-        <div className="relative flex-1">
+      <div className="flex flex-col items-start px-6 max-lg:px-4">
+        <div className="flex w-full items-center">
+          <Avatar className="mr-3 size-10 shrink-0">
+            {userAvatar ? (
+              <AvatarImage src={userAvatar} alt="Your profile" />
+            ) : null}
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+          <div className="mb-2 flex w-full justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="border-input text-muted-foreground hover:bg-accent flex cursor-pointer items-center gap-1.5 rounded-md border bg-transparent px-2.5 py-1 text-xs font-medium outline-none"
+                >
+                  {visibility === "public" ? (
+                    <Globe className="size-3.5" />
+                  ) : (
+                    <Lock className="size-3.5" />
+                  )}
+                  <span className="capitalize">{visibility}</span>
+                  <ChevronDown className="size-3.5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[130px]">
+                <DropdownMenuItem
+                  onClick={() => setVisibility("public")}
+                  className="cursor-pointer gap-2"
+                >
+                  <Globe className="text-muted-foreground size-4" />
+                  <span>Public</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setVisibility("private")}
+                  className="cursor-pointer gap-2"
+                >
+                  <Lock className="text-muted-foreground size-4" />
+                  <span>Private</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+        <div className="relative w-full">
           <Textarea
             id="create-post"
             value={content}
@@ -179,7 +239,7 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
       <input
         ref={photoInputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,.heic,.heif,.webp"
         multiple
         className="hidden"
         onChange={(e) => {

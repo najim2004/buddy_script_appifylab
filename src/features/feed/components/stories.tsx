@@ -36,7 +36,7 @@ export function Stories({ stories }: StoriesProps) {
         </Button>
       </div>
 
-      <div className="flex w-full gap-6 overflow-x-auto scrollbar-none">
+      <div className="flex w-full scrollbar-none gap-6 overflow-x-auto">
         {stories.map((story, index) => (
           <StoryCard
             key={story.id}
@@ -124,23 +124,22 @@ function StoryCard({
   );
 }
 
-/** Instagram-style horizontal stories — shown below lg (vanilla mobile stories) */
 export function StoriesMobile({ stories }: StoriesProps) {
   return (
-    <div className="bg-card mb-4 rounded-md px-3 py-3 lg:hidden">
-      <ul className="flex items-center gap-1 overflow-x-auto scrollbar-none">
+    <div className="mb-4 rounded-md bg-transparent px-3 py-3 lg:hidden">
+      <ul className="flex scrollbar-none items-center gap-1 overflow-x-auto">
         {stories.map((story) => (
-          <li key={story.id} className="flex w-[70px] shrink-0 justify-center">
-            <Link
-              href="#0"
-              className="flex w-[60px] flex-col items-center"
-            >
+          <li
+            key={story.id}
+            className="flex w-[70px] shrink-0 justify-center p-1"
+          >
+            <Link href="#0" className="flex w-[60px] flex-col items-center">
               <div
                 className={cn(
                   "relative size-[60px] overflow-hidden rounded-full",
                   story.isOwn
                     ? "ring-0"
-                    : "p-[2px] ring-2 ring-primary/70 ring-offset-1 ring-offset-card",
+                    : "ring-primary/70 ring-offset-card p-[2px] ring-2 ring-offset-1",
                 )}
               >
                 <Image

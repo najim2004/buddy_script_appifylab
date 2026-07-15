@@ -51,12 +51,13 @@ export const feedApi = apiSlice.injectEndpoints({
 
     createPost: builder.mutation<
       ApiPostDetail,
-      { content?: string; files?: File[] }
+      { content?: string; files?: File[]; visibility?: string }
     >({
-      query: ({ content, files }) => {
+      query: ({ content, files, visibility }) => {
         const body = new FormData();
         const text = content?.trim();
         if (text) body.append("content", text);
+        if (visibility) body.append("visibility", visibility);
         files?.forEach((file) => body.append("attachments", file));
         return { url: "/posts", method: "POST", body };
       },

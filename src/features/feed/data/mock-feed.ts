@@ -25,6 +25,24 @@ export const FEED_STORIES: FeedStory[] = [
     cover: "/assets/images/card_ppl4.png",
     avatar: "/assets/images/mini_pic.png",
   },
+  {
+    id: "4",
+    name: "Ryan Roslansky",
+    cover: "/assets/images/card_ppl2.png",
+    avatar: "/assets/images/mini_pic.png",
+  },
+  {
+    id: "5",
+    name: "Ryan Roslansky",
+    cover: "/assets/images/card_ppl3.png",
+    avatar: "/assets/images/mini_pic.png",
+  },
+  {
+    id: "6",
+    name: "Ryan Roslansky",
+    cover: "/assets/images/card_ppl4.png",
+    avatar: "/assets/images/mini_pic.png",
+  },
 ];
 
 export const CURRENT_USER_AVATAR = "/assets/images/txt_img.png";
