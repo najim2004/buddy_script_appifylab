@@ -1,5 +1,3 @@
-/** Shared API response primitives — match backend envelope. */
-
 export interface ApiResponse<T> {
   success: boolean;
   message?: string;
