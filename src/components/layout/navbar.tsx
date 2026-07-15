@@ -62,7 +62,7 @@ const NAV_ITEMS = [
   },
   {
     id: "friend-request",
-    href: "/friend-request",
+    href: "#",
     badge: 0,
     hasActiveState: false,
     liClass: "",

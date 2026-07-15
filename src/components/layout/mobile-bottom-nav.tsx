@@ -50,7 +50,7 @@ const MOBILE_NAV = [
   },
   {
     id: "friends",
-    href: "/friend-request",
+    href: "#",
     badge: 0,
     label: "Friends",
     icon: () => (
@@ -243,7 +243,9 @@ export function MobileBottomNav() {
           <div className="bg-background absolute inset-y-0 left-0 flex w-[min(100%,360px)] flex-col shadow-xl">
             <div className="border-border flex items-center justify-between border-b px-4 py-3">
               <div>
-                <p className="text-title text-sm font-semibold">{displayName}</p>
+                <p className="text-title text-sm font-semibold">
+                  {displayName}
+                </p>
                 <p className="text-muted-foreground text-xs">{user?.email}</p>
               </div>
               <button
@@ -267,7 +269,11 @@ export function MobileBottomNav() {
                 onClick={() => setTheme(isDark ? "light" : "dark")}
                 className="text-content hover:bg-muted flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm"
               >
-                {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+                {isDark ? (
+                  <Sun className="size-4" />
+                ) : (
+                  <Moon className="size-4" />
+                )}
                 {isDark ? "Light mode" : "Dark mode"}
               </button>
               <button
@@ -315,11 +321,7 @@ export function MobileTopBar() {
             aria-hidden
           >
             <circle cx="7" cy="7" r="6" stroke="currentColor" />
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              d="M16 16l-3-3"
-            />
+            <path stroke="currentColor" strokeLinecap="round" d="M16 16l-3-3" />
           </svg>
         </button>
       </div>
