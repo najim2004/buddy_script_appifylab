@@ -65,8 +65,8 @@ export function CreatePost({ userAvatar, className }: CreatePostProps) {
     const validFiles: File[] = [];
     for (let i = 0; i < list.length; i++) {
       const file = list[i];
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error(`File "${file.name}" exceeds the 2MB limit.`);
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error(`File "${file.name}" exceeds the 5MB limit.`);
       } else {
         validFiles.push(file);
       }
